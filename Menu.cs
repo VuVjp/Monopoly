@@ -13,7 +13,21 @@ public partial class Menu : Form
         Forms.game = new Game();
         Forms.menu = this;
     }
-    //private void 
+    private void ChangedForm(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        switch (btn.Name)
+        {
+            case "btnSingle":
+                btnSingle.BackColor = Color.LightGray;
+                btnOnline.BackColor = Color.White;
+                break;
+            case "btnOnline":
+                btnOnline.BackColor = Color.LightGray;
+                btnSingle.BackColor = Color.White;
+                break;
+        }
+    }   
     private void btnQuit_Click(object sender, EventArgs e)
     {
         Close();
