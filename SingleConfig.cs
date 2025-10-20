@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Monopoly
 {
-    public partial class OffConfig : Form
+    public partial class SingleConfig : Form
     {
-        public OffConfig()
+        public SingleConfig()
         {
             InitializeComponent();
         }

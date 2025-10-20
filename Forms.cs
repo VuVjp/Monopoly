@@ -12,5 +12,6 @@ namespace Monopoly
         internal static string gameInfoText = null!;
         internal static Game game = null!;
         internal static Menu menu = null!;
+        internal static SingleConfig lobby = null!;
     }
 }
