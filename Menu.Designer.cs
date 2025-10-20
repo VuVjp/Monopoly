@@ -55,6 +55,7 @@ partial class Menu
         btnSingle.TabIndex = 1;
         btnSingle.Text = "Singleplayer";
         btnSingle.UseVisualStyleBackColor = true;
+        btnSingle.Click += btnSingle_Click;
         // 
         // btnMulti
         // 
