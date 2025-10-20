@@ -33,6 +33,7 @@ partial class Menu
         btnMulti = new Button();
         btnAbout = new Button();
         btnQuit = new Button();
+        button1 = new Button();
         SuspendLayout();
         // 
         // lblTitle
@@ -49,7 +50,7 @@ partial class Menu
         // btnSingle
         // 
         btnSingle.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnSingle.Location = new Point(223, 321);
+        btnSingle.Location = new Point(222, 282);
         btnSingle.Name = "btnSingle";
         btnSingle.Size = new Size(637, 72);
         btnSingle.TabIndex = 1;
@@ -60,7 +61,7 @@ partial class Menu
         // btnMulti
         // 
         btnMulti.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnMulti.Location = new Point(223, 399);
+        btnMulti.Location = new Point(222, 360);
         btnMulti.Name = "btnMulti";
         btnMulti.Size = new Size(637, 72);
         btnMulti.TabIndex = 2;
@@ -70,7 +71,7 @@ partial class Menu
         // btnAbout
         // 
         btnAbout.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnAbout.Location = new Point(223, 477);
+        btnAbout.Location = new Point(222, 516);
         btnAbout.Name = "btnAbout";
         btnAbout.Size = new Size(310, 72);
         btnAbout.TabIndex = 3;
@@ -80,7 +81,7 @@ partial class Menu
         // btnQuit
         // 
         btnQuit.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnQuit.Location = new Point(550, 477);
+        btnQuit.Location = new Point(549, 516);
         btnQuit.Name = "btnQuit";
         btnQuit.Size = new Size(310, 72);
         btnQuit.TabIndex = 4;
@@ -88,12 +89,24 @@ partial class Menu
         btnQuit.UseVisualStyleBackColor = true;
         btnQuit.Click += btnQuit_Click;
         // 
+        // button1
+        // 
+        button1.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        button1.Location = new Point(222, 438);
+        button1.Name = "button1";
+        button1.Size = new Size(637, 72);
+        button1.TabIndex = 5;
+        button1.Text = "How To Play";
+        button1.UseVisualStyleBackColor = true;
+        button1.Click += button1_Click;
+        // 
         // Menu
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(30, 136, 229);
-        ClientSize = new Size(1120, 645);
+        ClientSize = new Size(1120, 659);
+        Controls.Add(button1);
         Controls.Add(btnQuit);
         Controls.Add(btnAbout);
         Controls.Add(btnMulti);
@@ -117,4 +130,5 @@ partial class Menu
     private Button btnMulti;
     private Button btnAbout;
     private Button btnQuit;
+    private Button button1;
 }
