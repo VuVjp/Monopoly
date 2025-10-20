@@ -13,7 +13,7 @@ Cách dùng cho server:
 
 Cách dùng cho client:
     BcastRequest bch = new BcastRequest();
-    List<MyTcpInfo> founds = bch.Lookup(10); 10 là số giây chờ phản hồi 
+    List<MyTcpInfo> founds = bch.Lookup(10); 10 là số giây chờ phản hồi, cho 2 giây là hợp lý
 */
 
 namespace LookupHandler
@@ -186,4 +186,5 @@ namespace LookupHandler
             s.Close();
         }
     }
+
 };
