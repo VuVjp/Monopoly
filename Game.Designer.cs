@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             pnlGame = new Panel();
+            pnlChance = new Panel();
+            pnlFortune = new Panel();
             pnl28 = new Panel();
             pcb28 = new PictureBox();
             pnl31 = new Panel();
@@ -101,8 +103,6 @@
             pnl15 = new Panel();
             pcb15 = new PictureBox();
             pnl16 = new Panel();
-            pnlFortune = new Panel();
-            pnlChance = new Panel();
             pnlGame.SuspendLayout();
             pnl28.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb28).BeginInit();
@@ -198,6 +198,20 @@
             pnlGame.Name = "pnlGame";
             pnlGame.Size = new Size(1626, 1335);
             pnlGame.TabIndex = 0;
+            // 
+            // pnlChance
+            // 
+            pnlChance.Location = new Point(1060, 731);
+            pnlChance.Name = "pnlChance";
+            pnlChance.Size = new Size(197, 272);
+            pnlChance.TabIndex = 39;
+            // 
+            // pnlFortune
+            // 
+            pnlFortune.Location = new Point(364, 348);
+            pnlFortune.Name = "pnlFortune";
+            pnlFortune.Size = new Size(197, 272);
+            pnlFortune.TabIndex = 38;
             // 
             // pnl28
             // 
@@ -788,20 +802,6 @@
             pnl16.Size = new Size(236, 96);
             pnl16.TabIndex = 22;
             // 
-            // pnlFortune
-            // 
-            pnlFortune.Location = new Point(364, 348);
-            pnlFortune.Name = "pnlFortune";
-            pnlFortune.Size = new Size(197, 272);
-            pnlFortune.TabIndex = 38;
-            // 
-            // pnlChance
-            // 
-            pnlChance.Location = new Point(1060, 731);
-            pnlChance.Name = "pnlChance";
-            pnlChance.Size = new Size(197, 272);
-            pnlChance.TabIndex = 39;
-            // 
             // Game
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -816,6 +816,7 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             Name = "Game";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Game";
             FormClosing += Game_FormClosing;
             pnlGame.ResumeLayout(false);
