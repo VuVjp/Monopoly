@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    partial class OffConfig
+    partial class SingleConfig
     {
         /// <summary>
         /// Required designer variable.
@@ -34,6 +34,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(233, 227, 208);
             ClientSize = new Size(1517, 917);
             Name = "OffConfig";
             StartPosition = FormStartPosition.CenterScreen;
