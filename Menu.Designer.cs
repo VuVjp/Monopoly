@@ -39,20 +39,20 @@ partial class Menu
         // lblTitle
         // 
         lblTitle.AutoSize = true;
-        lblTitle.Font = new Font("Showcard Gothic", 72F);
+        lblTitle.Font = new Font("Showcard Gothic", 120F, FontStyle.Regular, GraphicsUnit.Point, 0);
         lblTitle.ForeColor = Color.Gold;
-        lblTitle.Location = new Point(124, 53);
+        lblTitle.Location = new Point(73, 71);
         lblTitle.Name = "lblTitle";
-        lblTitle.Size = new Size(859, 177);
+        lblTitle.Size = new Size(1432, 297);
         lblTitle.TabIndex = 0;
         lblTitle.Text = "Monopoly";
         // 
         // btnSingle
         // 
-        btnSingle.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnSingle.Location = new Point(222, 282);
+        btnSingle.Font = new Font("Arial Rounded MT Bold", 24F);
+        btnSingle.Location = new Point(226, 415);
         btnSingle.Name = "btnSingle";
-        btnSingle.Size = new Size(637, 72);
+        btnSingle.Size = new Size(1068, 86);
         btnSingle.TabIndex = 1;
         btnSingle.Text = "Singleplayer";
         btnSingle.UseVisualStyleBackColor = true;
@@ -60,30 +60,30 @@ partial class Menu
         // 
         // btnMulti
         // 
-        btnMulti.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnMulti.Location = new Point(222, 360);
+        btnMulti.Font = new Font("Arial Rounded MT Bold", 24F);
+        btnMulti.Location = new Point(226, 516);
         btnMulti.Name = "btnMulti";
-        btnMulti.Size = new Size(637, 72);
+        btnMulti.Size = new Size(1068, 86);
         btnMulti.TabIndex = 2;
         btnMulti.Text = "Multiplayer";
         btnMulti.UseVisualStyleBackColor = true;
         // 
         // btnAbout
         // 
-        btnAbout.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnAbout.Location = new Point(222, 516);
+        btnAbout.Font = new Font("Arial Rounded MT Bold", 24F);
+        btnAbout.Location = new Point(226, 726);
         btnAbout.Name = "btnAbout";
-        btnAbout.Size = new Size(310, 72);
+        btnAbout.Size = new Size(525, 86);
         btnAbout.TabIndex = 3;
         btnAbout.Text = "About Us";
         btnAbout.UseVisualStyleBackColor = true;
         // 
         // btnQuit
         // 
-        btnQuit.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnQuit.Location = new Point(549, 516);
+        btnQuit.Font = new Font("Arial Rounded MT Bold", 24F);
+        btnQuit.Location = new Point(769, 726);
         btnQuit.Name = "btnQuit";
-        btnQuit.Size = new Size(310, 72);
+        btnQuit.Size = new Size(525, 86);
         btnQuit.TabIndex = 4;
         btnQuit.Text = "Quit Game";
         btnQuit.UseVisualStyleBackColor = true;
@@ -91,10 +91,10 @@ partial class Menu
         // 
         // button1
         // 
-        button1.Font = new Font("Arial Rounded MT Bold", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        button1.Location = new Point(222, 438);
+        button1.Font = new Font("Arial Rounded MT Bold", 24F);
+        button1.Location = new Point(226, 617);
         button1.Name = "button1";
-        button1.Size = new Size(637, 72);
+        button1.Size = new Size(1068, 86);
         button1.TabIndex = 5;
         button1.Text = "How To Play";
         button1.UseVisualStyleBackColor = true;
@@ -105,7 +105,7 @@ partial class Menu
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(30, 136, 229);
-        ClientSize = new Size(1120, 659);
+        ClientSize = new Size(1517, 917);
         Controls.Add(button1);
         Controls.Add(btnQuit);
         Controls.Add(btnAbout);

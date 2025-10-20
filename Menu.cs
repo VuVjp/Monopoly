@@ -13,6 +13,7 @@ public partial class Menu : Form
         Forms.game = new Game();
         Forms.menu = this;
     }
+    //private void 
     private void btnQuit_Click(object sender, EventArgs e)
     {
         Close();

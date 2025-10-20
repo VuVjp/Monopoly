@@ -9,6 +9,7 @@ namespace Monopoly
     internal class Forms
     {
         internal static bool isOnline;
+        internal static string gameInfoText = null!;
         internal static Game game = null!;
         internal static Menu menu = null!;
     }
