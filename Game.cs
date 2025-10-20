@@ -16,6 +16,18 @@ namespace Monopoly
         public Game()
         {
             InitializeComponent();
+            LoadForm();
+        }
+        private void LoadForm()
+        {
+            if (Forms.isOnline)
+            {
+                pcbChat.Visible = true;
+            }
+            else
+            {
+                pcbChat.Visible = false;
+            }
         }
 
         private void Game_FormClosing(object sender, FormClosingEventArgs e)

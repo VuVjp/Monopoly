@@ -5,10 +5,10 @@ public partial class Menu : Form
     public Menu()
     {
         InitializeComponent();
-        Load();
+        LoadForm();
     }
 
-    private void Load()
+    private void LoadForm()
     {
         Forms.game = new Game();
         Forms.menu = this;
@@ -20,6 +20,7 @@ public partial class Menu : Form
 
     private void btnSingle_Click(object sender, EventArgs e)
     {
+        Forms.isOnline = false;
         Forms.game.Show();
         this.Hide();
     }
