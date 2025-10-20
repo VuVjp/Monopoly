@@ -29,26 +29,60 @@
         private void InitializeComponent()
         {
             pnlGame = new Panel();
+            pnl28 = new Panel();
+            pcb28 = new PictureBox();
+            pnl31 = new Panel();
+            pcb31 = new PictureBox();
+            pnl29 = new Panel();
+            pcb29 = new PictureBox();
+            pnl30 = new Panel();
+            pnl36 = new Panel();
+            pcb36 = new PictureBox();
+            pnl35 = new Panel();
+            pnl33 = new Panel();
+            pnl34 = new Panel();
+            pcb34 = new PictureBox();
+            pnl32 = new Panel();
+            pnl10 = new Panel();
+            pcb10 = new PictureBox();
+            pnl11 = new Panel();
+            pnl13 = new Panel();
+            pcb13 = new PictureBox();
+            pnl12 = new Panel();
+            pcb12 = new PictureBox();
+            pnl14 = new Panel();
             pnl18 = new Panel();
+            pcb18 = new PictureBox();
             pnl27 = new Panel();
+            pcb27 = new PictureBox();
             pnl1 = new Panel();
+            pcb1 = new PictureBox();
             panel11 = new Panel();
             panel12 = new Panel();
             pnl19 = new Panel();
+            pcb19 = new PictureBox();
             pnl20 = new Panel();
             pnl21 = new Panel();
+            pcb21 = new PictureBox();
             pnl22 = new Panel();
+            pcb22 = new PictureBox();
             pnl23 = new Panel();
             pnl24 = new Panel();
+            pcb24 = new PictureBox();
             pnl25 = new Panel();
+            pcb25 = new PictureBox();
             pnl26 = new Panel();
             pnl9 = new Panel();
+            pcb9 = new PictureBox();
             pnl8 = new Panel();
+            pcb8 = new PictureBox();
             pnl7 = new Panel();
             pnl6 = new Panel();
+            pcb6 = new PictureBox();
             pnl5 = new Panel();
             pnl4 = new Panel();
             pnl3 = new Panel();
+            pcb3 = new PictureBox();
             pnl2 = new Panel();
             panel1 = new Panel();
             pnlSide = new Panel();
@@ -63,97 +97,67 @@
             pnlPlr1 = new Panel();
             panel9 = new Panel();
             pnl17 = new Panel();
-            pnl15 = new Panel();
-            pnl16 = new Panel();
-            pnl11 = new Panel();
-            pnl13 = new Panel();
-            pnl12 = new Panel();
-            pnl14 = new Panel();
-            pnl10 = new Panel();
-            pnl28 = new Panel();
-            pnl31 = new Panel();
-            pnl29 = new Panel();
-            pnl30 = new Panel();
-            pnl36 = new Panel();
-            pnl35 = new Panel();
-            pnl33 = new Panel();
-            pnl34 = new Panel();
-            pnl32 = new Panel();
-            pcb1 = new PictureBox();
-            pcb3 = new PictureBox();
-            pcb6 = new PictureBox();
-            pcb8 = new PictureBox();
-            pcb9 = new PictureBox();
-            pcb19 = new PictureBox();
-            pcb21 = new PictureBox();
-            pcb22 = new PictureBox();
-            pcb24 = new PictureBox();
-            pcb25 = new PictureBox();
-            pcb27 = new PictureBox();
-            pcb28 = new PictureBox();
-            pcb29 = new PictureBox();
-            pcb31 = new PictureBox();
-            pcb34 = new PictureBox();
-            pcb36 = new PictureBox();
-            pcb18 = new PictureBox();
             pcb17 = new PictureBox();
+            pnl15 = new Panel();
             pcb15 = new PictureBox();
-            pcb13 = new PictureBox();
-            pcb12 = new PictureBox();
-            pcb10 = new PictureBox();
+            pnl16 = new Panel();
+            pnlFortune = new Panel();
+            pnlChance = new Panel();
             pnlGame.SuspendLayout();
+            pnl28.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb28).BeginInit();
+            pnl31.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb31).BeginInit();
+            pnl29.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb29).BeginInit();
+            pnl36.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb36).BeginInit();
+            pnl34.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb34).BeginInit();
+            pnl10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb10).BeginInit();
+            pnl13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb13).BeginInit();
+            pnl12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb12).BeginInit();
             pnl18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb18).BeginInit();
             pnl27.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb27).BeginInit();
             pnl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb1).BeginInit();
             pnl19.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb19).BeginInit();
             pnl21.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb21).BeginInit();
             pnl22.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb22).BeginInit();
             pnl24.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb24).BeginInit();
             pnl25.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb25).BeginInit();
             pnl9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
             pnl8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
             pnl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb6).BeginInit();
             pnl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb3).BeginInit();
             pnlSide.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pnlLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).BeginInit();
             pnl17.SuspendLayout();
-            pnl15.SuspendLayout();
-            pnl13.SuspendLayout();
-            pnl12.SuspendLayout();
-            pnl10.SuspendLayout();
-            pnl28.SuspendLayout();
-            pnl31.SuspendLayout();
-            pnl29.SuspendLayout();
-            pnl36.SuspendLayout();
-            pnl34.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb19).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb21).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb22).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb24).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb25).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb27).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb28).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb29).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb31).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb34).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb36).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb18).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcb17).BeginInit();
+            pnl15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb15).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb13).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb12).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pcb10).BeginInit();
             SuspendLayout();
             // 
             // pnlGame
             // 
+            pnlGame.Controls.Add(pnlChance);
+            pnlGame.Controls.Add(pnlFortune);
             pnlGame.Controls.Add(pnl28);
             pnlGame.Controls.Add(pnl31);
             pnlGame.Controls.Add(pnl29);
@@ -195,6 +199,176 @@
             pnlGame.Size = new Size(1626, 1335);
             pnlGame.TabIndex = 0;
             // 
+            // pnl28
+            // 
+            pnl28.Controls.Add(pcb28);
+            pnl28.Location = new Point(1386, 237);
+            pnl28.Name = "pnl28";
+            pnl28.Size = new Size(236, 96);
+            pnl28.TabIndex = 29;
+            // 
+            // pcb28
+            // 
+            pcb28.Location = new Point(0, 0);
+            pcb28.Name = "pcb28";
+            pcb28.Size = new Size(57, 96);
+            pcb28.TabIndex = 38;
+            pcb28.TabStop = false;
+            // 
+            // pnl31
+            // 
+            pnl31.Controls.Add(pcb31);
+            pnl31.Location = new Point(1386, 524);
+            pnl31.Name = "pnl31";
+            pnl31.Size = new Size(236, 96);
+            pnl31.TabIndex = 32;
+            // 
+            // pcb31
+            // 
+            pcb31.Location = new Point(0, 0);
+            pcb31.Name = "pcb31";
+            pcb31.Size = new Size(57, 96);
+            pcb31.TabIndex = 40;
+            pcb31.TabStop = false;
+            // 
+            // pnl29
+            // 
+            pnl29.Controls.Add(pcb29);
+            pnl29.Location = new Point(1386, 332);
+            pnl29.Name = "pnl29";
+            pnl29.Size = new Size(236, 96);
+            pnl29.TabIndex = 30;
+            // 
+            // pcb29
+            // 
+            pcb29.Location = new Point(0, 0);
+            pcb29.Name = "pcb29";
+            pcb29.Size = new Size(57, 96);
+            pcb29.TabIndex = 39;
+            pcb29.TabStop = false;
+            // 
+            // pnl30
+            // 
+            pnl30.Location = new Point(1386, 428);
+            pnl30.Name = "pnl30";
+            pnl30.Size = new Size(236, 96);
+            pnl30.TabIndex = 31;
+            // 
+            // pnl36
+            // 
+            pnl36.Controls.Add(pcb36);
+            pnl36.Location = new Point(1386, 1003);
+            pnl36.Name = "pnl36";
+            pnl36.Size = new Size(236, 96);
+            pnl36.TabIndex = 37;
+            // 
+            // pcb36
+            // 
+            pcb36.Location = new Point(0, 0);
+            pcb36.Name = "pcb36";
+            pcb36.Size = new Size(57, 96);
+            pcb36.TabIndex = 40;
+            pcb36.TabStop = false;
+            // 
+            // pnl35
+            // 
+            pnl35.Location = new Point(1386, 907);
+            pnl35.Name = "pnl35";
+            pnl35.Size = new Size(236, 96);
+            pnl35.TabIndex = 36;
+            // 
+            // pnl33
+            // 
+            pnl33.Location = new Point(1386, 716);
+            pnl33.Name = "pnl33";
+            pnl33.Size = new Size(236, 96);
+            pnl33.TabIndex = 34;
+            // 
+            // pnl34
+            // 
+            pnl34.Controls.Add(pcb34);
+            pnl34.Location = new Point(1386, 812);
+            pnl34.Name = "pnl34";
+            pnl34.Size = new Size(236, 96);
+            pnl34.TabIndex = 35;
+            // 
+            // pcb34
+            // 
+            pcb34.Location = new Point(0, 0);
+            pcb34.Name = "pcb34";
+            pcb34.Size = new Size(57, 96);
+            pcb34.TabIndex = 40;
+            pcb34.TabStop = false;
+            // 
+            // pnl32
+            // 
+            pnl32.Location = new Point(1386, 620);
+            pnl32.Name = "pnl32";
+            pnl32.Size = new Size(236, 96);
+            pnl32.TabIndex = 33;
+            // 
+            // pnl10
+            // 
+            pnl10.Controls.Add(pcb10);
+            pnl10.Location = new Point(0, 1003);
+            pnl10.Name = "pnl10";
+            pnl10.Size = new Size(236, 96);
+            pnl10.TabIndex = 28;
+            // 
+            // pcb10
+            // 
+            pcb10.Location = new Point(179, -1);
+            pcb10.Name = "pcb10";
+            pcb10.Size = new Size(57, 96);
+            pcb10.TabIndex = 39;
+            pcb10.TabStop = false;
+            // 
+            // pnl11
+            // 
+            pnl11.Location = new Point(0, 907);
+            pnl11.Name = "pnl11";
+            pnl11.Size = new Size(236, 96);
+            pnl11.TabIndex = 27;
+            // 
+            // pnl13
+            // 
+            pnl13.Controls.Add(pcb13);
+            pnl13.Location = new Point(0, 716);
+            pnl13.Name = "pnl13";
+            pnl13.Size = new Size(236, 96);
+            pnl13.TabIndex = 25;
+            // 
+            // pcb13
+            // 
+            pcb13.Location = new Point(179, 0);
+            pcb13.Name = "pcb13";
+            pcb13.Size = new Size(57, 96);
+            pcb13.TabIndex = 39;
+            pcb13.TabStop = false;
+            // 
+            // pnl12
+            // 
+            pnl12.Controls.Add(pcb12);
+            pnl12.Location = new Point(0, 812);
+            pnl12.Name = "pnl12";
+            pnl12.Size = new Size(236, 96);
+            pnl12.TabIndex = 26;
+            // 
+            // pcb12
+            // 
+            pcb12.Location = new Point(179, 0);
+            pcb12.Name = "pcb12";
+            pcb12.Size = new Size(57, 96);
+            pcb12.TabIndex = 39;
+            pcb12.TabStop = false;
+            // 
+            // pnl14
+            // 
+            pnl14.Location = new Point(0, 620);
+            pnl14.Name = "pnl14";
+            pnl14.Size = new Size(236, 96);
+            pnl14.TabIndex = 24;
+            // 
             // pnl18
             // 
             pnl18.Controls.Add(pcb18);
@@ -202,6 +376,14 @@
             pnl18.Name = "pnl18";
             pnl18.Size = new Size(236, 96);
             pnl18.TabIndex = 20;
+            // 
+            // pcb18
+            // 
+            pcb18.Location = new Point(179, 0);
+            pcb18.Name = "pcb18";
+            pcb18.Size = new Size(57, 96);
+            pcb18.TabIndex = 39;
+            pcb18.TabStop = false;
             // 
             // pnl27
             // 
@@ -211,6 +393,14 @@
             pnl27.Size = new Size(128, 236);
             pnl27.TabIndex = 19;
             // 
+            // pcb27
+            // 
+            pcb27.Location = new Point(0, 179);
+            pcb27.Name = "pcb27";
+            pcb27.Size = new Size(128, 57);
+            pcb27.TabIndex = 2;
+            pcb27.TabStop = false;
+            // 
             // pnl1
             // 
             pnl1.Controls.Add(pcb1);
@@ -218,6 +408,14 @@
             pnl1.Name = "pnl1";
             pnl1.Size = new Size(128, 236);
             pnl1.TabIndex = 2;
+            // 
+            // pcb1
+            // 
+            pcb1.Location = new Point(0, 0);
+            pcb1.Name = "pcb1";
+            pcb1.Size = new Size(128, 57);
+            pcb1.TabIndex = 0;
+            pcb1.TabStop = false;
             // 
             // panel11
             // 
@@ -241,6 +439,14 @@
             pnl19.Size = new Size(128, 236);
             pnl19.TabIndex = 18;
             // 
+            // pcb19
+            // 
+            pcb19.Location = new Point(0, 179);
+            pcb19.Name = "pcb19";
+            pcb19.Size = new Size(128, 57);
+            pcb19.TabIndex = 2;
+            pcb19.TabStop = false;
+            // 
             // pnl20
             // 
             pnl20.Location = new Point(364, 1);
@@ -256,6 +462,14 @@
             pnl21.Size = new Size(128, 236);
             pnl21.TabIndex = 15;
             // 
+            // pcb21
+            // 
+            pcb21.Location = new Point(0, 179);
+            pcb21.Name = "pcb21";
+            pcb21.Size = new Size(128, 57);
+            pcb21.TabIndex = 2;
+            pcb21.TabStop = false;
+            // 
             // pnl22
             // 
             pnl22.Controls.Add(pcb22);
@@ -263,6 +477,14 @@
             pnl22.Name = "pnl22";
             pnl22.Size = new Size(128, 236);
             pnl22.TabIndex = 14;
+            // 
+            // pcb22
+            // 
+            pcb22.Location = new Point(0, 179);
+            pcb22.Name = "pcb22";
+            pcb22.Size = new Size(128, 57);
+            pcb22.TabIndex = 2;
+            pcb22.TabStop = false;
             // 
             // pnl23
             // 
@@ -279,6 +501,14 @@
             pnl24.Size = new Size(128, 236);
             pnl24.TabIndex = 12;
             // 
+            // pcb24
+            // 
+            pcb24.Location = new Point(0, 179);
+            pcb24.Name = "pcb24";
+            pcb24.Size = new Size(128, 57);
+            pcb24.TabIndex = 2;
+            pcb24.TabStop = false;
+            // 
             // pnl25
             // 
             pnl25.Controls.Add(pcb25);
@@ -286,6 +516,14 @@
             pnl25.Name = "pnl25";
             pnl25.Size = new Size(128, 236);
             pnl25.TabIndex = 11;
+            // 
+            // pcb25
+            // 
+            pcb25.Location = new Point(0, 179);
+            pcb25.Name = "pcb25";
+            pcb25.Size = new Size(128, 57);
+            pcb25.TabIndex = 2;
+            pcb25.TabStop = false;
             // 
             // pnl26
             // 
@@ -302,6 +540,14 @@
             pnl9.Size = new Size(128, 236);
             pnl9.TabIndex = 8;
             // 
+            // pcb9
+            // 
+            pcb9.Location = new Point(0, 0);
+            pcb9.Name = "pcb9";
+            pcb9.Size = new Size(128, 57);
+            pcb9.TabIndex = 1;
+            pcb9.TabStop = false;
+            // 
             // pnl8
             // 
             pnl8.Controls.Add(pcb8);
@@ -309,6 +555,14 @@
             pnl8.Name = "pnl8";
             pnl8.Size = new Size(128, 236);
             pnl8.TabIndex = 7;
+            // 
+            // pcb8
+            // 
+            pcb8.Location = new Point(0, 0);
+            pcb8.Name = "pcb8";
+            pcb8.Size = new Size(128, 57);
+            pcb8.TabIndex = 1;
+            pcb8.TabStop = false;
             // 
             // pnl7
             // 
@@ -324,6 +578,14 @@
             pnl6.Name = "pnl6";
             pnl6.Size = new Size(128, 236);
             pnl6.TabIndex = 5;
+            // 
+            // pcb6
+            // 
+            pcb6.Location = new Point(0, 0);
+            pcb6.Name = "pcb6";
+            pcb6.Size = new Size(128, 57);
+            pcb6.TabIndex = 1;
+            pcb6.TabStop = false;
             // 
             // pnl5
             // 
@@ -346,6 +608,14 @@
             pnl3.Name = "pnl3";
             pnl3.Size = new Size(128, 236);
             pnl3.TabIndex = 2;
+            // 
+            // pcb3
+            // 
+            pcb3.Location = new Point(0, 0);
+            pcb3.Name = "pcb3";
+            pcb3.Size = new Size(128, 57);
+            pcb3.TabIndex = 1;
+            pcb3.TabStop = false;
             // 
             // pnl2
             // 
@@ -487,263 +757,6 @@
             pnl17.Size = new Size(236, 96);
             pnl17.TabIndex = 21;
             // 
-            // pnl15
-            // 
-            pnl15.Controls.Add(pcb15);
-            pnl15.Location = new Point(12, 535);
-            pnl15.Name = "pnl15";
-            pnl15.Size = new Size(236, 96);
-            pnl15.TabIndex = 23;
-            // 
-            // pnl16
-            // 
-            pnl16.Location = new Point(12, 440);
-            pnl16.Name = "pnl16";
-            pnl16.Size = new Size(236, 96);
-            pnl16.TabIndex = 22;
-            // 
-            // pnl11
-            // 
-            pnl11.Location = new Point(0, 907);
-            pnl11.Name = "pnl11";
-            pnl11.Size = new Size(236, 96);
-            pnl11.TabIndex = 27;
-            // 
-            // pnl13
-            // 
-            pnl13.Controls.Add(pcb13);
-            pnl13.Location = new Point(0, 716);
-            pnl13.Name = "pnl13";
-            pnl13.Size = new Size(236, 96);
-            pnl13.TabIndex = 25;
-            // 
-            // pnl12
-            // 
-            pnl12.Controls.Add(pcb12);
-            pnl12.Location = new Point(0, 812);
-            pnl12.Name = "pnl12";
-            pnl12.Size = new Size(236, 96);
-            pnl12.TabIndex = 26;
-            // 
-            // pnl14
-            // 
-            pnl14.Location = new Point(0, 620);
-            pnl14.Name = "pnl14";
-            pnl14.Size = new Size(236, 96);
-            pnl14.TabIndex = 24;
-            // 
-            // pnl10
-            // 
-            pnl10.Controls.Add(pcb10);
-            pnl10.Location = new Point(0, 1003);
-            pnl10.Name = "pnl10";
-            pnl10.Size = new Size(236, 96);
-            pnl10.TabIndex = 28;
-            // 
-            // pnl28
-            // 
-            pnl28.Controls.Add(pcb28);
-            pnl28.Location = new Point(1386, 237);
-            pnl28.Name = "pnl28";
-            pnl28.Size = new Size(236, 96);
-            pnl28.TabIndex = 29;
-            // 
-            // pnl31
-            // 
-            pnl31.Controls.Add(pcb31);
-            pnl31.Location = new Point(1386, 524);
-            pnl31.Name = "pnl31";
-            pnl31.Size = new Size(236, 96);
-            pnl31.TabIndex = 32;
-            // 
-            // pnl29
-            // 
-            pnl29.Controls.Add(pcb29);
-            pnl29.Location = new Point(1386, 332);
-            pnl29.Name = "pnl29";
-            pnl29.Size = new Size(236, 96);
-            pnl29.TabIndex = 30;
-            // 
-            // pnl30
-            // 
-            pnl30.Location = new Point(1386, 428);
-            pnl30.Name = "pnl30";
-            pnl30.Size = new Size(236, 96);
-            pnl30.TabIndex = 31;
-            // 
-            // pnl36
-            // 
-            pnl36.Controls.Add(pcb36);
-            pnl36.Location = new Point(1386, 1003);
-            pnl36.Name = "pnl36";
-            pnl36.Size = new Size(236, 96);
-            pnl36.TabIndex = 37;
-            // 
-            // pnl35
-            // 
-            pnl35.Location = new Point(1386, 907);
-            pnl35.Name = "pnl35";
-            pnl35.Size = new Size(236, 96);
-            pnl35.TabIndex = 36;
-            // 
-            // pnl33
-            // 
-            pnl33.Location = new Point(1386, 716);
-            pnl33.Name = "pnl33";
-            pnl33.Size = new Size(236, 96);
-            pnl33.TabIndex = 34;
-            // 
-            // pnl34
-            // 
-            pnl34.Controls.Add(pcb34);
-            pnl34.Location = new Point(1386, 812);
-            pnl34.Name = "pnl34";
-            pnl34.Size = new Size(236, 96);
-            pnl34.TabIndex = 35;
-            // 
-            // pnl32
-            // 
-            pnl32.Location = new Point(1386, 620);
-            pnl32.Name = "pnl32";
-            pnl32.Size = new Size(236, 96);
-            pnl32.TabIndex = 33;
-            // 
-            // pcb1
-            // 
-            pcb1.Location = new Point(0, 0);
-            pcb1.Name = "pcb1";
-            pcb1.Size = new Size(128, 57);
-            pcb1.TabIndex = 0;
-            pcb1.TabStop = false;
-            // 
-            // pcb3
-            // 
-            pcb3.Location = new Point(0, 0);
-            pcb3.Name = "pcb3";
-            pcb3.Size = new Size(128, 57);
-            pcb3.TabIndex = 1;
-            pcb3.TabStop = false;
-            // 
-            // pcb6
-            // 
-            pcb6.Location = new Point(0, 0);
-            pcb6.Name = "pcb6";
-            pcb6.Size = new Size(128, 57);
-            pcb6.TabIndex = 1;
-            pcb6.TabStop = false;
-            // 
-            // pcb8
-            // 
-            pcb8.Location = new Point(0, 0);
-            pcb8.Name = "pcb8";
-            pcb8.Size = new Size(128, 57);
-            pcb8.TabIndex = 1;
-            pcb8.TabStop = false;
-            // 
-            // pcb9
-            // 
-            pcb9.Location = new Point(0, 0);
-            pcb9.Name = "pcb9";
-            pcb9.Size = new Size(128, 57);
-            pcb9.TabIndex = 1;
-            pcb9.TabStop = false;
-            // 
-            // pcb19
-            // 
-            pcb19.Location = new Point(0, 179);
-            pcb19.Name = "pcb19";
-            pcb19.Size = new Size(128, 57);
-            pcb19.TabIndex = 2;
-            pcb19.TabStop = false;
-            // 
-            // pcb21
-            // 
-            pcb21.Location = new Point(0, 179);
-            pcb21.Name = "pcb21";
-            pcb21.Size = new Size(128, 57);
-            pcb21.TabIndex = 2;
-            pcb21.TabStop = false;
-            // 
-            // pcb22
-            // 
-            pcb22.Location = new Point(0, 179);
-            pcb22.Name = "pcb22";
-            pcb22.Size = new Size(128, 57);
-            pcb22.TabIndex = 2;
-            pcb22.TabStop = false;
-            // 
-            // pcb24
-            // 
-            pcb24.Location = new Point(0, 179);
-            pcb24.Name = "pcb24";
-            pcb24.Size = new Size(128, 57);
-            pcb24.TabIndex = 2;
-            pcb24.TabStop = false;
-            // 
-            // pcb25
-            // 
-            pcb25.Location = new Point(0, 179);
-            pcb25.Name = "pcb25";
-            pcb25.Size = new Size(128, 57);
-            pcb25.TabIndex = 2;
-            pcb25.TabStop = false;
-            // 
-            // pcb27
-            // 
-            pcb27.Location = new Point(0, 179);
-            pcb27.Name = "pcb27";
-            pcb27.Size = new Size(128, 57);
-            pcb27.TabIndex = 2;
-            pcb27.TabStop = false;
-            // 
-            // pcb28
-            // 
-            pcb28.Location = new Point(0, 0);
-            pcb28.Name = "pcb28";
-            pcb28.Size = new Size(57, 96);
-            pcb28.TabIndex = 38;
-            pcb28.TabStop = false;
-            // 
-            // pcb29
-            // 
-            pcb29.Location = new Point(0, 0);
-            pcb29.Name = "pcb29";
-            pcb29.Size = new Size(57, 96);
-            pcb29.TabIndex = 39;
-            pcb29.TabStop = false;
-            // 
-            // pcb31
-            // 
-            pcb31.Location = new Point(0, 0);
-            pcb31.Name = "pcb31";
-            pcb31.Size = new Size(57, 96);
-            pcb31.TabIndex = 40;
-            pcb31.TabStop = false;
-            // 
-            // pcb34
-            // 
-            pcb34.Location = new Point(0, 0);
-            pcb34.Name = "pcb34";
-            pcb34.Size = new Size(57, 96);
-            pcb34.TabIndex = 40;
-            pcb34.TabStop = false;
-            // 
-            // pcb36
-            // 
-            pcb36.Location = new Point(0, 0);
-            pcb36.Name = "pcb36";
-            pcb36.Size = new Size(57, 96);
-            pcb36.TabIndex = 40;
-            pcb36.TabStop = false;
-            // 
-            // pcb18
-            // 
-            pcb18.Location = new Point(179, 0);
-            pcb18.Name = "pcb18";
-            pcb18.Size = new Size(57, 96);
-            pcb18.TabIndex = 39;
-            pcb18.TabStop = false;
-            // 
             // pcb17
             // 
             pcb17.Location = new Point(179, 0);
@@ -751,6 +764,14 @@
             pcb17.Size = new Size(57, 96);
             pcb17.TabIndex = 39;
             pcb17.TabStop = false;
+            // 
+            // pnl15
+            // 
+            pnl15.Controls.Add(pcb15);
+            pnl15.Location = new Point(12, 535);
+            pnl15.Name = "pnl15";
+            pnl15.Size = new Size(236, 96);
+            pnl15.TabIndex = 23;
             // 
             // pcb15
             // 
@@ -760,29 +781,26 @@
             pcb15.TabIndex = 39;
             pcb15.TabStop = false;
             // 
-            // pcb13
+            // pnl16
             // 
-            pcb13.Location = new Point(179, 0);
-            pcb13.Name = "pcb13";
-            pcb13.Size = new Size(57, 96);
-            pcb13.TabIndex = 39;
-            pcb13.TabStop = false;
+            pnl16.Location = new Point(12, 440);
+            pnl16.Name = "pnl16";
+            pnl16.Size = new Size(236, 96);
+            pnl16.TabIndex = 22;
             // 
-            // pcb12
+            // pnlFortune
             // 
-            pcb12.Location = new Point(179, 0);
-            pcb12.Name = "pcb12";
-            pcb12.Size = new Size(57, 96);
-            pcb12.TabIndex = 39;
-            pcb12.TabStop = false;
+            pnlFortune.Location = new Point(364, 348);
+            pnlFortune.Name = "pnlFortune";
+            pnlFortune.Size = new Size(197, 272);
+            pnlFortune.TabIndex = 38;
             // 
-            // pcb10
+            // pnlChance
             // 
-            pcb10.Location = new Point(179, -1);
-            pcb10.Name = "pcb10";
-            pcb10.Size = new Size(57, 96);
-            pcb10.TabIndex = 39;
-            pcb10.TabStop = false;
+            pnlChance.Location = new Point(1060, 731);
+            pnlChance.Name = "pnlChance";
+            pnlChance.Size = new Size(197, 272);
+            pnlChance.TabIndex = 39;
             // 
             // Game
             // 
@@ -801,55 +819,55 @@
             Text = "Game";
             FormClosing += Game_FormClosing;
             pnlGame.ResumeLayout(false);
+            pnl28.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb28).EndInit();
+            pnl31.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb31).EndInit();
+            pnl29.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb29).EndInit();
+            pnl36.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb36).EndInit();
+            pnl34.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb34).EndInit();
+            pnl10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb10).EndInit();
+            pnl13.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb13).EndInit();
+            pnl12.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb12).EndInit();
             pnl18.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb18).EndInit();
             pnl27.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb27).EndInit();
             pnl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb1).EndInit();
             pnl19.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb19).EndInit();
             pnl21.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb21).EndInit();
             pnl22.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb22).EndInit();
             pnl24.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb24).EndInit();
             pnl25.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb25).EndInit();
             pnl9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb9).EndInit();
             pnl8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
             pnl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb6).EndInit();
             pnl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb3).EndInit();
             pnlSide.ResumeLayout(false);
             pnlSide.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pnlLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).EndInit();
             pnl17.ResumeLayout(false);
-            pnl15.ResumeLayout(false);
-            pnl13.ResumeLayout(false);
-            pnl12.ResumeLayout(false);
-            pnl10.ResumeLayout(false);
-            pnl28.ResumeLayout(false);
-            pnl31.ResumeLayout(false);
-            pnl29.ResumeLayout(false);
-            pnl36.ResumeLayout(false);
-            pnl34.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pcb1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb9).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb19).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb21).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb22).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb24).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb25).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb27).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb28).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb29).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb31).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb34).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb36).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb18).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcb17).EndInit();
+            pnl15.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb15).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb13).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb12).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pcb10).EndInit();
             ResumeLayout(false);
         }
 
@@ -928,5 +946,7 @@
         private PictureBox pcb18;
         private PictureBox pcb17;
         private PictureBox pcb15;
+        private Panel pnlFortune;
+        private Panel pnlChance;
     }
 }
