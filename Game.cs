@@ -93,7 +93,7 @@ namespace Monopoly
 
         private void pcbInfo_MouseLeave(object sender, EventArgs e)
         {
-            pcbChat.Size = new Size(100, 100);
+            pcbInfo.Size = new Size(100, 100);
         }
     }
 }

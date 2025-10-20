@@ -34,9 +34,10 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1517, 917);
             Name = "OffConfig";
-            Text = "OffConfig";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Offline Config";
             ResumeLayout(false);
         }
 
