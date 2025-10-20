@@ -5,15 +5,15 @@ using System.Text;
 
 /*
 Cách dùng cho server:
-    IPEndPoint tcp_host = new IPEndPoint(IPAddress.Parse("192.168.1.254"), 3636);
-    BcastListen bch = new BcastListen(tcp_host, "trandinhbac");
+    IPEndPoint tcp_host = new IPEndPoint(IPAddress.Parse("192.168.1.254"), 3636); ip + port tùy chỉnh
+    BcastListen bch = new BcastListen(tcp_host, "trandinhbac"); tên tùy chỉnh
 
     bch.Start() server sẽ bắt đầu nhận các broadcast của client gửi tới và server sẽ phản hồi thông tin địa chỉ + port của tcp và tên chủ server
-    bch.Stop() dừng quá trình broadcast lại
+    bch.Stop() dừng quá trình nhận broadcast lại
 
 Cách dùng cho client:
     BcastRequest bch = new BcastRequest();
-    List<MyTcpInfo> founds = bch.Lookup(10); 10 là số giây chờ phản hồi, cho 2 giây là hợp lý
+    List<MyTcpInfo> founds = bch.Lookup(10); gửi broadcast và chờ phản hồi trong khoảng thời gian (giây). 2 giây là hợp lý
 */
 
 namespace LookupHandler
@@ -60,7 +60,6 @@ namespace LookupHandler
 
                     if (s.SendTo(packet, 12 + name.Length, 0, from) != 12 + name.Length)
                     {
-                        Console.WriteLine("b");
                         continue;
                     }
                 }
@@ -113,7 +112,6 @@ namespace LookupHandler
         public MyTcpInfo(byte[] packet)
         {
             name = Encoding.UTF8.GetString(packet.AsSpan(12));
-            Console.WriteLine("asdasdasd");
 
             if (BitConverter.IsLittleEndian)
             {
@@ -188,3 +186,4 @@ namespace LookupHandler
     }
 
 };
+
