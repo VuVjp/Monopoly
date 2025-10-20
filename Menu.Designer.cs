@@ -30,7 +30,7 @@ partial class Menu
     {
         lblTitle = new Label();
         btnSingle = new Button();
-        btnMulti = new Button();
+        btnOnline = new Button();
         btnAbout = new Button();
         btnQuit = new Button();
         button1 = new Button();
@@ -58,15 +58,15 @@ partial class Menu
         btnSingle.UseVisualStyleBackColor = true;
         btnSingle.Click += btnSingle_Click;
         // 
-        // btnMulti
+        // btnOnline
         // 
-        btnMulti.Font = new Font("Arial Rounded MT Bold", 24F);
-        btnMulti.Location = new Point(226, 516);
-        btnMulti.Name = "btnMulti";
-        btnMulti.Size = new Size(1068, 86);
-        btnMulti.TabIndex = 2;
-        btnMulti.Text = "Multiplayer";
-        btnMulti.UseVisualStyleBackColor = true;
+        btnOnline.Font = new Font("Arial Rounded MT Bold", 24F);
+        btnOnline.Location = new Point(226, 516);
+        btnOnline.Name = "btnOnline";
+        btnOnline.Size = new Size(1068, 86);
+        btnOnline.TabIndex = 2;
+        btnOnline.Text = "Multiplayer";
+        btnOnline.UseVisualStyleBackColor = true;
         // 
         // btnAbout
         // 
@@ -109,7 +109,7 @@ partial class Menu
         Controls.Add(button1);
         Controls.Add(btnQuit);
         Controls.Add(btnAbout);
-        Controls.Add(btnMulti);
+        Controls.Add(btnOnline);
         Controls.Add(btnSingle);
         Controls.Add(lblTitle);
         ForeColor = SystemColors.ControlText;
@@ -127,7 +127,7 @@ partial class Menu
 
     private Label lblTitle;
     private Button btnSingle;
-    private Button btnMulti;
+    private Button btnOnline;
     private Button btnAbout;
     private Button btnQuit;
     private Button button1;
