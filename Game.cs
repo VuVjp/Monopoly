@@ -36,22 +36,37 @@ namespace Monopoly
 
         private void pcbReturn_MouseEnter(object sender, EventArgs e)
         {
-            pcbReturn.Size = new Size(180, 180);
+            pcbReturn.Size = new Size(110, 110);
         }
 
         private void pcbReturn_MouseLeave(object sender, EventArgs e)
         {
-            pcbReturn.Size = new Size(169, 169);
+            pcbReturn.Size = new Size(100, 100);
         }
 
         private void pcbSave_MouseEnter(object sender, EventArgs e)
         {
-            pcbSave.Size = new Size(180, 180);
+            pcbSave.Size = new Size(110, 110);
         }
 
         private void pcbSave_MouseLeave(object sender, EventArgs e)
         {
-            pcbSave.Size = new Size(169, 169);
+            pcbSave.Size = new Size(100, 100);
+        }
+
+        private void pcbChat_MouseHover(object sender, EventArgs e)
+        {
+            pcbChat.Size = new Size(110, 110);
+        }
+
+        private void pcbChat_MouseEnter(object sender, EventArgs e)
+        {
+            pcbChat.Size = new Size(110, 110);
+        }
+
+        private void pcbChat_MouseLeave(object sender, EventArgs e)
+        {
+            pcbChat.Size = new Size(100, 100);
         }
     }
 }

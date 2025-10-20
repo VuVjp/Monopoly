@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Game));
             pnlGame = new Panel();
             pnlChance = new Panel();
             pnlFortune = new Panel();
@@ -88,6 +89,7 @@
             pnl2 = new Panel();
             panel1 = new Panel();
             pnlSide = new Panel();
+            pcbChat = new PictureBox();
             label1 = new Label();
             lblMoney = new Label();
             pnlLogo = new PictureBox();
@@ -145,6 +147,7 @@
             pnl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb3).BeginInit();
             pnlSide.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbChat).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pnlLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).BeginInit();
@@ -649,6 +652,7 @@
             // 
             pnlSide.BackgroundImage = Properties.Resources.pexels_pixabay_326333;
             pnlSide.BackgroundImageLayout = ImageLayout.Stretch;
+            pnlSide.Controls.Add(pcbChat);
             pnlSide.Controls.Add(label1);
             pnlSide.Controls.Add(lblMoney);
             pnlSide.Controls.Add(pnlLogo);
@@ -662,6 +666,19 @@
             pnlSide.Name = "pnlSide";
             pnlSide.Size = new Size(377, 1334);
             pnlSide.TabIndex = 1;
+            // 
+            // pcbChat
+            // 
+            pcbChat.BackColor = Color.Transparent;
+            pcbChat.BackgroundImage = (Image)resources.GetObject("pcbChat.BackgroundImage");
+            pcbChat.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbChat.Location = new Point(208, 1219);
+            pcbChat.Name = "pcbChat";
+            pcbChat.Size = new Size(100, 100);
+            pcbChat.TabIndex = 11;
+            pcbChat.TabStop = false;
+            pcbChat.MouseEnter += pcbChat_MouseEnter;
+            pcbChat.MouseLeave += pcbChat_MouseLeave;
             // 
             // label1
             // 
@@ -701,9 +718,9 @@
             pcbSave.BackColor = Color.Transparent;
             pcbSave.BackgroundImage = Properties.Resources.SavePNG;
             pcbSave.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbSave.Location = new Point(191, 1150);
+            pcbSave.Location = new Point(208, 1113);
             pcbSave.Name = "pcbSave";
-            pcbSave.Size = new Size(169, 169);
+            pcbSave.Size = new Size(100, 100);
             pcbSave.TabIndex = 7;
             pcbSave.TabStop = false;
             pcbSave.Click += pcbSave_Click;
@@ -715,9 +732,9 @@
             pcbReturn.BackColor = Color.Transparent;
             pcbReturn.BackgroundImage = Properties.Resources.Return;
             pcbReturn.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbReturn.Location = new Point(16, 1150);
+            pcbReturn.Location = new Point(76, 1113);
             pcbReturn.Name = "pcbReturn";
-            pcbReturn.Size = new Size(169, 169);
+            pcbReturn.Size = new Size(100, 100);
             pcbReturn.TabIndex = 6;
             pcbReturn.TabStop = false;
             pcbReturn.Click += pcbReturn_Click;
@@ -862,6 +879,7 @@
             ((System.ComponentModel.ISupportInitialize)pcb3).EndInit();
             pnlSide.ResumeLayout(false);
             pnlSide.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbChat).EndInit();
             ((System.ComponentModel.ISupportInitialize)pnlLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).EndInit();
@@ -949,5 +967,6 @@
         private PictureBox pcb15;
         private Panel pnlFortune;
         private Panel pnlChance;
+        private PictureBox pcbChat;
     }
 }
