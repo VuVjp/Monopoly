@@ -12,7 +12,6 @@ namespace Monopoly
 {
     public partial class Game : Form
     {
-
         public Game()
         {
             InitializeComponent();
@@ -22,6 +21,7 @@ namespace Monopoly
         {
             if (Forms.isOnline)
             {
+                
                 pcbChat.Visible = true;
             }
             else
@@ -77,6 +77,21 @@ namespace Monopoly
         }
 
         private void pcbChat_MouseLeave(object sender, EventArgs e)
+        {
+            pcbChat.Size = new Size(100, 100);
+        }
+
+        private void pcbInfo_DragEnter(object sender, DragEventArgs e)
+        {
+            pcbInfo.Size = new Size(110, 110);
+        }
+
+        private void pcbInfo_MouseEnter(object sender, EventArgs e)
+        {
+            pcbInfo.Size = new Size(110, 110);
+        }
+
+        private void pcbInfo_MouseLeave(object sender, EventArgs e)
         {
             pcbChat.Size = new Size(100, 100);
         }

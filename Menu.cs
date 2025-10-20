@@ -12,7 +12,7 @@ public partial class Menu : Form
     {
         Forms.game = new Game();
         Forms.menu = this;
-    }   
+    }
     private void btnQuit_Click(object sender, EventArgs e)
     {
         Close();
@@ -23,5 +23,10 @@ public partial class Menu : Form
         Forms.isOnline = false;
         Forms.game.Show();
         this.Hide();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show(Cons.howToPlayText, "How to Play Monopoly", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }
