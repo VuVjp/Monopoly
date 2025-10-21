@@ -16,7 +16,7 @@ Cách dùng cho client:
     List<MyTcpInfo> founds = bch.Lookup(10); gửi broadcast và chờ phản hồi trong khoảng thời gian (giây). 2 giây là hợp lý
 */
 
-namespace LookupHandler
+namespace LookupHelper
 {
     public class BcastListen
     {
@@ -186,4 +186,5 @@ namespace LookupHandler
     }
 
 };
+
 
