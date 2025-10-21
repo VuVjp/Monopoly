@@ -63,9 +63,49 @@ namespace Monopoly.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ChanceCards {
+            get {
+                object obj = ResourceManager.GetObject("ChanceCards", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Chat {
             get {
                 object obj = ResourceManager.GetObject("Chat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Fortune90 {
+            get {
+                object obj = ResourceManager.GetObject("Fortune90", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FortuneCard {
+            get {
+                object obj = ResourceManager.GetObject("FortuneCard", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FortuneCards {
+            get {
+                object obj = ResourceManager.GetObject("FortuneCards", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

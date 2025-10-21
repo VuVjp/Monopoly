@@ -39,6 +39,7 @@
             pnl33 = new Panel();
             pcb19 = new PictureBox();
             pnl31 = new Panel();
+            label4 = new Label();
             pcb18 = new PictureBox();
             pnl36 = new Panel();
             pcb21 = new PictureBox();
@@ -47,8 +48,8 @@
             pnl12 = new Panel();
             pcb6 = new PictureBox();
             pnl13 = new Panel();
-            pnl14 = new Panel();
             pcb7 = new PictureBox();
+            pnl14 = new Panel();
             pnl18 = new Panel();
             pcb10 = new PictureBox();
             pnl28 = new Panel();
@@ -73,16 +74,17 @@
             pnl10 = new Panel();
             pcb5 = new PictureBox();
             pnl9 = new Panel();
-            pcb4 = new PictureBox();
             pnl8 = new Panel();
             pnl7 = new Panel();
-            pcb3 = new PictureBox();
+            pcb4 = new PictureBox();
             pnl6 = new Panel();
+            pcb3 = new PictureBox();
             pnl5 = new Panel();
             pnl4 = new Panel();
             pcb2 = new PictureBox();
             pnl3 = new Panel();
             pnl1 = new Panel();
+            pcb8 = new PictureBox();
             pnlSide = new Panel();
             pcbInfo = new PictureBox();
             pcbChat = new PictureBox();
@@ -97,9 +99,8 @@
             pnlPlr1 = new Panel();
             pnl11 = new Panel();
             pnl17 = new Panel();
-            pcb9 = new PictureBox();
             pnl15 = new Panel();
-            pcb8 = new PictureBox();
+            pcb9 = new PictureBox();
             pnl16 = new Panel();
             pnlGame.SuspendLayout();
             pnl35.SuspendLayout();
@@ -114,7 +115,7 @@
             ((System.ComponentModel.ISupportInitialize)pcb21).BeginInit();
             pnl12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb6).BeginInit();
-            pnl14.SuspendLayout();
+            pnl13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb7).BeginInit();
             pnl18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb10).BeginInit();
@@ -134,22 +135,22 @@
             ((System.ComponentModel.ISupportInitialize)pcb15).BeginInit();
             pnl10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb5).BeginInit();
-            pnl9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb4).BeginInit();
             pnl7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb4).BeginInit();
+            pnl6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb3).BeginInit();
             pnl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
             pnlSide.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcbInfo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbChat).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pnlLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).BeginInit();
-            pnl17.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
             pnl15.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
+            pnl16.SuspendLayout();
             SuspendLayout();
             // 
             // pnlGame
@@ -196,7 +197,7 @@
             // 
             // pnl35
             // 
-            pnl35.BackColor = Color.FromArgb(255, 224, 192);
+            pnl35.BackColor = Color.Transparent;
             pnl35.BorderStyle = BorderStyle.FixedSingle;
             pnl35.Controls.Add(pcb20);
             pnl35.Location = new Point(1012, 629);
@@ -207,6 +208,7 @@
             // 
             // pcb20
             // 
+            pcb20.BackColor = Color.FromArgb(255, 224, 192);
             pcb20.Location = new Point(-1, -1);
             pcb20.Margin = new Padding(2);
             pcb20.Name = "pcb20";
@@ -216,6 +218,8 @@
             // 
             // pnlChance
             // 
+            pnlChance.BackgroundImage = Properties.Resources.ChanceCards;
+            pnlChance.BackgroundImageLayout = ImageLayout.Stretch;
             pnlChance.Location = new Point(781, 537);
             pnlChance.Margin = new Padding(2);
             pnlChance.Name = "pnlChance";
@@ -224,6 +228,8 @@
             // 
             // pnlFortune
             // 
+            pnlFortune.BackgroundImage = Properties.Resources.FortuneCards;
+            pnlFortune.BackgroundImageLayout = ImageLayout.Stretch;
             pnlFortune.Location = new Point(244, 245);
             pnlFortune.Margin = new Padding(2);
             pnlFortune.Name = "pnlFortune";
@@ -232,7 +238,7 @@
             // 
             // pnl30
             // 
-            pnl30.BackColor = Color.FromArgb(192, 192, 255);
+            pnl30.BackColor = Color.Transparent;
             pnl30.BorderStyle = BorderStyle.FixedSingle;
             pnl30.Controls.Add(label3);
             pnl30.Controls.Add(pcb17);
@@ -245,15 +251,17 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.Location = new Point(49, 27);
             label3.Name = "label3";
-            label3.Size = new Size(53, 40);
+            label3.Size = new Size(57, 34);
             label3.TabIndex = 40;
             label3.Text = "Tokyo\r\n3000 $";
             label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pcb17
             // 
+            pcb17.BackColor = Color.FromArgb(192, 192, 255);
             pcb17.Location = new Point(-1, -1);
             pcb17.Margin = new Padding(2);
             pcb17.Name = "pcb17";
@@ -263,7 +271,7 @@
             // 
             // pnl33
             // 
-            pnl33.BackColor = Color.FromArgb(192, 192, 255);
+            pnl33.BackColor = Color.Transparent;
             pnl33.BorderStyle = BorderStyle.FixedSingle;
             pnl33.Controls.Add(pcb19);
             pnl33.Location = new Point(1012, 437);
@@ -274,6 +282,7 @@
             // 
             // pcb19
             // 
+            pcb19.BackColor = Color.FromArgb(192, 192, 255);
             pcb19.Location = new Point(-1, -1);
             pcb19.Margin = new Padding(2);
             pcb19.Name = "pcb19";
@@ -283,8 +292,9 @@
             // 
             // pnl31
             // 
-            pnl31.BackColor = Color.FromArgb(192, 192, 255);
+            pnl31.BackColor = Color.Transparent;
             pnl31.BorderStyle = BorderStyle.FixedSingle;
+            pnl31.Controls.Add(label4);
             pnl31.Controls.Add(pcb18);
             pnl31.Location = new Point(1012, 245);
             pnl31.Margin = new Padding(2);
@@ -292,8 +302,20 @@
             pnl31.Size = new Size(149, 97);
             pnl31.TabIndex = 30;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(49, 25);
+            label4.Name = "label4";
+            label4.Size = new Size(57, 34);
+            label4.TabIndex = 41;
+            label4.Text = "Tokyo\r\n3000 $";
+            label4.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // pcb18
             // 
+            pcb18.BackColor = Color.FromArgb(192, 192, 255);
             pcb18.Location = new Point(-1, -1);
             pcb18.Margin = new Padding(2);
             pcb18.Name = "pcb18";
@@ -303,7 +325,7 @@
             // 
             // pnl36
             // 
-            pnl36.BackColor = Color.FromArgb(255, 224, 192);
+            pnl36.BackColor = Color.Transparent;
             pnl36.BorderStyle = BorderStyle.FixedSingle;
             pnl36.Controls.Add(pcb21);
             pnl36.Location = new Point(1012, 725);
@@ -314,6 +336,7 @@
             // 
             // pcb21
             // 
+            pcb21.BackColor = Color.FromArgb(255, 224, 192);
             pcb21.Location = new Point(-1, -1);
             pcb21.Margin = new Padding(2);
             pcb21.Name = "pcb21";
@@ -332,6 +355,8 @@
             // 
             // pnl32
             // 
+            pnl32.BackgroundImage = Properties.Resources.Fortune90;
+            pnl32.BackgroundImageLayout = ImageLayout.Stretch;
             pnl32.BorderStyle = BorderStyle.FixedSingle;
             pnl32.Location = new Point(1012, 341);
             pnl32.Margin = new Padding(2);
@@ -341,7 +366,7 @@
             // 
             // pnl12
             // 
-            pnl12.BackColor = Color.FromArgb(192, 255, 255);
+            pnl12.BackColor = Color.Transparent;
             pnl12.BorderStyle = BorderStyle.FixedSingle;
             pnl12.Controls.Add(pcb6);
             pnl12.Location = new Point(0, 725);
@@ -352,6 +377,7 @@
             // 
             // pcb6
             // 
+            pcb6.BackColor = Color.Silver;
             pcb6.Location = new Point(120, -1);
             pcb6.Margin = new Padding(2);
             pcb6.Name = "pcb6";
@@ -362,35 +388,36 @@
             // pnl13
             // 
             pnl13.BorderStyle = BorderStyle.FixedSingle;
+            pnl13.Controls.Add(pcb7);
             pnl13.Location = new Point(0, 629);
             pnl13.Margin = new Padding(2);
             pnl13.Name = "pnl13";
             pnl13.Size = new Size(149, 97);
             pnl13.TabIndex = 27;
             // 
+            // pcb7
+            // 
+            pcb7.BackColor = Color.Silver;
+            pcb7.Location = new Point(120, -1);
+            pcb7.Margin = new Padding(2);
+            pcb7.Name = "pcb7";
+            pcb7.Size = new Size(29, 97);
+            pcb7.TabIndex = 1;
+            pcb7.TabStop = false;
+            // 
             // pnl14
             // 
-            pnl14.BackColor = Color.FromArgb(255, 192, 255);
+            pnl14.BackColor = Color.Transparent;
             pnl14.BorderStyle = BorderStyle.FixedSingle;
-            pnl14.Controls.Add(pcb7);
             pnl14.Location = new Point(0, 533);
             pnl14.Margin = new Padding(2);
             pnl14.Name = "pnl14";
             pnl14.Size = new Size(149, 97);
             pnl14.TabIndex = 26;
             // 
-            // pcb7
-            // 
-            pcb7.Location = new Point(120, -1);
-            pcb7.Margin = new Padding(2);
-            pcb7.Name = "pcb7";
-            pcb7.Size = new Size(29, 97);
-            pcb7.TabIndex = 39;
-            pcb7.TabStop = false;
-            // 
             // pnl18
             // 
-            pnl18.BackColor = Color.FromArgb(255, 192, 192);
+            pnl18.BackColor = Color.Transparent;
             pnl18.BorderStyle = BorderStyle.FixedSingle;
             pnl18.Controls.Add(pcb10);
             pnl18.Location = new Point(0, 150);
@@ -401,6 +428,7 @@
             // 
             // pcb10
             // 
+            pcb10.BackColor = Color.FromArgb(255, 192, 255);
             pcb10.Location = new Point(120, -1);
             pcb10.Margin = new Padding(2);
             pcb10.Name = "pcb10";
@@ -410,7 +438,7 @@
             // 
             // pnl28
             // 
-            pnl28.BackColor = Color.FromArgb(192, 255, 192);
+            pnl28.BackColor = Color.Transparent;
             pnl28.BorderStyle = BorderStyle.FixedSingle;
             pnl28.Controls.Add(pcb16);
             pnl28.Location = new Point(916, 1);
@@ -421,6 +449,7 @@
             // 
             // pcb16
             // 
+            pcb16.BackColor = Color.FromArgb(192, 255, 192);
             pcb16.Location = new Point(-1, 120);
             pcb16.Margin = new Padding(2);
             pcb16.Name = "pcb16";
@@ -430,7 +459,7 @@
             // 
             // pnl2
             // 
-            pnl2.BackColor = Color.FromArgb(255, 224, 192);
+            pnl2.BackColor = Color.Transparent;
             pnl2.BorderStyle = BorderStyle.FixedSingle;
             pnl2.Controls.Add(pcb1);
             pnl2.Location = new Point(916, 821);
@@ -441,6 +470,7 @@
             // 
             // pcb1
             // 
+            pcb1.BackColor = Color.FromArgb(255, 224, 192);
             pcb1.Location = new Point(-1, -1);
             pcb1.Margin = new Padding(2);
             pcb1.Name = "pcb1";
@@ -468,7 +498,7 @@
             // 
             // pnl20
             // 
-            pnl20.BackColor = Color.FromArgb(255, 192, 192);
+            pnl20.BackColor = Color.Transparent;
             pnl20.BorderStyle = BorderStyle.FixedSingle;
             pnl20.Controls.Add(pcb11);
             pnl20.Location = new Point(148, 1);
@@ -479,6 +509,7 @@
             // 
             // pcb11
             // 
+            pcb11.BackColor = Color.FromArgb(255, 192, 192);
             pcb11.Location = new Point(-1, 120);
             pcb11.Margin = new Padding(2);
             pcb11.Name = "pcb11";
@@ -488,6 +519,8 @@
             // 
             // pnl21
             // 
+            pnl21.BackgroundImage = Properties.Resources.FortuneCard;
+            pnl21.BackgroundImageLayout = ImageLayout.Stretch;
             pnl21.BorderStyle = BorderStyle.FixedSingle;
             pnl21.Location = new Point(244, 1);
             pnl21.Margin = new Padding(2);
@@ -497,7 +530,7 @@
             // 
             // pnl22
             // 
-            pnl22.BackColor = Color.FromArgb(255, 192, 192);
+            pnl22.BackColor = Color.Transparent;
             pnl22.BorderStyle = BorderStyle.FixedSingle;
             pnl22.Controls.Add(pcb12);
             pnl22.Location = new Point(340, 1);
@@ -508,6 +541,7 @@
             // 
             // pcb12
             // 
+            pcb12.BackColor = Color.FromArgb(255, 192, 192);
             pcb12.Location = new Point(-1, 120);
             pcb12.Margin = new Padding(2);
             pcb12.Name = "pcb12";
@@ -517,7 +551,7 @@
             // 
             // pnl23
             // 
-            pnl23.BackColor = Color.FromArgb(192, 255, 255);
+            pnl23.BackColor = Color.Transparent;
             pnl23.BorderStyle = BorderStyle.FixedSingle;
             pnl23.Controls.Add(pcb13);
             pnl23.Location = new Point(436, 1);
@@ -528,6 +562,7 @@
             // 
             // pcb13
             // 
+            pcb13.BackColor = Color.FromArgb(255, 192, 192);
             pcb13.Location = new Point(-1, 120);
             pcb13.Margin = new Padding(2);
             pcb13.Name = "pcb13";
@@ -546,7 +581,7 @@
             // 
             // pnl25
             // 
-            pnl25.BackColor = Color.FromArgb(192, 255, 192);
+            pnl25.BackColor = Color.Transparent;
             pnl25.BorderStyle = BorderStyle.FixedSingle;
             pnl25.Controls.Add(pcb14);
             pnl25.Location = new Point(628, 1);
@@ -557,7 +592,7 @@
             // 
             // pcb14
             // 
-            pcb14.BackColor = Color.Red;
+            pcb14.BackColor = Color.FromArgb(192, 255, 192);
             pcb14.Location = new Point(-1, 120);
             pcb14.Margin = new Padding(2);
             pcb14.Name = "pcb14";
@@ -567,7 +602,7 @@
             // 
             // pnl26
             // 
-            pnl26.BackColor = Color.FromArgb(192, 255, 192);
+            pnl26.BackColor = Color.Transparent;
             pnl26.BorderStyle = BorderStyle.FixedSingle;
             pnl26.Controls.Add(pcb15);
             pnl26.Location = new Point(724, 1);
@@ -578,7 +613,7 @@
             // 
             // pcb15
             // 
-            pcb15.BackColor = Color.Red;
+            pcb15.BackColor = Color.FromArgb(192, 255, 192);
             pcb15.Location = new Point(-1, 120);
             pcb15.Margin = new Padding(2);
             pcb15.Name = "pcb15";
@@ -597,7 +632,7 @@
             // 
             // pnl10
             // 
-            pnl10.BackColor = Color.FromArgb(255, 255, 192);
+            pnl10.BackColor = Color.Transparent;
             pnl10.BorderStyle = BorderStyle.FixedSingle;
             pnl10.Controls.Add(pcb5);
             pnl10.Location = new Point(148, 821);
@@ -608,35 +643,27 @@
             // 
             // pcb5
             // 
+            pcb5.BackColor = Color.Silver;
             pcb5.Location = new Point(-1, -1);
             pcb5.Margin = new Padding(2);
             pcb5.Name = "pcb5";
             pcb5.Size = new Size(97, 29);
-            pcb5.TabIndex = 1;
+            pcb5.TabIndex = 39;
             pcb5.TabStop = false;
             // 
             // pnl9
             // 
-            pnl9.BackColor = Color.FromArgb(255, 255, 192);
+            pnl9.BackColor = Color.Transparent;
             pnl9.BorderStyle = BorderStyle.FixedSingle;
-            pnl9.Controls.Add(pcb4);
             pnl9.Location = new Point(244, 821);
             pnl9.Margin = new Padding(2);
             pnl9.Name = "pnl9";
             pnl9.Size = new Size(97, 149);
             pnl9.TabIndex = 7;
             // 
-            // pcb4
-            // 
-            pcb4.Location = new Point(-1, -1);
-            pcb4.Margin = new Padding(2);
-            pcb4.Name = "pcb4";
-            pcb4.Size = new Size(97, 29);
-            pcb4.TabIndex = 1;
-            pcb4.TabStop = false;
-            // 
             // pnl8
             // 
+            pnl8.BackgroundImageLayout = ImageLayout.Stretch;
             pnl8.BorderStyle = BorderStyle.FixedSingle;
             pnl8.Location = new Point(340, 821);
             pnl8.Margin = new Padding(2);
@@ -646,32 +673,44 @@
             // 
             // pnl7
             // 
-            pnl7.BackColor = Color.FromArgb(255, 255, 192);
+            pnl7.BackColor = Color.Transparent;
             pnl7.BorderStyle = BorderStyle.FixedSingle;
-            pnl7.Controls.Add(pcb3);
+            pnl7.Controls.Add(pcb4);
             pnl7.Location = new Point(436, 821);
             pnl7.Margin = new Padding(2);
             pnl7.Name = "pnl7";
             pnl7.Size = new Size(97, 149);
             pnl7.TabIndex = 5;
             // 
+            // pcb4
+            // 
+            pcb4.BackColor = Color.Chocolate;
+            pcb4.Location = new Point(-1, -1);
+            pcb4.Margin = new Padding(2);
+            pcb4.Name = "pcb4";
+            pcb4.Size = new Size(97, 29);
+            pcb4.TabIndex = 1;
+            pcb4.TabStop = false;
+            // 
+            // pnl6
+            // 
+            pnl6.BorderStyle = BorderStyle.FixedSingle;
+            pnl6.Controls.Add(pcb3);
+            pnl6.Location = new Point(532, 821);
+            pnl6.Margin = new Padding(2);
+            pnl6.Name = "pnl6";
+            pnl6.Size = new Size(97, 149);
+            pnl6.TabIndex = 4;
+            // 
             // pcb3
             // 
+            pcb3.BackColor = Color.Chocolate;
             pcb3.Location = new Point(-1, -1);
             pcb3.Margin = new Padding(2);
             pcb3.Name = "pcb3";
             pcb3.Size = new Size(97, 29);
             pcb3.TabIndex = 1;
             pcb3.TabStop = false;
-            // 
-            // pnl6
-            // 
-            pnl6.BorderStyle = BorderStyle.FixedSingle;
-            pnl6.Location = new Point(532, 821);
-            pnl6.Margin = new Padding(2);
-            pnl6.Name = "pnl6";
-            pnl6.Size = new Size(97, 149);
-            pnl6.TabIndex = 4;
             // 
             // pnl5
             // 
@@ -684,7 +723,7 @@
             // 
             // pnl4
             // 
-            pnl4.BackColor = Color.FromArgb(192, 255, 255);
+            pnl4.BackColor = Color.Transparent;
             pnl4.BorderStyle = BorderStyle.FixedSingle;
             pnl4.Controls.Add(pcb2);
             pnl4.Location = new Point(724, 821);
@@ -695,6 +734,7 @@
             // 
             // pcb2
             // 
+            pcb2.BackColor = Color.Chocolate;
             pcb2.Location = new Point(-1, -1);
             pcb2.Margin = new Padding(2);
             pcb2.Name = "pcb2";
@@ -719,6 +759,16 @@
             pnl1.Name = "pnl1";
             pnl1.Size = new Size(149, 149);
             pnl1.TabIndex = 0;
+            // 
+            // pcb8
+            // 
+            pcb8.BackColor = Color.FromArgb(255, 192, 255);
+            pcb8.Location = new Point(120, -1);
+            pcb8.Margin = new Padding(2);
+            pcb8.Name = "pcb8";
+            pcb8.Size = new Size(29, 97);
+            pcb8.TabIndex = 39;
+            pcb8.TabStop = false;
             // 
             // pnlSide
             // 
@@ -881,27 +931,17 @@
             // 
             // pnl17
             // 
-            pnl17.BackColor = Color.FromArgb(255, 192, 255);
+            pnl17.BackColor = Color.Transparent;
             pnl17.BorderStyle = BorderStyle.FixedSingle;
-            pnl17.Controls.Add(pcb9);
             pnl17.Location = new Point(7, 245);
             pnl17.Margin = new Padding(2);
             pnl17.Name = "pnl17";
             pnl17.Size = new Size(149, 97);
             pnl17.TabIndex = 21;
             // 
-            // pcb9
-            // 
-            pcb9.Location = new Point(120, -1);
-            pcb9.Margin = new Padding(2);
-            pcb9.Name = "pcb9";
-            pcb9.Size = new Size(29, 97);
-            pcb9.TabIndex = 39;
-            pcb9.TabStop = false;
-            // 
             // pnl15
             // 
-            pnl15.BackColor = Color.FromArgb(255, 192, 255);
+            pnl15.BackColor = Color.Transparent;
             pnl15.BorderStyle = BorderStyle.FixedSingle;
             pnl15.Controls.Add(pcb8);
             pnl15.Location = new Point(7, 436);
@@ -910,18 +950,20 @@
             pnl15.Size = new Size(149, 97);
             pnl15.TabIndex = 23;
             // 
-            // pcb8
+            // pcb9
             // 
-            pcb8.Location = new Point(120, -1);
-            pcb8.Margin = new Padding(2);
-            pcb8.Name = "pcb8";
-            pcb8.Size = new Size(29, 97);
-            pcb8.TabIndex = 39;
-            pcb8.TabStop = false;
+            pcb9.BackColor = Color.FromArgb(255, 192, 255);
+            pcb9.Location = new Point(120, -1);
+            pcb9.Margin = new Padding(2);
+            pcb9.Name = "pcb9";
+            pcb9.Size = new Size(29, 97);
+            pcb9.TabIndex = 39;
+            pcb9.TabStop = false;
             // 
             // pnl16
             // 
             pnl16.BorderStyle = BorderStyle.FixedSingle;
+            pnl16.Controls.Add(pcb9);
             pnl16.Location = new Point(7, 341);
             pnl16.Margin = new Padding(2);
             pnl16.Name = "pnl16";
@@ -956,12 +998,13 @@
             pnl33.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb19).EndInit();
             pnl31.ResumeLayout(false);
+            pnl31.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb18).EndInit();
             pnl36.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb21).EndInit();
             pnl12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb6).EndInit();
-            pnl14.ResumeLayout(false);
+            pnl13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb7).EndInit();
             pnl18.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb10).EndInit();
@@ -981,12 +1024,13 @@
             ((System.ComponentModel.ISupportInitialize)pcb15).EndInit();
             pnl10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb5).EndInit();
-            pnl9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pcb4).EndInit();
             pnl7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb4).EndInit();
+            pnl6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb3).EndInit();
             pnl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcb2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
             pnlSide.ResumeLayout(false);
             pnlSide.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcbInfo).EndInit();
@@ -994,10 +1038,9 @@
             ((System.ComponentModel.ISupportInitialize)pnlLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).EndInit();
-            pnl17.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pcb9).EndInit();
             pnl15.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pcb9).EndInit();
+            pnl16.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1059,23 +1102,24 @@
         private PictureBox pcb13;
         private PictureBox pcb14;
         private PictureBox pcb15;
-        private PictureBox pcb5;
-        private PictureBox pcb4;
+        private PictureBox pcb7;
         private PictureBox pcb3;
+        private PictureBox pcb4;
         private PictureBox pcb2;
         private PictureBox pcb19;
         private PictureBox pcb20;
         private PictureBox pcb21;
         private PictureBox pcb6;
-        private PictureBox pcb7;
+        private PictureBox pcb5;
+        private PictureBox pcb8;
         private PictureBox pcb10;
         private PictureBox pcb9;
-        private PictureBox pcb8;
         private Panel pnlFortune;
         private Panel pnlChance;
         private PictureBox pcbChat;
         private PictureBox pcbInfo;
         private Label label2;
         private Label label3;
+        private Label label4;
     }
 }
