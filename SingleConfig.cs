@@ -90,7 +90,7 @@ namespace Monopoly
             this.selectedPlr = selectedPlr;
             if (curImg != null)
             {
-                selectedPlr.Image = curImg.Image;
+                selectedPlr.Image = curImg.BackgroundImage;
                 selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             selectedUI.Location = new Point(selectedPlr.Location.X - 10, selectedPlr.Location.Y - 10);
