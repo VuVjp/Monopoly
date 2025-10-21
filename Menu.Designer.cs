@@ -28,31 +28,20 @@ partial class Menu
     /// </summary>
     private void InitializeComponent()
     {
-        lblTitle = new Label();
         btnSingle = new Button();
         btnOnline = new Button();
         btnAbout = new Button();
         btnQuit = new Button();
         button1 = new Button();
+        lblTitle = new Label();
         SuspendLayout();
-        // 
-        // lblTitle
-        // 
-        lblTitle.AutoSize = true;
-        lblTitle.Font = new Font("Showcard Gothic", 120F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        lblTitle.ForeColor = Color.Gold;
-        lblTitle.Location = new Point(73, 71);
-        lblTitle.Name = "lblTitle";
-        lblTitle.Size = new Size(1432, 297);
-        lblTitle.TabIndex = 0;
-        lblTitle.Text = "Monopoly";
         // 
         // btnSingle
         // 
-        btnSingle.Font = new Font("Arial Rounded MT Bold", 24F);
-        btnSingle.Location = new Point(226, 415);
+        btnSingle.Font = new Font("Showcard Gothic", 24F);
+        btnSingle.Location = new Point(296, 407);
         btnSingle.Name = "btnSingle";
-        btnSingle.Size = new Size(1068, 86);
+        btnSingle.Size = new Size(952, 86);
         btnSingle.TabIndex = 1;
         btnSingle.Text = "Singleplayer";
         btnSingle.UseVisualStyleBackColor = true;
@@ -60,30 +49,30 @@ partial class Menu
         // 
         // btnOnline
         // 
-        btnOnline.Font = new Font("Arial Rounded MT Bold", 24F);
-        btnOnline.Location = new Point(226, 516);
+        btnOnline.Font = new Font("Showcard Gothic", 24F);
+        btnOnline.Location = new Point(296, 508);
         btnOnline.Name = "btnOnline";
-        btnOnline.Size = new Size(1068, 86);
+        btnOnline.Size = new Size(952, 86);
         btnOnline.TabIndex = 2;
         btnOnline.Text = "Multiplayer";
         btnOnline.UseVisualStyleBackColor = true;
         // 
         // btnAbout
         // 
-        btnAbout.Font = new Font("Arial Rounded MT Bold", 24F);
-        btnAbout.Location = new Point(226, 726);
+        btnAbout.Font = new Font("Showcard Gothic", 24F);
+        btnAbout.Location = new Point(296, 743);
         btnAbout.Name = "btnAbout";
-        btnAbout.Size = new Size(525, 86);
+        btnAbout.Size = new Size(456, 86);
         btnAbout.TabIndex = 3;
         btnAbout.Text = "About Us";
         btnAbout.UseVisualStyleBackColor = true;
         // 
         // btnQuit
         // 
-        btnQuit.Font = new Font("Arial Rounded MT Bold", 24F);
-        btnQuit.Location = new Point(769, 726);
+        btnQuit.Font = new Font("Showcard Gothic", 24F);
+        btnQuit.Location = new Point(792, 743);
         btnQuit.Name = "btnQuit";
-        btnQuit.Size = new Size(525, 86);
+        btnQuit.Size = new Size(456, 86);
         btnQuit.TabIndex = 4;
         btnQuit.Text = "Quit Game";
         btnQuit.UseVisualStyleBackColor = true;
@@ -91,27 +80,39 @@ partial class Menu
         // 
         // button1
         // 
-        button1.Font = new Font("Arial Rounded MT Bold", 24F);
-        button1.Location = new Point(226, 617);
+        button1.Font = new Font("Showcard Gothic", 24F);
+        button1.Location = new Point(296, 609);
         button1.Name = "button1";
-        button1.Size = new Size(1068, 86);
+        button1.Size = new Size(952, 86);
         button1.TabIndex = 5;
         button1.Text = "How To Play";
         button1.UseVisualStyleBackColor = true;
         button1.Click += button1_Click;
         // 
+        // lblTitle
+        // 
+        lblTitle.AutoSize = true;
+        lblTitle.BackColor = Color.Red;
+        lblTitle.Font = new Font("Showcard Gothic", 100F);
+        lblTitle.ForeColor = Color.WhiteSmoke;
+        lblTitle.Location = new Point(179, 123);
+        lblTitle.Name = "lblTitle";
+        lblTitle.Size = new Size(1192, 249);
+        lblTitle.TabIndex = 8;
+        lblTitle.Text = "Monopoly";
+        // 
         // Menu
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        BackColor = Color.FromArgb(30, 136, 229);
+        BackColor = Color.FromArgb(233, 227, 208);
         ClientSize = new Size(1517, 917);
+        Controls.Add(lblTitle);
         Controls.Add(button1);
         Controls.Add(btnQuit);
         Controls.Add(btnAbout);
         Controls.Add(btnOnline);
         Controls.Add(btnSingle);
-        Controls.Add(lblTitle);
         ForeColor = SystemColors.ControlText;
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
@@ -124,11 +125,10 @@ partial class Menu
     }
 
     #endregion
-
-    private Label lblTitle;
     private Button btnSingle;
     private Button btnOnline;
     private Button btnAbout;
     private Button btnQuit;
     private Button button1;
+    private Label lblTitle;
 }
