@@ -16,7 +16,6 @@ namespace Monopoly
         {
             InitializeComponent();
             LoadForm();
-            RotateLabel(label3, -90f);
 
         }
         private void LoadForm()
