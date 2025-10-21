@@ -13,5 +13,14 @@ namespace Monopoly
         internal static Game game = null!;
         internal static Menu menu = null!;
         internal static GameConfig gameConfig = null!;
+        internal static SingleConfig singleConfig = null!;
+
+        public static void Dispose()
+        {
+            menu.Dispose();
+            gameConfig.Dispose();
+            singleConfig.Dispose();
+            game.Dispose();
+        }
     }
 }
