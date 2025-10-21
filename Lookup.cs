@@ -1,7 +1,6 @@
-using System.Net.Sockets;
 using System.Net;
-using System.Text.Unicode;
 using System.Text;
+using System.Net.Sockets;
 
 /*
 Cách dùng cho server:
@@ -115,7 +114,6 @@ namespace LookupHelper
 
             if (BitConverter.IsLittleEndian)
             {
-                Array.Reverse(packet, 4, 4);
                 Array.Reverse(packet, 8, 4);
             }
 
@@ -156,7 +154,7 @@ namespace LookupHelper
             byte[] resp = new byte[1500];
 
             IPEndPoint bcast_addr = new IPEndPoint(IPAddress.Broadcast, 26305);
-            Console.WriteLine(s.SendTo(BitConverter.GetBytes(signature), sizeof(uint), 0, bcast_addr));
+            s.SendTo(BitConverter.GetBytes(signature), sizeof(uint), 0, bcast_addr);
 
             List<MyTcpInfo> founds = new List<MyTcpInfo>();
 
@@ -184,7 +182,4 @@ namespace LookupHelper
             s.Close();
         }
     }
-
 };
-
-
