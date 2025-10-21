@@ -32,7 +32,7 @@ namespace Monopoly
 
         private void Game_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Forms.menu.Close();
+            Forms.Dispose();
         }
 
         private void pcbReturn_Click(object sender, EventArgs e)

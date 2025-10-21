@@ -698,7 +698,7 @@
             // label1
             // 
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Cooper Black", 20F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Showcard Gothic", 20F, FontStyle.Italic);
             label1.ForeColor = Color.Green;
             label1.Location = new Point(3, 448);
             label1.Name = "label1";
@@ -711,11 +711,11 @@
             // 
             lblMoney.AutoSize = true;
             lblMoney.BackColor = Color.Transparent;
-            lblMoney.Font = new Font("Cooper Black", 20F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblMoney.Font = new Font("Showcard Gothic", 20F, FontStyle.Italic);
             lblMoney.ForeColor = Color.Green;
             lblMoney.Location = new Point(109, 393);
             lblMoney.Name = "lblMoney";
-            lblMoney.Size = new Size(152, 46);
+            lblMoney.Size = new Size(158, 50);
             lblMoney.TabIndex = 9;
             lblMoney.Text = "Money";
             // 
