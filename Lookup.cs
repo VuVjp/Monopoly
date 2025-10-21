@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using System.Net.Sockets;
+using Monopoly;
 
 /*
 Cách dùng cho server:
@@ -24,12 +25,11 @@ namespace LookupHelper
         private string name;
         private bool is_running;
         private IPEndPoint remote_tcp;
-        private uint signature = 0xd00ddeed ^ 0xffffffff;
 
         private void Thread_Worker()
         {
             byte[] packet = new byte[1500];
-            byte[] sign = BitConverter.GetBytes(signature);
+            byte[] sign = BitConverter.GetBytes(Cons.signature);
             byte[] addr = remote_tcp.Address.GetAddressBytes();
             byte[] port = BitConverter.GetBytes(remote_tcp.Port);
 
@@ -52,7 +52,7 @@ namespace LookupHelper
                     IPEndPoint from_buffer = new IPEndPoint(0, 0);
                     EndPoint from = (EndPoint)from_buffer;
 
-                    if (s.ReceiveFrom(data, data.Length, 0, ref from) != data.Length || BitConverter.ToUInt32(data) != signature)
+                    if (s.ReceiveFrom(data, data.Length, 0, ref from) != data.Length || BitConverter.ToUInt32(data) != Cons.signature)
                     {
                         continue;
                     }
@@ -137,7 +137,6 @@ namespace LookupHelper
     public class BcastRequest
     {
         private Socket s;
-        private uint signature = 0xd00ddeed ^ 0xffffffff;
         public BcastRequest()
         {
             s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -154,7 +153,7 @@ namespace LookupHelper
             byte[] resp = new byte[1500];
 
             IPEndPoint bcast_addr = new IPEndPoint(IPAddress.Broadcast, 26305);
-            s.SendTo(BitConverter.GetBytes(signature), sizeof(uint), 0, bcast_addr);
+            s.SendTo(BitConverter.GetBytes(Cons.signature), sizeof(uint), 0, bcast_addr);
 
             List<MyTcpInfo> founds = new List<MyTcpInfo>();
 
@@ -165,7 +164,7 @@ namespace LookupHelper
                     break;
                 }
 
-                if (s.Receive(resp, resp.Length, 0) < 12 + 3 || BitConverter.ToInt32(resp) != signature)
+                if (s.Receive(resp, resp.Length, 0) < 12 + 3 || BitConverter.ToInt32(resp) != Cons.signature)
                 {
                     continue;
                 }
