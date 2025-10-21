@@ -50,6 +50,7 @@
             pnl13 = new Panel();
             pcb7 = new PictureBox();
             pnl14 = new Panel();
+            pcb8 = new PictureBox();
             pnl18 = new Panel();
             pcb10 = new PictureBox();
             pnl28 = new Panel();
