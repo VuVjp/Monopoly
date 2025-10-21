@@ -16,12 +16,15 @@ namespace Monopoly
         {
             InitializeComponent();
             LoadForm();
+            RotateLabel(label3, -90f);
+
         }
         private void LoadForm()
         {
+
             if (Forms.isOnline)
             {
-                
+
                 pcbChat.Visible = true;
             }
             else
@@ -39,11 +42,6 @@ namespace Monopoly
         {
             this.Hide();
             Forms.menu.Show();
-        }
-
-        private void pcbSave_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void pcbReturn_MouseEnter(object sender, EventArgs e)
@@ -94,6 +92,46 @@ namespace Monopoly
         private void pcbInfo_MouseLeave(object sender, EventArgs e)
         {
             pcbInfo.Size = new Size(100, 100);
+        }
+        public void RotateLabel(Label lbl, float angle)
+        {
+            lbl.Visible = false;
+            PictureBox rotated = new PictureBox
+            {
+                Width = lbl.Width,
+                Height = lbl.Height,
+                Location = lbl.Location,
+                BackColor = lbl.BackColor,
+                Parent = lbl.Parent
+            };
+
+            rotated.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                e.Graphics.TranslateTransform(rotated.Width / 2f, rotated.Height / 2f);
+                e.Graphics.RotateTransform(angle);
+                e.Graphics.TranslateTransform(-rotated.Width / 2f, -rotated.Height / 2f);
+                StringFormat format = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+
+                using (Brush b = new SolidBrush(lbl.ForeColor))
+                {
+                    e.Graphics.DrawString(lbl.Text, lbl.Font, b,
+                        new RectangleF(0, 0, rotated.Width, rotated.Height), format);
+                }
+
+                e.Graphics.ResetTransform();
+            };
+            rotated.Invalidate();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
