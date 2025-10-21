@@ -285,6 +285,8 @@
             Controls.Add(pcbAvt2);
             Controls.Add(selectedUI);
             Controls.Add(selectedImg);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "SingleConfig";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Offline Config";
