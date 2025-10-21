@@ -16,7 +16,6 @@ namespace Monopoly
         {
             InitializeComponent();
             LoadForm();
-
         }
         private void LoadForm()
         {
