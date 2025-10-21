@@ -88,14 +88,15 @@
             // 
             // lblTitle
             // 
-            lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Showcard Gothic", 50F);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(384, 7);
+            lblTitle.ImageAlign = ContentAlignment.MiddleRight;
+            lblTitle.Location = new Point(-1, 7);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(760, 124);
+            lblTitle.Size = new Size(1518, 124);
             lblTitle.TabIndex = 8;
             lblTitle.Text = "Singleplayer";
+            lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // GameConfig
             // 
@@ -116,7 +117,6 @@
             Text = "GameConfig";
             FormClosing += GameConfig_FormClosing;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
