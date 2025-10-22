@@ -102,13 +102,13 @@ namespace Monopoly
                         if (selectedPlr == pcbPlr3)
                         {
                             SelectPlrUI(pcbPlr2);
-                            pcbPlr3.Image = Properties.Resources.user;
                         }
-                        if (selectedPlr.Tag != null)
+                        if (pcbPlr3.Tag != null)
                         {
-                            PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                            pcbPlr3.Image = Properties.Resources.user;
+                            PictureBox oldImg = (PictureBox)pcbPlr3.Tag!;
                             oldImg.Tag = null;
-                            selectedPlr.Tag = null;
+                            pcbPlr3.Tag = null;
                         }
                         pcbPlr3.Visible = false;
                         break;
@@ -116,13 +116,13 @@ namespace Monopoly
                         if (selectedPlr == pcbPlr4)
                         {
                             SelectPlrUI(pcbPlr3);
-                            pcbPlr4.Image = Properties.Resources.user;
                         }
-                        if (selectedPlr.Tag != null)
+                        if (pcbPlr4.Tag != null)
                         {
-                            PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                            pcbPlr4.Image = Properties.Resources.user;
+                            PictureBox oldImg = (PictureBox)pcbPlr4.Tag!;
                             oldImg.Tag = null;
-                            selectedPlr.Tag = null;
+                            pcbPlr4.Tag = null;
                         }
                         pcbPlr4.Visible = false;
                         break;
