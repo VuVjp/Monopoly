@@ -13,7 +13,8 @@ namespace Monopoly
         internal static Game game = null!;
         internal static Menu menu = null!;
         internal static GameConfig gameConfig = null!;
-        internal static SingleConfig singleConfig = null!;
+        internal static PlayerConfig singleConfig = null!;
+        internal static bool isAdmin;
 
         public static void Dispose()
         {

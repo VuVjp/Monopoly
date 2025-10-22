@@ -11,7 +11,7 @@ public partial class Menu : Form
     private void LoadForm()
     {
         Forms.game = new Game();
-        Forms.singleConfig = new SingleConfig();
+        Forms.singleConfig = new PlayerConfig();
         Forms.gameConfig = new GameConfig();
         Forms.menu = this;
     }
