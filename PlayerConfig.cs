@@ -76,7 +76,7 @@ namespace Monopoly
             selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
         }
 
-        private void HidePics(int index, int length)
+        public void HidePics(int index, int length)
         {
             for (int i = index; i < length; i++)
             {
@@ -96,7 +96,7 @@ namespace Monopoly
             }
         }
 
-        private void ShowPics(int index, int length)
+        public void ShowPics(int index, int length)
         {
             for (int i = index; i < length; i++)
             {
@@ -112,7 +112,7 @@ namespace Monopoly
             }
         }
 
-        private void SelectPlrUI(PictureBox selectedPlr)
+        public void SelectPlrUI(PictureBox selectedPlr)
         {
             selectedUI.Visible = true;
             this.selectedPlr = selectedPlr;
