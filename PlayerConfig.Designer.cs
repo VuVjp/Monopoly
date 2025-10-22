@@ -75,6 +75,7 @@
             // pcbPlr1
             // 
             pcbPlr1.BorderStyle = BorderStyle.FixedSingle;
+            pcbPlr1.Cursor = Cursors.Hand;
             pcbPlr1.Image = Properties.Resources.user;
             pcbPlr1.Location = new Point(283, 460);
             pcbPlr1.Name = "pcbPlr1";
@@ -86,6 +87,7 @@
             // pcbPlr2
             // 
             pcbPlr2.BorderStyle = BorderStyle.FixedSingle;
+            pcbPlr2.Cursor = Cursors.Hand;
             pcbPlr2.Image = Properties.Resources.user;
             pcbPlr2.Location = new Point(527, 460);
             pcbPlr2.Name = "pcbPlr2";
@@ -97,6 +99,7 @@
             // pcbPlr3
             // 
             pcbPlr3.BorderStyle = BorderStyle.FixedSingle;
+            pcbPlr3.Cursor = Cursors.Hand;
             pcbPlr3.Image = Properties.Resources.user;
             pcbPlr3.Location = new Point(771, 460);
             pcbPlr3.Name = "pcbPlr3";
@@ -108,6 +111,7 @@
             // pcbPlr4
             // 
             pcbPlr4.BorderStyle = BorderStyle.FixedSingle;
+            pcbPlr4.Cursor = Cursors.Hand;
             pcbPlr4.Image = Properties.Resources.user;
             pcbPlr4.Location = new Point(1015, 460);
             pcbPlr4.Name = "pcbPlr4";

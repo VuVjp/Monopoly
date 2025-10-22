@@ -119,7 +119,7 @@ partial class Menu
         Name = "Menu";
         SizeGripStyle = SizeGripStyle.Hide;
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "Form1";
+        Text = "Monopoly";
         ResumeLayout(false);
         PerformLayout();
     }

@@ -121,7 +121,7 @@
   <data name="pnl9.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAp0AAAQ8CAYAAADQRSVPAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAA/7JJREFUeF6c/QeQnGma34n1TvsGUChfWZlZ6b0vD9Mzuzzd8cQISgxJJzIYQUnB
+        vAAADrwBlbxySQAA/7JJREFUeF6c/QeQnGma34n1TvsGUChfWZlZ6b0vD9Mzuzzd8cQISgxJJzIYQUnB
         k05BBU+Gd9LpRB15dLNmdmbaouG9LXig2sKbQvkqoFAW5eC7O6fNdPf0zOwsmfsofv83MbzbC0Xo1BEV
         QKMyv+/93vcx/+f/mO+55/5H/PdHfxR6JdMd8iTafcVk0vM3EomWv5dKNf5n4VTDf57KN/8XxXbvPy8V
         /e/mCoFjsZTnXCTh7U+k/f3pgr8/kvD0+2NN/Ymivz9R8PcH4039/lhDfyzt6Q9GGvqDwYb+SKKp3x+s
@@ -25153,7 +25153,7 @@
         DjoMXrjleuvyba/b1++svDMwFDJ0dzhyeOQu++7kvaR7L+9n3J9/sOkh+mHhI6lH5Y+VHtf9qPdj64jl
         yJlR19G+J0FPHoyxxp7/lP7Th/H8p+Sn5ROqE42TZpOnp9ynbj5b/Wz8eerz+emCn6V/rn6h++K7Xxx/
         6ZtZNTP+kv9y4dfiV/Kvjrxe9rp71n/28ZvkN/NzhW/l3x59x3jX+z7s/cR85gfsh4qPeh+7Pnl/eriQ
-        vLDwG/eE8/s3BCkeAAAACXBIWXMAAAsOAAALDgFAvuFBAAD1S0lEQVR4XsT955IrSZI1CDqcc84pOA8E
+        vLDwG/eE8/s3BCkeAAAACXBIWXMAAAsMAAALDAE/QCLIAAD1S0lEQVR4XsT955IrSZI1CDqcc84pOA8E
         J5eT5KRIk+ruj8z8GJF9/1dYOaoOu8ibWd3V347IlphkxUUgAHdzMzUl5+iRXjbFzRDsKndbOpvcn0fW
         EDqz2FsX6TKLp4mHkXvzMlhUwaoM1pmzTu1Vam9yd1t4m9ydJXYfGo2rtZ7eheY0cYbUn+UhRuHP62BW
         udPS6zK7CTG62J9m0TQO+tBrXKN21MbVprG1Lr1dEx6HYt9lqzIeYrd2rcoxW98bonCeRrPU7yOnj8xl
@@ -552862,7 +552862,7 @@
   <data name="pcbChat.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABQAAAAQACAYAAAC+k/RDAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DQAACw0B7QfALAAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAP+HSURB
+        DAAACwwBP0AiyAAAAB90RVh0U29mdHdhcmUATWFjcm9tZWRpYSBGaXJld29ya3MgOLVo0ngAAP+HSURB
         VHhe7N0FeBTX+sfxQFuqaKkXaKHQUrm3dnul191d/jdAnSpudXe59ZIECRbH3d0lWIBAsOAQLEiUwPt/
         zmQnmX3PGd3ZzCb85nm+z24GCicBkuyn75mJI6I4hBBCCCGEEEIIIYRQ3Uw6gRBCCCGEEEIIIYQQqjtJ
         JxBCCCGEEEIIIYQQQnUn6QRCCCGEEEIIIYQQQqjuJJ1ACCGEEEIIIYQQQgjVnaQTCCGEEEIIIYQQQgih

@@ -35,6 +35,8 @@ namespace Monopoly
                 img.Image = (Image)Properties.Resources.ResourceManager.GetObject("plr" +
                     counter++)!;
                 img.Click += Img_Click;
+                img.MouseEnter += pcbImg_MouseEnter!;
+                img.MouseLeave += pcbImg_MouseLeave!;
             }
             if (Forms.isOnline)
             {
@@ -63,8 +65,13 @@ namespace Monopoly
         {
             selectedImg.Visible = false;
             selectedPlr = pcbPlr1;
-            
-            foreach (PictureBox plr in plrPics) plr.Click += pcbPlr_Click!;
+
+            foreach (PictureBox plr in plrPics)
+            {
+                plr.Click += pcbPlr_Click!;
+                plr.MouseEnter += pcbPlr_MouseEnter!;
+                plr.MouseLeave += pcbPlr_MouseLeave!;
+            }
             HidePics(int.Parse(txbPlrCounter.Text), plrPics.Count);
         }
 
@@ -76,7 +83,8 @@ namespace Monopoly
             {
                 curImg.Tag = selectedPlr;
                 selectedPlr.Tag = curImg;
-
+                
+                curImg.BackgroundImage = Properties.Resources.Ban;
                 selectedPlr.Image = curImg.Image;
                 selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
             }
@@ -84,7 +92,9 @@ namespace Monopoly
             {
                 PictureBox oldImg = (PictureBox)selectedPlr.Tag;
                 oldImg.Tag = null;
+                oldImg.BackgroundImage = null;
                 curImg.Tag = selectedPlr;
+                curImg.BackgroundImage = Properties.Resources.Ban;
                 selectedPlr.Tag = curImg;
 
                 selectedPlr.Image = curImg.Image;
@@ -108,6 +118,7 @@ namespace Monopoly
                             pcbPlr3.Image = Properties.Resources.user;
                             PictureBox oldImg = (PictureBox)pcbPlr3.Tag!;
                             oldImg.Tag = null;
+                            oldImg.BackgroundImage = null;
                             pcbPlr3.Tag = null;
                         }
                         pcbPlr3.Visible = false;
@@ -122,6 +133,7 @@ namespace Monopoly
                             pcbPlr4.Image = Properties.Resources.user;
                             PictureBox oldImg = (PictureBox)pcbPlr4.Tag!;
                             oldImg.Tag = null;
+                            oldImg.BackgroundImage = null;
                             pcbPlr4.Tag = null;
                         }
                         pcbPlr4.Visible = false;
@@ -151,6 +163,37 @@ namespace Monopoly
             selectedUI.Visible = true;
             this.selectedPlr = selectedPlr;
             selectedUI.Location = new Point(selectedPlr.Location.X - 10, selectedPlr.Location.Y - 10);
+        }
+        private void pcbImg_MouseEnter(object sender, EventArgs e)
+        {
+            var pcb = (PictureBox)sender;
+            if (pcb.Tag == null)
+            {
+                pcb.Cursor = Cursors.Hand;
+                pcb.Size = new Size(145, 145);
+            }
+            else 
+            {
+                pcb.Cursor = Cursors.Default;
+            }
+        }
+
+        private void pcbImg_MouseLeave(object sender, EventArgs e)
+        {
+            var pcb = (PictureBox)sender;
+            pcb.Size = new Size(140,140);
+        }
+
+        private void pcbPlr_MouseEnter(object sender, EventArgs e)
+        {
+            var pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width + 5, pcb.Size.Height + 5);
+        }
+
+        private void pcbPlr_MouseLeave(object sender, EventArgs e)
+        {
+            var pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width - 5, pcb.Size.Height - 5);
         }
 
         private void SingleConfig_FormClosing(object sender, FormClosingEventArgs e)
