@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace Monopoly.Screens
 {
-    public partial class MenuScreen : UserControl
+    public partial class MainMenu : UserControl
     {
-        public MenuScreen()
+        private Monopoly monopoly;
+        public MainMenu(Monopoly monopoly)
         {
             InitializeComponent();
+            this.monopoly = monopoly;
+        }
+        private void btnSingle_Click(object sender, EventArgs e)
+        {
+            monopoly.LoadScreen(new GameConfig(monopoly));
         }
     }
 }

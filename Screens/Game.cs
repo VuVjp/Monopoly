@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Monopoly
+namespace Monopoly.Screens
 {
-    public partial class Monopoly_cs : Form
+    public partial class Game : UserControl
     {
-        public Monopoly_cs()
+        private Monopoly monopoly;
+        public Game(Monopoly monopoly)
         {
             InitializeComponent();
+            this.monopoly = monopoly;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Monopoly.Screens
 {
-    partial class MenuScreen
+    partial class MainMenu
     {
         /// <summary> 
         /// Required designer variable.
@@ -40,18 +40,18 @@
             // 
             lblTitle.AutoSize = true;
             lblTitle.BackColor = Color.Red;
-            lblTitle.Font = new Font("Showcard Gothic", 100F);
+            lblTitle.Font = new Font("Showcard Gothic", 120F);
             lblTitle.ForeColor = Color.WhiteSmoke;
-            lblTitle.Location = new Point(316, 281);
+            lblTitle.Location = new Point(173, 159);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(1192, 249);
+            lblTitle.Size = new Size(1432, 297);
             lblTitle.TabIndex = 14;
             lblTitle.Text = "Monopoly";
             // 
             // button1
             // 
             button1.Font = new Font("Showcard Gothic", 24F);
-            button1.Location = new Point(433, 767);
+            button1.Location = new Point(407, 772);
             button1.Name = "button1";
             button1.Size = new Size(952, 86);
             button1.TabIndex = 13;
@@ -61,7 +61,7 @@
             // btnQuit
             // 
             btnQuit.Font = new Font("Showcard Gothic", 24F);
-            btnQuit.Location = new Point(929, 901);
+            btnQuit.Location = new Point(903, 906);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new Size(456, 86);
             btnQuit.TabIndex = 12;
@@ -71,7 +71,7 @@
             // btnAbout
             // 
             btnAbout.Font = new Font("Showcard Gothic", 24F);
-            btnAbout.Location = new Point(433, 901);
+            btnAbout.Location = new Point(407, 906);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(456, 86);
             btnAbout.TabIndex = 11;
@@ -81,7 +81,7 @@
             // btnOnline
             // 
             btnOnline.Font = new Font("Showcard Gothic", 24F);
-            btnOnline.Location = new Point(433, 666);
+            btnOnline.Location = new Point(407, 671);
             btnOnline.Name = "btnOnline";
             btnOnline.Size = new Size(952, 86);
             btnOnline.TabIndex = 10;
@@ -91,14 +91,15 @@
             // btnSingle
             // 
             btnSingle.Font = new Font("Showcard Gothic", 24F);
-            btnSingle.Location = new Point(433, 565);
+            btnSingle.Location = new Point(407, 570);
             btnSingle.Name = "btnSingle";
             btnSingle.Size = new Size(952, 86);
             btnSingle.TabIndex = 9;
             btnSingle.Text = "Singleplayer";
             btnSingle.UseVisualStyleBackColor = true;
+            btnSingle.Click += btnSingle_Click;
             // 
-            // MenuScreen
+            // MainMenu
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -109,8 +110,8 @@
             Controls.Add(btnAbout);
             Controls.Add(btnOnline);
             Controls.Add(btnSingle);
-            Name = "MenuScreen";
-            Size = new Size(1824, 1268);
+            Name = "MainMenu";
+            Size = new Size(1793, 1213);
             ResumeLayout(false);
             PerformLayout();
         }
