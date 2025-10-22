@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +8,34 @@ namespace Monopoly
 {
     interface GameManager
     {
+        static void StartGame()
+        {
+
+        }
+        static void StopGame() 
+        { 
+
+        }
+        static void RollDice()
+        {
+
+        }
+        static void EndTurn()
+        {
+
+        }
+        static void LoadPlayer()
+        {
+            for (int i = 0; i < PlayerManager.PlayerCount; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        break;
+                }
+            }
+        }
+
     }
     public class OfflineGameManager : GameManager
     {

@@ -120,14 +120,26 @@
             pcbInfo = new PictureBox();
             pcbChat = new PictureBox();
             label1 = new Label();
-            lblMoney = new Label();
+            lblCurTurn = new Label();
             pnlLogo = new PictureBox();
             pcbSave = new PictureBox();
             pcbReturn = new PictureBox();
             pnlPlr4 = new Panel();
+            label5 = new Label();
+            lblPlayerName4 = new Label();
+            pcbPlrAvt4 = new PictureBox();
             pnlPlr3 = new Panel();
+            label4 = new Label();
+            lblPlayerName3 = new Label();
+            pcbPlrAvt3 = new PictureBox();
             pnlPlr2 = new Panel();
+            label3 = new Label();
+            lblPlayerName2 = new Label();
+            pcbPlrAvt2 = new PictureBox();
             pnlPlr1 = new Panel();
+            label2 = new Label();
+            lblPlayerName1 = new Label();
+            pcbPlrAvt1 = new PictureBox();
             pnl11 = new Panel();
             pos11 = new Label();
             pnl17 = new Panel();
@@ -198,6 +210,14 @@
             ((System.ComponentModel.ISupportInitialize)pnlLogo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).BeginInit();
+            pnlPlr4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt4).BeginInit();
+            pnlPlr3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt3).BeginInit();
+            pnlPlr2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt2).BeginInit();
+            pnlPlr1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).BeginInit();
             pnl11.SuspendLayout();
             pnl17.SuspendLayout();
             pnl15.SuspendLayout();
@@ -1315,7 +1335,7 @@
             pnlSide.Controls.Add(pcbInfo);
             pnlSide.Controls.Add(pcbChat);
             pnlSide.Controls.Add(label1);
-            pnlSide.Controls.Add(lblMoney);
+            pnlSide.Controls.Add(lblCurTurn);
             pnlSide.Controls.Add(pnlLogo);
             pnlSide.Controls.Add(pcbSave);
             pnlSide.Controls.Add(pcbReturn);
@@ -1361,27 +1381,27 @@
             // 
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Showcard Gothic", 20F, FontStyle.Italic);
-            label1.ForeColor = Color.Green;
+            label1.ForeColor = Color.Gold;
             label1.Location = new Point(2, 406);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
             label1.Size = new Size(338, 46);
             label1.TabIndex = 10;
-            label1.Text = "00000 $";
+            label1.Text = "Player 1";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // lblMoney
+            // lblCurTurn
             // 
-            lblMoney.AutoSize = true;
-            lblMoney.BackColor = Color.Transparent;
-            lblMoney.Font = new Font("Showcard Gothic", 20F, FontStyle.Italic);
-            lblMoney.ForeColor = Color.Green;
-            lblMoney.Location = new Point(91, 354);
-            lblMoney.Margin = new Padding(2, 0, 2, 0);
-            lblMoney.Name = "lblMoney";
-            lblMoney.Size = new Size(158, 50);
-            lblMoney.TabIndex = 9;
-            lblMoney.Text = "Money";
+            lblCurTurn.AutoSize = true;
+            lblCurTurn.BackColor = Color.Transparent;
+            lblCurTurn.Font = new Font("Showcard Gothic", 20F, FontStyle.Italic);
+            lblCurTurn.ForeColor = Color.Gold;
+            lblCurTurn.Location = new Point(91, 354);
+            lblCurTurn.Margin = new Padding(2, 0, 2, 0);
+            lblCurTurn.Name = "lblCurTurn";
+            lblCurTurn.Size = new Size(142, 50);
+            lblCurTurn.TabIndex = 9;
+            lblCurTurn.Text = "Turn:";
             // 
             // pnlLogo
             // 
@@ -1425,38 +1445,170 @@
             // pnlPlr4
             // 
             pnlPlr4.BackColor = Color.Transparent;
+            pnlPlr4.Controls.Add(label5);
+            pnlPlr4.Controls.Add(lblPlayerName4);
+            pnlPlr4.Controls.Add(pcbPlrAvt4);
             pnlPlr4.Location = new Point(2, 855);
             pnlPlr4.Margin = new Padding(2);
             pnlPlr4.Name = "pnlPlr4";
             pnlPlr4.Size = new Size(338, 125);
             pnlPlr4.TabIndex = 5;
+            pnlPlr4.Visible = false;
+            // 
+            // label5
+            // 
+            label5.Font = new Font("Cooper Black", 12F);
+            label5.ForeColor = Color.FromArgb(0, 192, 0);
+            label5.Location = new Point(113, 63);
+            label5.Name = "label5";
+            label5.Size = new Size(213, 35);
+            label5.TabIndex = 3;
+            label5.Text = "0000$";
+            // 
+            // lblPlayerName4
+            // 
+            lblPlayerName4.AutoSize = true;
+            lblPlayerName4.Font = new Font("Cooper Black", 15F);
+            lblPlayerName4.ForeColor = SystemColors.ControlText;
+            lblPlayerName4.Location = new Point(113, 17);
+            lblPlayerName4.Name = "lblPlayerName4";
+            lblPlayerName4.Size = new Size(141, 35);
+            lblPlayerName4.TabIndex = 2;
+            lblPlayerName4.Text = "Player 4";
+            // 
+            // pcbPlrAvt4
+            // 
+            pcbPlrAvt4.Location = new Point(17, 18);
+            pcbPlrAvt4.Name = "pcbPlrAvt4";
+            pcbPlrAvt4.Size = new Size(90, 90);
+            pcbPlrAvt4.TabIndex = 1;
+            pcbPlrAvt4.TabStop = false;
             // 
             // pnlPlr3
             // 
             pnlPlr3.BackColor = Color.Transparent;
+            pnlPlr3.Controls.Add(label4);
+            pnlPlr3.Controls.Add(lblPlayerName3);
+            pnlPlr3.Controls.Add(pcbPlrAvt3);
             pnlPlr3.Location = new Point(2, 724);
             pnlPlr3.Margin = new Padding(2);
             pnlPlr3.Name = "pnlPlr3";
             pnlPlr3.Size = new Size(338, 125);
             pnlPlr3.TabIndex = 4;
+            pnlPlr3.Visible = false;
+            // 
+            // label4
+            // 
+            label4.Font = new Font("Cooper Black", 12F);
+            label4.ForeColor = Color.FromArgb(0, 192, 0);
+            label4.Location = new Point(113, 61);
+            label4.Name = "label4";
+            label4.Size = new Size(213, 35);
+            label4.TabIndex = 3;
+            label4.Text = "0000$";
+            // 
+            // lblPlayerName3
+            // 
+            lblPlayerName3.AutoSize = true;
+            lblPlayerName3.Font = new Font("Cooper Black", 15F);
+            lblPlayerName3.ForeColor = SystemColors.ControlText;
+            lblPlayerName3.Location = new Point(113, 16);
+            lblPlayerName3.Name = "lblPlayerName3";
+            lblPlayerName3.Size = new Size(141, 35);
+            lblPlayerName3.TabIndex = 2;
+            lblPlayerName3.Text = "Player 3";
+            // 
+            // pcbPlrAvt3
+            // 
+            pcbPlrAvt3.Location = new Point(17, 16);
+            pcbPlrAvt3.Name = "pcbPlrAvt3";
+            pcbPlrAvt3.Size = new Size(90, 90);
+            pcbPlrAvt3.TabIndex = 1;
+            pcbPlrAvt3.TabStop = false;
             // 
             // pnlPlr2
             // 
             pnlPlr2.BackColor = Color.Transparent;
+            pnlPlr2.Controls.Add(label3);
+            pnlPlr2.Controls.Add(lblPlayerName2);
+            pnlPlr2.Controls.Add(pcbPlrAvt2);
             pnlPlr2.Location = new Point(2, 592);
             pnlPlr2.Margin = new Padding(2);
             pnlPlr2.Name = "pnlPlr2";
             pnlPlr2.Size = new Size(338, 125);
             pnlPlr2.TabIndex = 3;
+            pnlPlr2.Visible = false;
+            // 
+            // label3
+            // 
+            label3.Font = new Font("Cooper Black", 12F);
+            label3.ForeColor = Color.FromArgb(0, 192, 0);
+            label3.Location = new Point(113, 63);
+            label3.Name = "label3";
+            label3.Size = new Size(213, 35);
+            label3.TabIndex = 3;
+            label3.Text = "0000$";
+            // 
+            // lblPlayerName2
+            // 
+            lblPlayerName2.AutoSize = true;
+            lblPlayerName2.Font = new Font("Cooper Black", 15F);
+            lblPlayerName2.ForeColor = SystemColors.ControlText;
+            lblPlayerName2.Location = new Point(113, 19);
+            lblPlayerName2.Name = "lblPlayerName2";
+            lblPlayerName2.Size = new Size(141, 35);
+            lblPlayerName2.TabIndex = 2;
+            lblPlayerName2.Text = "Player 2";
+            // 
+            // pcbPlrAvt2
+            // 
+            pcbPlrAvt2.Location = new Point(17, 19);
+            pcbPlrAvt2.Name = "pcbPlrAvt2";
+            pcbPlrAvt2.Size = new Size(90, 90);
+            pcbPlrAvt2.TabIndex = 1;
+            pcbPlrAvt2.TabStop = false;
             // 
             // pnlPlr1
             // 
             pnlPlr1.BackColor = Color.Transparent;
+            pnlPlr1.Controls.Add(label2);
+            pnlPlr1.Controls.Add(lblPlayerName1);
+            pnlPlr1.Controls.Add(pcbPlrAvt1);
             pnlPlr1.Location = new Point(2, 461);
             pnlPlr1.Margin = new Padding(2);
             pnlPlr1.Name = "pnlPlr1";
             pnlPlr1.Size = new Size(338, 125);
             pnlPlr1.TabIndex = 2;
+            pnlPlr1.Visible = false;
+            // 
+            // label2
+            // 
+            label2.Font = new Font("Cooper Black", 12F);
+            label2.ForeColor = Color.FromArgb(0, 192, 0);
+            label2.Location = new Point(113, 65);
+            label2.Name = "label2";
+            label2.Size = new Size(213, 35);
+            label2.TabIndex = 2;
+            label2.Text = "0000$";
+            // 
+            // lblPlayerName1
+            // 
+            lblPlayerName1.AutoSize = true;
+            lblPlayerName1.Font = new Font("Cooper Black", 15F);
+            lblPlayerName1.ForeColor = SystemColors.ControlText;
+            lblPlayerName1.Location = new Point(113, 20);
+            lblPlayerName1.Name = "lblPlayerName1";
+            lblPlayerName1.Size = new Size(141, 35);
+            lblPlayerName1.TabIndex = 1;
+            lblPlayerName1.Text = "Player 1";
+            // 
+            // pcbPlrAvt1
+            // 
+            pcbPlrAvt1.Location = new Point(17, 20);
+            pcbPlrAvt1.Name = "pcbPlrAvt1";
+            pcbPlrAvt1.Size = new Size(90, 90);
+            pcbPlrAvt1.TabIndex = 0;
+            pcbPlrAvt1.TabStop = false;
             // 
             // pnl11
             // 
@@ -1686,6 +1838,18 @@
             ((System.ComponentModel.ISupportInitialize)pnlLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbSave).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbReturn).EndInit();
+            pnlPlr4.ResumeLayout(false);
+            pnlPlr4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt4).EndInit();
+            pnlPlr3.ResumeLayout(false);
+            pnlPlr3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt3).EndInit();
+            pnlPlr2.ResumeLayout(false);
+            pnlPlr2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt2).EndInit();
+            pnlPlr1.ResumeLayout(false);
+            pnlPlr1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).EndInit();
             pnl11.ResumeLayout(false);
             pnl11.PerformLayout();
             pnl17.ResumeLayout(false);
@@ -1702,15 +1866,9 @@
 
         private Panel pnlGame;
         private Panel pnlSide;
-        private Panel pnlPlr2;
-        private Panel pnlPlr1;
-        private Panel pnlPlr4;
-        private Panel pnlPlr3;
         private PictureBox pcbSave;
         private PictureBox pcbReturn;
         private PictureBox pnlLogo;
-        private Label label1;
-        private Label lblMoney;
         private Panel pnl1;
         private Panel pnl4;
         private Panel pnl3;
@@ -1808,5 +1966,23 @@
         private Label pos34;
         private PictureBox pcbChance;
         private PictureBox pcbFortune;
+        private Label label1;
+        private Label lblCurTurn;
+        public Panel pnlPlr2;
+        public Panel pnlPlr1;
+        public Panel pnlPlr4;
+        public Panel pnlPlr3;
+        public PictureBox pcbPlrAvt4;
+        public PictureBox pcbPlrAvt3;
+        public PictureBox pcbPlrAvt2;
+        public Label lblPlayerName1;
+        public PictureBox pcbPlrAvt1;
+        public Label label5;
+        public Label lblPlayerName4;
+        public Label label4;
+        public Label lblPlayerName3;
+        public Label label3;
+        public Label lblPlayerName2;
+        public Label label2;
     }
 }

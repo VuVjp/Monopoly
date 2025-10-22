@@ -16,6 +16,7 @@ namespace Monopoly
         internal static PlayerConfig singleConfig = null!;
         internal static bool isAdmin;
 
+        internal static Dictionary<string, PictureBox> plrInfo;
         public static void Dispose()
         {
             menu.Dispose();

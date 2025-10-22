@@ -22,7 +22,6 @@ namespace Monopoly
 
             if (Forms.isOnline)
             {
-
                 pcbChat.Visible = true;
             }
             else

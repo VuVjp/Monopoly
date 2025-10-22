@@ -213,6 +213,7 @@ namespace Monopoly
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            PlayerManager.PlayerCount = int.Parse(txbPlrCounter.Text);
             this.Hide();
             Forms.game.Show();
         }
