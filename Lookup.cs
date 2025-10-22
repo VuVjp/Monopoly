@@ -23,7 +23,7 @@ namespace LookupHelper
         private IPEndPoint remote = new IPEndPoint(0, 0);
         private string name;
 
-        public MyTcpInfo(byte[] packet)
+        public MyTcpInfo(byte[] packet, EndPoint from)
         {
             name = Encoding.UTF8.GetString(packet.AsSpan(12));
 
@@ -32,10 +32,15 @@ namespace LookupHelper
                 Array.Reverse(packet, 8, 4);
             }
 
-            remote = new IPEndPoint(
-                BitConverter.ToUInt32(packet.AsSpan(4)),
-                BitConverter.ToInt32(packet.AsSpan(8))
-            );
+            uint addr = BitConverter.ToUInt32(packet.AsSpan(4));
+            int port = BitConverter.ToInt32(packet.AsSpan(8));
+
+            if (addr == 0)
+            {
+                addr = BitConverter.ToUInt32(((IPEndPoint)from).Address.GetAddressBytes());
+            }
+
+            remote = new IPEndPoint(addr, port);
         }
 
         public IPEndPoint GetRemote()
@@ -80,9 +85,7 @@ namespace LookupHelper
                 try
                 {
                     byte[] data = new byte[sizeof(uint)];
-
-                    IPEndPoint from_buffer = new IPEndPoint(0, 0);
-                    EndPoint from = (EndPoint)from_buffer;
+                    EndPoint from = new IPEndPoint(0, 0);
 
                     if (s.ReceiveFrom(data, data.Length, 0, ref from) != data.Length || BitConverter.ToUInt32(data) != magic)
                     {
@@ -130,7 +133,6 @@ namespace LookupHelper
 
         ~BcastListen()
         {
-            s.Shutdown(SocketShutdown.Both);
             s.Close();
         }
     }
@@ -171,14 +173,16 @@ namespace LookupHelper
                         break;
                     }
 
-                    if (s.Receive(resp, resp.Length, 0) < 12 + 3 || BitConverter.ToInt32(resp) != BcastListen.magic)
+                    EndPoint remote = new IPEndPoint(0, 0);
+
+                    if (s.ReceiveFrom(resp, resp.Length, 0, ref remote) < 12 + 3 || BitConverter.ToInt32(resp) != BcastListen.magic)
                     {
                         continue;
                     }
 
                     lock (locker)
                     {
-                        results.Add(new MyTcpInfo(resp));
+                        results.Add(new MyTcpInfo(resp, remote));
                     }
                 }
 
