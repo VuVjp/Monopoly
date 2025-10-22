@@ -78,7 +78,6 @@ namespace Monopoly
                 selectedPlr.Tag = curImg;
 
                 selectedPlr.Image = curImg.Image;
-                //selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
                 selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
             }
             if (curImg.Tag == null && selectedPlr.Tag != null)
@@ -89,7 +88,6 @@ namespace Monopoly
                 selectedPlr.Tag = curImg;
 
                 selectedPlr.Image = curImg.Image;
-                selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
                 selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
             }
         }
@@ -103,28 +101,28 @@ namespace Monopoly
                     case 2:
                         if (selectedPlr == pcbPlr3)
                         {
-                            if(selectedPlr.Tag != null)
-                            {
-                                PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
-                                oldImg.Tag = null;
-                                selectedPlr.Tag = null;
-                            }
                             SelectPlrUI(pcbPlr2);
                             pcbPlr3.Image = Properties.Resources.user;
+                        }
+                        if (selectedPlr.Tag != null)
+                        {
+                            PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                            oldImg.Tag = null;
+                            selectedPlr.Tag = null;
                         }
                         pcbPlr3.Visible = false;
                         break;
                     case 3:
                         if (selectedPlr == pcbPlr4)
                         {
-                            if (selectedPlr.Tag != null)
-                            {
-                                PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
-                                oldImg.Tag = null;
-                                selectedPlr.Tag = null;
-                            }
                             SelectPlrUI(pcbPlr3);
                             pcbPlr4.Image = Properties.Resources.user;
+                        }
+                        if (selectedPlr.Tag != null)
+                        {
+                            PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                            oldImg.Tag = null;
+                            selectedPlr.Tag = null;
                         }
                         pcbPlr4.Visible = false;
                         break;
