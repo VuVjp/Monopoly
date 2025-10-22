@@ -63,11 +63,12 @@
             // 
             // pcbAvt2
             // 
-            pcbAvt2.BackgroundImage = Properties.Resources.plr1;
             pcbAvt2.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt2.Image = Properties.Resources.VuVjp;
             pcbAvt2.Location = new Point(588, 115);
             pcbAvt2.Name = "pcbAvt2";
             pcbAvt2.Size = new Size(140, 140);
+            pcbAvt2.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt2.TabIndex = 0;
             pcbAvt2.TabStop = false;
             // 
@@ -139,71 +140,78 @@
             // 
             // pcbAvt1
             // 
-            pcbAvt1.BackgroundImage = Properties.Resources.plr1;
             pcbAvt1.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt1.Image = Properties.Resources.VuVjp;
             pcbAvt1.Location = new Point(405, 115);
             pcbAvt1.Name = "pcbAvt1";
             pcbAvt1.Size = new Size(140, 140);
+            pcbAvt1.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt1.TabIndex = 8;
             pcbAvt1.TabStop = false;
             // 
             // pcbAvt3
             // 
-            pcbAvt3.BackgroundImage = Properties.Resources.plr1;
             pcbAvt3.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt3.Image = Properties.Resources.VuVjp;
             pcbAvt3.Location = new Point(771, 115);
             pcbAvt3.Name = "pcbAvt3";
             pcbAvt3.Size = new Size(140, 140);
+            pcbAvt3.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt3.TabIndex = 9;
             pcbAvt3.TabStop = false;
             // 
             // pcbAvt4
             // 
-            pcbAvt4.BackgroundImage = Properties.Resources.plr1;
             pcbAvt4.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt4.Image = Properties.Resources.VuVjp;
             pcbAvt4.Location = new Point(954, 115);
             pcbAvt4.Name = "pcbAvt4";
             pcbAvt4.Size = new Size(140, 140);
+            pcbAvt4.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt4.TabIndex = 10;
             pcbAvt4.TabStop = false;
             // 
             // pcbAvt5
             // 
-            pcbAvt5.BackgroundImage = Properties.Resources.plr1;
             pcbAvt5.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt5.Image = Properties.Resources.VuVjp;
             pcbAvt5.Location = new Point(405, 280);
             pcbAvt5.Name = "pcbAvt5";
             pcbAvt5.Size = new Size(140, 140);
+            pcbAvt5.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt5.TabIndex = 11;
             pcbAvt5.TabStop = false;
             // 
             // pcbAvt6
             // 
-            pcbAvt6.BackgroundImage = Properties.Resources.plr1;
             pcbAvt6.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt6.Image = Properties.Resources.VuVjp;
             pcbAvt6.Location = new Point(588, 280);
             pcbAvt6.Name = "pcbAvt6";
             pcbAvt6.Size = new Size(140, 140);
+            pcbAvt6.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt6.TabIndex = 12;
             pcbAvt6.TabStop = false;
             // 
             // pcbAvt7
             // 
-            pcbAvt7.BackgroundImage = Properties.Resources.plr1;
             pcbAvt7.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt7.Image = Properties.Resources.VuVjp;
             pcbAvt7.Location = new Point(771, 280);
             pcbAvt7.Name = "pcbAvt7";
             pcbAvt7.Size = new Size(140, 140);
+            pcbAvt7.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt7.TabIndex = 13;
             pcbAvt7.TabStop = false;
             // 
             // pcbAvt8
             // 
-            pcbAvt8.BackgroundImage = Properties.Resources.plr1;
             pcbAvt8.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbAvt8.Image = Properties.Resources.VuVjp;
             pcbAvt8.Location = new Point(954, 280);
             pcbAvt8.Name = "pcbAvt8";
             pcbAvt8.Size = new Size(140, 140);
+            pcbAvt8.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt8.TabIndex = 14;
             pcbAvt8.TabStop = false;
             // 
@@ -260,7 +268,7 @@
             selectedImg.TabIndex = 19;
             selectedImg.UseVisualStyleBackColor = false;
             // 
-            // SingleConfig
+            // PlayerConfig
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -287,7 +295,7 @@
             Controls.Add(selectedImg);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
-            Name = "SingleConfig";
+            Name = "PlayerConfig";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Offline Config";
             FormClosing += SingleConfig_FormClosing;

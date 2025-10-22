@@ -6,6 +6,7 @@ using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,8 +32,8 @@ namespace Monopoly
             plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8 };
             foreach (PictureBox img in plrImgs)
             {
-                img.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("plr" +
-                    ++counter)!;
+                img.Image = (Image)Properties.Resources.ResourceManager.GetObject("plr" +
+                    counter++)!;
                 img.Click += Img_Click;
             }
             if (Forms.isOnline)
@@ -71,9 +72,26 @@ namespace Monopoly
         {
             selectedImg.Visible = true;
             curImg = (PictureBox)sender!;
-            selectedPlr.Image = curImg.BackgroundImage;
-            selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
-            selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
+            if (curImg.Tag == null && selectedPlr.Tag == null)
+            {
+                curImg.Tag = selectedPlr;
+                selectedPlr.Tag = curImg;
+
+                selectedPlr.Image = curImg.Image;
+                //selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
+                selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
+            }
+            if (curImg.Tag == null && selectedPlr.Tag != null)
+            {
+                PictureBox oldImg = (PictureBox)selectedPlr.Tag;
+                oldImg.Tag = null;
+                curImg.Tag = selectedPlr;
+                selectedPlr.Tag = curImg;
+
+                selectedPlr.Image = curImg.Image;
+                selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
+                selectedImg.Location = new Point(curImg.Location.X - 10, curImg.Location.Y - 10);
+            }
         }
 
         public void HidePics(int index, int length)
@@ -84,12 +102,30 @@ namespace Monopoly
                 {
                     case 2:
                         if (selectedPlr == pcbPlr3)
+                        {
+                            if(selectedPlr.Tag != null)
+                            {
+                                PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                                oldImg.Tag = null;
+                                selectedPlr.Tag = null;
+                            }
                             SelectPlrUI(pcbPlr2);
+                            pcbPlr3.Image = Properties.Resources.user;
+                        }
                         pcbPlr3.Visible = false;
                         break;
                     case 3:
                         if (selectedPlr == pcbPlr4)
+                        {
+                            if (selectedPlr.Tag != null)
+                            {
+                                PictureBox oldImg = (PictureBox)selectedPlr.Tag!;
+                                oldImg.Tag = null;
+                                selectedPlr.Tag = null;
+                            }
                             SelectPlrUI(pcbPlr3);
+                            pcbPlr4.Image = Properties.Resources.user;
+                        }
                         pcbPlr4.Visible = false;
                         break;
                 }
@@ -116,11 +152,6 @@ namespace Monopoly
         {
             selectedUI.Visible = true;
             this.selectedPlr = selectedPlr;
-            if (curImg != null)
-            {
-                selectedPlr.Image = curImg.BackgroundImage;
-                selectedPlr.SizeMode = PictureBoxSizeMode.StretchImage;
-            }
             selectedUI.Location = new Point(selectedPlr.Location.X - 10, selectedPlr.Location.Y - 10);
         }
 
