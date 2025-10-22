@@ -53,7 +53,7 @@
             // 
             btnDelete.Font = new Font("Showcard Gothic", 24F);
             btnDelete.Location = new Point(227, 629);
-            btnDelete.Margin = new Padding(2, 2, 2, 2);
+            btnDelete.Margin = new Padding(2);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(392, 52);
             btnDelete.TabIndex = 13;
@@ -64,18 +64,19 @@
             // 
             btnReturn.Font = new Font("Showcard Gothic", 24F);
             btnReturn.Location = new Point(634, 629);
-            btnReturn.Margin = new Padding(2, 2, 2, 2);
+            btnReturn.Margin = new Padding(2);
             btnReturn.Name = "btnReturn";
             btnReturn.Size = new Size(392, 52);
             btnReturn.TabIndex = 12;
             btnReturn.Text = "Return";
             btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
             // 
             // lsbGameContainer
             // 
             lsbGameContainer.FormattingEnabled = true;
             lsbGameContainer.Location = new Point(227, 114);
-            lsbGameContainer.Margin = new Padding(2, 2, 2, 2);
+            lsbGameContainer.Margin = new Padding(2);
             lsbGameContainer.Name = "lsbGameContainer";
             lsbGameContainer.Size = new Size(800, 439);
             lsbGameContainer.TabIndex = 11;
@@ -84,7 +85,7 @@
             // 
             btnJoin.Font = new Font("Showcard Gothic", 24F);
             btnJoin.Location = new Point(634, 574);
-            btnJoin.Margin = new Padding(2, 2, 2, 2);
+            btnJoin.Margin = new Padding(2);
             btnJoin.Name = "btnJoin";
             btnJoin.Size = new Size(392, 52);
             btnJoin.TabIndex = 10;
@@ -96,7 +97,7 @@
             // 
             btnCreate.Font = new Font("Showcard Gothic", 24F);
             btnCreate.Location = new Point(227, 574);
-            btnCreate.Margin = new Padding(2, 2, 2, 2);
+            btnCreate.Margin = new Padding(2);
             btnCreate.Name = "btnCreate";
             btnCreate.Size = new Size(392, 52);
             btnCreate.TabIndex = 9;
@@ -114,7 +115,7 @@
             Controls.Add(lsbGameContainer);
             Controls.Add(btnJoin);
             Controls.Add(btnCreate);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "GameConfig";
             Size = new Size(1255, 728);
             ResumeLayout(false);

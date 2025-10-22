@@ -202,6 +202,7 @@
             btnReturn.TabIndex = 25;
             btnReturn.Text = "Return";
             btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
             // 
             // pcbPlr4
             // 

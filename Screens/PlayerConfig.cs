@@ -23,5 +23,10 @@ namespace Monopoly.Screens
         {
             monopoly.LoadScreen(new Game(monopoly));
         }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            monopoly.LoadScreen(new GameConfig(monopoly));
+        }
     }
 }

@@ -18,5 +18,10 @@ namespace Monopoly.Screens
             InitializeComponent();
             this.monopoly = monopoly;
         }
+
+        private void pcbReturn_Click(object sender, EventArgs e)
+        {
+            monopoly.LoadScreen(new MainMenu(monopoly));
+        }
     }
 }
