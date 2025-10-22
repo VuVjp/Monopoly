@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
@@ -11,30 +12,57 @@ using System.Windows.Forms;
 
 namespace Monopoly
 {
-    public partial class SingleConfig : Form
+    public partial class PlayerConfig : Form
     {
         PictureBox selectedPlr = null!;
         PictureBox curImg = null!;
+        List<PictureBox> plrPics = null!;
+        List<PictureBox> plrImgs = null!;
 
-        public SingleConfig()
+        public PlayerConfig()
         {
             InitializeComponent();
-            LoadForm();
+            FormLoader();
         }
-
-        private void LoadForm()
+        private void FormLoader()
         {
             int counter = 1;
-            selectedImg.Visible = false;
-            selectedPlr = pcbPlr1;
-            List<PictureBox> plrPics = new List<PictureBox>() { pcbPlr1, pcbPlr2, pcbPlr3, pcbPlr4 };
-            List<PictureBox> plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8};
+            plrPics = new List<PictureBox>() { pcbPlr1, pcbPlr2, pcbPlr3, pcbPlr4 };
+            plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8 };
             foreach (PictureBox img in plrImgs)
             {
-                img.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("plr" + 
+                img.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("plr" +
                     ++counter)!;
                 img.Click += Img_Click;
             }
+            if (Forms.isOnline)
+            {
+                if (!Forms.isAdmin)
+                {
+                    btnPlay.Enabled = false;
+                    btnPlus.Enabled = false;
+                    btnMinus.Enabled = false;
+                    //txbPlrCounter.Text = Socket nhận từ server
+                    //SelectPlrUI(); socket nhận từ server
+                }
+                FormLoaderLoadFormOnlineMode();
+            }
+            else
+            {
+                FormLoaderLoadFormOfflineMode();
+            }
+        }
+        private void FormLoaderLoadFormOnlineMode()
+        {
+            HidePics(int.Parse(txbPlrCounter.Text), plrPics.Count);
+            ShowPics(2, int.Parse(txbPlrCounter.Text));
+        }
+
+        private void FormLoaderLoadFormOfflineMode()
+        {
+            selectedImg.Visible = false;
+            selectedPlr = pcbPlr1;
+            
             foreach (PictureBox plr in plrPics) plr.Click += pcbPlr_Click!;
             HidePics(int.Parse(txbPlrCounter.Text), plrPics.Count);
         }
@@ -56,12 +84,12 @@ namespace Monopoly
                 {
                     case 2:
                         if (selectedPlr == pcbPlr3)
-                            selectPlrUI(pcbPlr2);
+                            SelectPlrUI(pcbPlr2);
                         pcbPlr3.Visible = false;
                         break;
                     case 3:
                         if (selectedPlr == pcbPlr4)
-                            selectPlrUI(pcbPlr3);
+                            SelectPlrUI(pcbPlr3);
                         pcbPlr4.Visible = false;
                         break;
                 }
@@ -70,7 +98,7 @@ namespace Monopoly
 
         private void ShowPics(int index, int length)
         {
-            for (int i = index; i < length; i++)
+            for (int i = index; i < length; i--)
             {
                 switch (i)
                 {
@@ -84,7 +112,7 @@ namespace Monopoly
             }
         }
 
-        private void selectPlrUI(PictureBox selectedPlr)
+        private void SelectPlrUI(PictureBox selectedPlr)
         {
             selectedUI.Visible = true;
             this.selectedPlr = selectedPlr;
@@ -102,7 +130,7 @@ namespace Monopoly
         }
         private void pcbPlr_Click(object sender, EventArgs e)
         {
-            selectPlrUI((PictureBox)sender);
+            SelectPlrUI((PictureBox)sender);
         }
 
         private void btnReturn_Click(object sender, EventArgs e)

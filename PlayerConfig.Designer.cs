@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    partial class SingleConfig
+    partial class PlayerConfig
     {
         /// <summary>
         /// Required designer variable.
