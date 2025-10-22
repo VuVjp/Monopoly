@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 /*
 Cách dùng cho server:
-    IPEndPoint tcp_host = new IPEndPoint(IPAddress.Parse("192.168.1.254"), 3636); ip + port tùy chỉnh
+    IPEndPoint tcp_host = new IPEndPoint(IPAddress.Parse("192.168.1.254"), 3636); ip + port tùy chỉnh, nếu tcp server bind trên any thì có thể truyền any vào
     BcastListen bch = new BcastListen(tcp_host, "trandinhbac"); tên tùy chỉnh
 
     bch.Start() server sẽ bắt đầu nhận các broadcast của client gửi tới và server sẽ phản hồi thông tin địa chỉ + port của tcp và tên chủ server
@@ -240,3 +240,4 @@ namespace LookupHelper
         }
     }
 };
+
