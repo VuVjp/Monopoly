@@ -149,6 +149,8 @@ namespace Monopoly.Screens
             pos1 = new Label();
             pnl15 = new Panel();
             pos14 = new Label();
+            pnl11 = new Panel();
+            pos11 = new Label();
             pnl17.SuspendLayout();
             pnl16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
@@ -222,6 +224,7 @@ namespace Monopoly.Screens
             pnl3.SuspendLayout();
             pnl1.SuspendLayout();
             pnl15.SuspendLayout();
+            pnl11.SuspendLayout();
             SuspendLayout();
             // 
             // pnl17
@@ -562,6 +565,7 @@ namespace Monopoly.Screens
             // pnlGame
             // 
             pnlGame.BorderStyle = BorderStyle.FixedSingle;
+            pnlGame.Controls.Add(pnl11);
             pnlGame.Controls.Add(pcbChance);
             pnlGame.Controls.Add(pcbFortune);
             pnlGame.Controls.Add(pnl35);
@@ -1685,6 +1689,32 @@ namespace Monopoly.Screens
             pos14.Text = " ";
             pos14.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // pnl11
+            // 
+            pnl11.BackgroundImage = Resources.VisitJail;
+            pnl11.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl11.BorderStyle = BorderStyle.FixedSingle;
+            pnl11.Controls.Add(pos11);
+            pnl11.Cursor = Cursors.Hand;
+            pnl11.Location = new Point(-1, 1025);
+            pnl11.Margin = new Padding(2);
+            pnl11.Name = "pnl11";
+            pnl11.Size = new Size(186, 186);
+            pnl11.TabIndex = 42;
+            // 
+            // pos11
+            // 
+            pos11.AutoSize = true;
+            pos11.BackColor = Color.Transparent;
+            pos11.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos11.Location = new Point(86, 90);
+            pos11.Margin = new Padding(2, 0, 2, 0);
+            pos11.Name = "pos11";
+            pos11.Size = new Size(15, 21);
+            pos11.TabIndex = 52;
+            pos11.Text = " ";
+            pos11.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Game
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -1809,6 +1839,8 @@ namespace Monopoly.Screens
             pnl1.PerformLayout();
             pnl15.ResumeLayout(false);
             pnl15.PerformLayout();
+            pnl11.ResumeLayout(false);
+            pnl11.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1932,5 +1964,7 @@ namespace Monopoly.Screens
         private Label pos1;
         private Panel pnl15;
         private Label pos14;
+        private Panel pnl11;
+        private Label pos11;
     }
 }
