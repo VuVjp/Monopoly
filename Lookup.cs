@@ -1,7 +1,8 @@
 using System.Net;
 using System.Text;
 using System.Net.Sockets;
-using Monopoly;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 /*
 Cách dùng cho server:
@@ -12,12 +13,42 @@ Cách dùng cho server:
     bch.Stop() dừng quá trình nhận broadcast lại
 
 Cách dùng cho client:
-    BcastRequest bch = new BcastRequest();
-    List<MyTcpInfo> founds = bch.Lookup(10); gửi broadcast và chờ phản hồi trong khoảng thời gian (giây). 2 giây là hợp lý
+    List<MyTcpInfo> founds = BcastRequest.Lookup(2); gửi broadcast và chờ phản hồi trong khoảng thời gian (giây). 2 giây là hợp lý
 */
 
 namespace LookupHelper
 {
+    public struct MyTcpInfo
+    {
+        private IPEndPoint remote = new IPEndPoint(0, 0);
+        private string name;
+
+        public MyTcpInfo(byte[] packet)
+        {
+            name = Encoding.UTF8.GetString(packet.AsSpan(12));
+
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(packet, 8, 4);
+            }
+
+            remote = new IPEndPoint(
+                BitConverter.ToUInt32(packet.AsSpan(4)),
+                BitConverter.ToInt32(packet.AsSpan(8))
+            );
+        }
+
+        public IPEndPoint GetRemote()
+        {
+            return remote;
+        }
+        public string GetName()
+        {
+            return name;
+        }
+
+    };
+
     public class BcastListen
     {
         private Socket s;
@@ -25,11 +56,12 @@ namespace LookupHelper
         private string name;
         private bool is_running;
         private IPEndPoint remote_tcp;
+        public static uint magic = 0xd00ddeed ^ 0xffffffff;
 
         private void Thread_Worker()
         {
             byte[] packet = new byte[1500];
-            byte[] sign = BitConverter.GetBytes(Cons.signature);
+            byte[] sign = BitConverter.GetBytes(magic);
             byte[] addr = remote_tcp.Address.GetAddressBytes();
             byte[] port = BitConverter.GetBytes(remote_tcp.Port);
 
@@ -52,7 +84,7 @@ namespace LookupHelper
                     IPEndPoint from_buffer = new IPEndPoint(0, 0);
                     EndPoint from = (EndPoint)from_buffer;
 
-                    if (s.ReceiveFrom(data, data.Length, 0, ref from) != data.Length || BitConverter.ToUInt32(data) != Cons.signature)
+                    if (s.ReceiveFrom(data, data.Length, 0, ref from) != data.Length || BitConverter.ToUInt32(data) != magic)
                     {
                         continue;
                     }
@@ -103,47 +135,61 @@ namespace LookupHelper
         }
     }
 
-    public struct MyTcpInfo
-    {
-        private IPEndPoint remote = new IPEndPoint(0, 0);
-        private string name;
-
-        public MyTcpInfo(byte[] packet)
-        {
-            name = Encoding.UTF8.GetString(packet.AsSpan(12));
-
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(packet, 8, 4);
-            }
-
-            remote = new IPEndPoint(
-                BitConverter.ToUInt32(packet.AsSpan(4)),
-                BitConverter.ToInt32(packet.AsSpan(8))
-            );
-        }
-
-        public IPEndPoint GetRemote()
-        {
-            return remote;
-        }
-        public string GetName()
-        {
-            return name;
-        }
-        
-    };
-
     public class BcastRequest
     {
-        private Socket s;
-        public BcastRequest()
+        static private List<MyTcpInfo> results = new List<MyTcpInfo>();
+        static private readonly object locker = new object();
+        static private IPAddress Calc(byte[] addr, byte[] mask)
         {
-            s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+            byte[] bcast = new byte[4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                bcast[i] = (byte)(((int)mask[i] ^ 0xff) | (int)addr[i]);
+            }
+
+            return new IPAddress(bcast);
+        }
+        static private void Thread_Worker(byte[] addr, byte[] mask, int seconds)
+        {
+            byte[] resp = new byte[1500];
+
+            try
+            {
+                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+
+                if (s.SendTo(BitConverter.GetBytes(BcastListen.magic), sizeof(uint), 0, new IPEndPoint(BitConverter.ToUInt32(Calc(addr, mask).GetAddressBytes()), 26305)) != sizeof(uint))
+                {
+                    return;
+                }
+
+                while (true)
+                {
+                    if (!s.Poll(seconds * 1000000, SelectMode.SelectRead))
+                    {
+                        break;
+                    }
+
+                    if (s.Receive(resp, resp.Length, 0) < 12 + 3 || BitConverter.ToInt32(resp) != BcastListen.magic)
+                    {
+                        continue;
+                    }
+
+                    lock (locker)
+                    {
+                        results.Add(new MyTcpInfo(resp));
+                    }
+                }
+
+                s.Close();
+            } catch
+            {
+                return;
+            }
         }
 
-        public List<MyTcpInfo> Lookup(int seconds)
+        static public List<MyTcpInfo> Lookup(int seconds)
         {
             if (seconds < 1)
             {
@@ -151,34 +197,42 @@ namespace LookupHelper
             }
 
             byte[] resp = new byte[1500];
+            List<Thread> threads = new List<Thread>();
 
-            IPEndPoint bcast_addr = new IPEndPoint(IPAddress.Broadcast, 26305);
-            s.SendTo(BitConverter.GetBytes(Cons.signature), sizeof(uint), 0, bcast_addr);
-
-            List<MyTcpInfo> founds = new List<MyTcpInfo>();
-
-            while (true)
+            foreach (NetworkInterface iface in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (!s.Poll(seconds * 1000000, SelectMode.SelectRead))
-                {
-                    break;
-                }
-
-                if (s.Receive(resp, resp.Length, 0) < 12 + 3 || BitConverter.ToInt32(resp) != Cons.signature)
+                if (iface.OperationalStatus != OperationalStatus.Up || iface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
                 {
                     continue;
                 }
 
-                founds.Add(new MyTcpInfo(resp));
+                foreach (var i in iface.GetIPProperties().UnicastAddresses)
+                {
+                    if (i.IPv4Mask.Equals(IPAddress.Any))
+                    {
+                        continue;
+                    }
+
+                    if (i.Address.AddressFamily != AddressFamily.InterNetwork)
+                    {
+                        continue;
+                    }
+
+                    threads.Add(new Thread(() =>
+                    {
+                        Thread_Worker(i.Address.GetAddressBytes(), i.IPv4Mask.GetAddressBytes(), seconds);
+                    }));
+
+                    threads.Last().Start();
+                }
             }
 
-            return founds;
-        }
+            foreach (Thread t in threads)
+            {
+                t.Join();
+            }
 
-        ~BcastRequest()
-        {
-            s.Shutdown(SocketShutdown.Both);
-            s.Close();
+            return results;
         }
     }
 };
