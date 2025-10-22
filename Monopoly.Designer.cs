@@ -34,16 +34,18 @@
             // pnlMain
             // 
             pnlMain.Location = new Point(0, 1);
+            pnlMain.Margin = new Padding(2);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(1793, 1213);
+            pnlMain.Size = new Size(1255, 728);
             pnlMain.TabIndex = 0;
             // 
             // Monopoly
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1794, 1215);
+            ClientSize = new Size(1256, 729);
             Controls.Add(pnlMain);
+            Margin = new Padding(2);
             Name = "Monopoly";
             Text = "Monopoly";
             ResumeLayout(false);

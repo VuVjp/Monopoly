@@ -41,9 +41,10 @@
             lblTitle.Font = new Font("Showcard Gothic", 50F);
             lblTitle.ForeColor = Color.White;
             lblTitle.ImageAlign = ContentAlignment.MiddleRight;
-            lblTitle.Location = new Point(132, 58);
+            lblTitle.Location = new Point(0, 20);
+            lblTitle.Margin = new Padding(2, 0, 2, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(1518, 124);
+            lblTitle.Size = new Size(1253, 74);
             lblTitle.TabIndex = 14;
             lblTitle.Text = "Singleplayer";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -51,9 +52,10 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Showcard Gothic", 24F);
-            btnDelete.Location = new Point(324, 1070);
+            btnDelete.Location = new Point(227, 629);
+            btnDelete.Margin = new Padding(2, 2, 2, 2);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(560, 86);
+            btnDelete.Size = new Size(392, 52);
             btnDelete.TabIndex = 13;
             btnDelete.Text = "Delete Game";
             btnDelete.UseVisualStyleBackColor = true;
@@ -61,9 +63,10 @@
             // btnReturn
             // 
             btnReturn.Font = new Font("Showcard Gothic", 24F);
-            btnReturn.Location = new Point(905, 1070);
+            btnReturn.Location = new Point(634, 629);
+            btnReturn.Margin = new Padding(2, 2, 2, 2);
             btnReturn.Name = "btnReturn";
-            btnReturn.Size = new Size(560, 86);
+            btnReturn.Size = new Size(392, 52);
             btnReturn.TabIndex = 12;
             btnReturn.Text = "Return";
             btnReturn.UseVisualStyleBackColor = true;
@@ -71,17 +74,19 @@
             // lsbGameContainer
             // 
             lsbGameContainer.FormattingEnabled = true;
-            lsbGameContainer.Location = new Point(324, 212);
+            lsbGameContainer.Location = new Point(227, 114);
+            lsbGameContainer.Margin = new Padding(2, 2, 2, 2);
             lsbGameContainer.Name = "lsbGameContainer";
-            lsbGameContainer.Size = new Size(1141, 729);
+            lsbGameContainer.Size = new Size(800, 439);
             lsbGameContainer.TabIndex = 11;
             // 
             // btnJoin
             // 
             btnJoin.Font = new Font("Showcard Gothic", 24F);
-            btnJoin.Location = new Point(905, 978);
+            btnJoin.Location = new Point(634, 574);
+            btnJoin.Margin = new Padding(2, 2, 2, 2);
             btnJoin.Name = "btnJoin";
-            btnJoin.Size = new Size(560, 86);
+            btnJoin.Size = new Size(392, 52);
             btnJoin.TabIndex = 10;
             btnJoin.Text = "Join Game";
             btnJoin.UseVisualStyleBackColor = true;
@@ -90,16 +95,17 @@
             // btnCreate
             // 
             btnCreate.Font = new Font("Showcard Gothic", 24F);
-            btnCreate.Location = new Point(324, 978);
+            btnCreate.Location = new Point(227, 574);
+            btnCreate.Margin = new Padding(2, 2, 2, 2);
             btnCreate.Name = "btnCreate";
-            btnCreate.Size = new Size(560, 86);
+            btnCreate.Size = new Size(392, 52);
             btnCreate.TabIndex = 9;
             btnCreate.Text = "Create New Game";
             btnCreate.UseVisualStyleBackColor = true;
             // 
             // GameConfig
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 46);
             Controls.Add(lblTitle);
@@ -108,8 +114,9 @@
             Controls.Add(lsbGameContainer);
             Controls.Add(btnJoin);
             Controls.Add(btnCreate);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "GameConfig";
-            Size = new Size(1793, 1213);
+            Size = new Size(1255, 728);
             ResumeLayout(false);
         }
 
