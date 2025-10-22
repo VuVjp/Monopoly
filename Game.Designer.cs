@@ -1744,6 +1744,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Game";
             FormClosing += Game_FormClosing;
+            Load += Game_Load;
             pnlGame.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pcbChance).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbFortune).EndInit();

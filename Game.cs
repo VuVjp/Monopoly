@@ -53,5 +53,10 @@ namespace Monopoly
             pcb.Cursor = Cursors.Hand;
             pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
         }
+
+        private void Game_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
