@@ -99,7 +99,7 @@
             // pcbAvt8
             // 
             pcbAvt8.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt8.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt8.Image = Properties.Resources.VuVjp;
             pcbAvt8.Location = new Point(779, 207);
             pcbAvt8.Margin = new Padding(2);
             pcbAvt8.Name = "pcbAvt8";
@@ -111,7 +111,7 @@
             // pcbAvt7
             // 
             pcbAvt7.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt7.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt7.Image = Properties.Resources.VuVjp;
             pcbAvt7.Location = new Point(651, 207);
             pcbAvt7.Margin = new Padding(2);
             pcbAvt7.Name = "pcbAvt7";
@@ -123,7 +123,7 @@
             // pcbAvt6
             // 
             pcbAvt6.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt6.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt6.Image = Properties.Resources.VuVjp;
             pcbAvt6.Location = new Point(525, 207);
             pcbAvt6.Margin = new Padding(2);
             pcbAvt6.Name = "pcbAvt6";
@@ -135,7 +135,7 @@
             // pcbAvt5
             // 
             pcbAvt5.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt5.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt5.Image = Properties.Resources.VuVjp;
             pcbAvt5.Location = new Point(397, 207);
             pcbAvt5.Margin = new Padding(2);
             pcbAvt5.Name = "pcbAvt5";
@@ -147,7 +147,7 @@
             // pcbAvt4
             // 
             pcbAvt4.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt4.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt4.Image = Properties.Resources.VuVjp;
             pcbAvt4.Location = new Point(779, 96);
             pcbAvt4.Margin = new Padding(2);
             pcbAvt4.Name = "pcbAvt4";
@@ -159,7 +159,7 @@
             // pcbAvt3
             // 
             pcbAvt3.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt3.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt3.Image = Properties.Resources.VuVjp;
             pcbAvt3.Location = new Point(651, 96);
             pcbAvt3.Margin = new Padding(2);
             pcbAvt3.Name = "pcbAvt3";
@@ -171,7 +171,7 @@
             // pcbAvt1
             // 
             pcbAvt1.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt1.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt1.Image = Properties.Resources.VuVjp;
             pcbAvt1.Location = new Point(397, 96);
             pcbAvt1.Margin = new Padding(2);
             pcbAvt1.Name = "pcbAvt1";
@@ -208,7 +208,7 @@
             // 
             pcbPlr4.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr4.Cursor = Cursors.Hand;
-            pcbPlr4.Image = Monopoly.Properties.Resources.user;
+            pcbPlr4.Image = Properties.Resources.user;
             pcbPlr4.Location = new Point(815, 351);
             pcbPlr4.Margin = new Padding(2);
             pcbPlr4.Name = "pcbPlr4";
@@ -221,7 +221,7 @@
             // 
             pcbPlr3.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr3.Cursor = Cursors.Hand;
-            pcbPlr3.Image = Monopoly.Properties.Resources.user;
+            pcbPlr3.Image = Properties.Resources.user;
             pcbPlr3.Location = new Point(645, 351);
             pcbPlr3.Margin = new Padding(2);
             pcbPlr3.Name = "pcbPlr3";
@@ -234,7 +234,7 @@
             // 
             pcbPlr2.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr2.Cursor = Cursors.Hand;
-            pcbPlr2.Image = Monopoly.Properties.Resources.user;
+            pcbPlr2.Image = Properties.Resources.user;
             pcbPlr2.Location = new Point(474, 351);
             pcbPlr2.Margin = new Padding(2);
             pcbPlr2.Name = "pcbPlr2";
@@ -247,7 +247,7 @@
             // 
             pcbPlr1.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr1.Cursor = Cursors.Hand;
-            pcbPlr1.Image = Monopoly.Properties.Resources.user;
+            pcbPlr1.Image = Properties.Resources.user;
             pcbPlr1.Location = new Point(303, 351);
             pcbPlr1.Margin = new Padding(2);
             pcbPlr1.Name = "pcbPlr1";
@@ -259,7 +259,7 @@
             // pcbAvt2
             // 
             pcbAvt2.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt2.Image = Monopoly.Properties.Resources.VuVjp;
+            pcbAvt2.Image = Properties.Resources.VuVjp;
             pcbAvt2.Location = new Point(525, 96);
             pcbAvt2.Margin = new Padding(2);
             pcbAvt2.Name = "pcbAvt2";
