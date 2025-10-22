@@ -24,7 +24,5 @@ namespace Monopoly
             "Winning the Game:\n" +
             "The game ends when all other players are bankrupt. The last player remaining wins the game!\n\n" +
             "Have fun and good luck!";
-
-        internal const uint signature = 0xd00ddeed ^ 0xffffffff;
     }
 }
