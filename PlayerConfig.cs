@@ -98,7 +98,7 @@ namespace Monopoly
 
         private void ShowPics(int index, int length)
         {
-            for (int i = index; i < length; i--)
+            for (int i = index; i < length; i++)
             {
                 switch (i)
                 {
