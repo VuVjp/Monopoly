@@ -45,8 +45,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1256, 729);
             Controls.Add(pnlMain);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(2);
+            MaximizeBox = false;
             Name = "Monopoly";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Monopoly";
             ResumeLayout(false);
         }

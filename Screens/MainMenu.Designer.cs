@@ -70,6 +70,7 @@
             btnQuit.TabIndex = 12;
             btnQuit.Text = "Quit Game";
             btnQuit.UseVisualStyleBackColor = true;
+            btnQuit.Click += btnQuit_Click;
             // 
             // btnAbout
             // 

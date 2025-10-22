@@ -23,5 +23,15 @@ namespace Monopoly.Screens
         {
             monopoly.LoadScreen(new MainMenu(monopoly));
         }
+        private void pcb_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width + 10, pcb.Size.Height + 10);
+        }
+        private void pcb_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
+        }
     }
 }

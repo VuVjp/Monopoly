@@ -18,9 +18,15 @@ namespace Monopoly.Screens
             InitializeComponent();
             this.monopoly = monopoly;
         }
+
         private void btnSingle_Click(object sender, EventArgs e)
         {
             monopoly.LoadScreen(new GameConfig(monopoly));
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            monopoly.Close();
         }
     }
 }

@@ -236,7 +236,7 @@ namespace Monopoly.Screens
             pnl17.Controls.Add(pos17);
             pnl17.Cursor = Cursors.Hand;
             pnl17.Location = new Point(1, 184);
-            pnl17.Margin = new Padding(1, 1, 1, 1);
+            pnl17.Margin = new Padding(1);
             pnl17.Name = "pnl17";
             pnl17.Size = new Size(131, 73);
             pnl17.TabIndex = 25;
@@ -261,7 +261,7 @@ namespace Monopoly.Screens
             pnl16.Controls.Add(pcb9);
             pnl16.Cursor = Cursors.Hand;
             pnl16.Location = new Point(1, 256);
-            pnl16.Margin = new Padding(1, 1, 1, 1);
+            pnl16.Margin = new Padding(1);
             pnl16.Name = "pnl16";
             pnl16.Size = new Size(131, 73);
             pnl16.TabIndex = 26;
@@ -283,7 +283,7 @@ namespace Monopoly.Screens
             pcb9.BackColor = Color.FromArgb(255, 192, 255);
             pcb9.BorderStyle = BorderStyle.FixedSingle;
             pcb9.Location = new Point(104, -1);
-            pcb9.Margin = new Padding(1, 1, 1, 1);
+            pcb9.Margin = new Padding(1);
             pcb9.Name = "pcb9";
             pcb9.Size = new Size(26, 73);
             pcb9.TabIndex = 39;
@@ -305,7 +305,7 @@ namespace Monopoly.Screens
             pnlSide.Controls.Add(pnlPlr2);
             pnlSide.Controls.Add(pnlPlr1);
             pnlSide.Location = new Point(1018, 1);
-            pnlSide.Margin = new Padding(1, 1, 1, 1);
+            pnlSide.Margin = new Padding(1);
             pnlSide.Name = "pnlSide";
             pnlSide.Size = new Size(237, 727);
             pnlSide.TabIndex = 24;
@@ -315,24 +315,30 @@ namespace Monopoly.Screens
             pcbInfo.BackColor = Color.Transparent;
             pcbInfo.BackgroundImage = (Image)resources.GetObject("pcbInfo.BackgroundImage");
             pcbInfo.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbInfo.Cursor = Cursors.Hand;
             pcbInfo.Location = new Point(45, 661);
-            pcbInfo.Margin = new Padding(1, 1, 1, 1);
+            pcbInfo.Margin = new Padding(1);
             pcbInfo.Name = "pcbInfo";
             pcbInfo.Size = new Size(62, 53);
             pcbInfo.TabIndex = 12;
             pcbInfo.TabStop = false;
+            pcbInfo.MouseEnter += pcb_MouseEnter;
+            pcbInfo.MouseLeave += pcb_MouseLeave;
             // 
             // pcbChat
             // 
             pcbChat.BackColor = Color.Transparent;
             pcbChat.BackgroundImage = (Image)resources.GetObject("pcbChat.BackgroundImage");
             pcbChat.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbChat.Cursor = Cursors.Hand;
             pcbChat.Location = new Point(136, 661);
-            pcbChat.Margin = new Padding(1, 1, 1, 1);
+            pcbChat.Margin = new Padding(1);
             pcbChat.Name = "pcbChat";
             pcbChat.Size = new Size(62, 53);
             pcbChat.TabIndex = 11;
             pcbChat.TabStop = false;
+            pcbChat.MouseEnter += pcb_MouseEnter;
+            pcbChat.MouseLeave += pcb_MouseLeave;
             // 
             // label1
             // 
@@ -364,7 +370,7 @@ namespace Monopoly.Screens
             // 
             pnlLogo.BackColor = Color.Transparent;
             pnlLogo.Location = new Point(1, 1);
-            pnlLogo.Margin = new Padding(1, 1, 1, 1);
+            pnlLogo.Margin = new Padding(1);
             pnlLogo.Name = "pnlLogo";
             pnlLogo.Size = new Size(237, 203);
             pnlLogo.TabIndex = 8;
@@ -375,25 +381,31 @@ namespace Monopoly.Screens
             pcbSave.BackColor = Color.Transparent;
             pcbSave.BackgroundImage = (Image)resources.GetObject("pcbSave.BackgroundImage");
             pcbSave.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbSave.Cursor = Cursors.Hand;
             pcbSave.Location = new Point(136, 597);
-            pcbSave.Margin = new Padding(1, 1, 1, 1);
+            pcbSave.Margin = new Padding(1);
             pcbSave.Name = "pcbSave";
             pcbSave.Size = new Size(62, 53);
             pcbSave.TabIndex = 7;
             pcbSave.TabStop = false;
+            pcbSave.MouseEnter += pcb_MouseEnter;
+            pcbSave.MouseLeave += pcb_MouseLeave;
             // 
             // pcbReturn
             // 
             pcbReturn.BackColor = Color.Transparent;
             pcbReturn.BackgroundImage = (Image)resources.GetObject("pcbReturn.BackgroundImage");
             pcbReturn.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbReturn.Cursor = Cursors.Hand;
             pcbReturn.Location = new Point(45, 597);
-            pcbReturn.Margin = new Padding(1, 1, 1, 1);
+            pcbReturn.Margin = new Padding(1);
             pcbReturn.Name = "pcbReturn";
             pcbReturn.Size = new Size(62, 53);
             pcbReturn.TabIndex = 6;
             pcbReturn.TabStop = false;
             pcbReturn.Click += pcbReturn_Click;
+            pcbReturn.MouseEnter += pcb_MouseEnter;
+            pcbReturn.MouseLeave += pcb_MouseLeave;
             // 
             // pnlPlr4
             // 
@@ -402,7 +414,7 @@ namespace Monopoly.Screens
             pnlPlr4.Controls.Add(lblPlayerName4);
             pnlPlr4.Controls.Add(pcbPlrAvt4);
             pnlPlr4.Location = new Point(1, 513);
-            pnlPlr4.Margin = new Padding(1, 1, 1, 1);
+            pnlPlr4.Margin = new Padding(1);
             pnlPlr4.Name = "pnlPlr4";
             pnlPlr4.Size = new Size(237, 75);
             pnlPlr4.TabIndex = 5;
@@ -434,7 +446,7 @@ namespace Monopoly.Screens
             // pcbPlrAvt4
             // 
             pcbPlrAvt4.Location = new Point(12, 11);
-            pcbPlrAvt4.Margin = new Padding(2, 2, 2, 2);
+            pcbPlrAvt4.Margin = new Padding(2);
             pcbPlrAvt4.Name = "pcbPlrAvt4";
             pcbPlrAvt4.Size = new Size(63, 54);
             pcbPlrAvt4.TabIndex = 1;
@@ -447,7 +459,7 @@ namespace Monopoly.Screens
             pnlPlr3.Controls.Add(lblPlayerName3);
             pnlPlr3.Controls.Add(pcbPlrAvt3);
             pnlPlr3.Location = new Point(1, 434);
-            pnlPlr3.Margin = new Padding(1, 1, 1, 1);
+            pnlPlr3.Margin = new Padding(1);
             pnlPlr3.Name = "pnlPlr3";
             pnlPlr3.Size = new Size(237, 75);
             pnlPlr3.TabIndex = 4;
@@ -479,7 +491,7 @@ namespace Monopoly.Screens
             // pcbPlrAvt3
             // 
             pcbPlrAvt3.Location = new Point(12, 10);
-            pcbPlrAvt3.Margin = new Padding(2, 2, 2, 2);
+            pcbPlrAvt3.Margin = new Padding(2);
             pcbPlrAvt3.Name = "pcbPlrAvt3";
             pcbPlrAvt3.Size = new Size(63, 54);
             pcbPlrAvt3.TabIndex = 1;
@@ -492,7 +504,7 @@ namespace Monopoly.Screens
             pnlPlr2.Controls.Add(lblPlayerName2);
             pnlPlr2.Controls.Add(pcbPlrAvt2);
             pnlPlr2.Location = new Point(1, 355);
-            pnlPlr2.Margin = new Padding(1, 1, 1, 1);
+            pnlPlr2.Margin = new Padding(1);
             pnlPlr2.Name = "pnlPlr2";
             pnlPlr2.Size = new Size(237, 75);
             pnlPlr2.TabIndex = 3;
@@ -524,7 +536,7 @@ namespace Monopoly.Screens
             // pcbPlrAvt2
             // 
             pcbPlrAvt2.Location = new Point(12, 11);
-            pcbPlrAvt2.Margin = new Padding(2, 2, 2, 2);
+            pcbPlrAvt2.Margin = new Padding(2);
             pcbPlrAvt2.Name = "pcbPlrAvt2";
             pcbPlrAvt2.Size = new Size(63, 54);
             pcbPlrAvt2.TabIndex = 1;
@@ -537,7 +549,7 @@ namespace Monopoly.Screens
             pnlPlr1.Controls.Add(lblPlayerName1);
             pnlPlr1.Controls.Add(pcbPlrAvt1);
             pnlPlr1.Location = new Point(1, 277);
-            pnlPlr1.Margin = new Padding(1, 1, 1, 1);
+            pnlPlr1.Margin = new Padding(1);
             pnlPlr1.Name = "pnlPlr1";
             pnlPlr1.Size = new Size(237, 75);
             pnlPlr1.TabIndex = 2;
@@ -569,7 +581,7 @@ namespace Monopoly.Screens
             // pcbPlrAvt1
             // 
             pcbPlrAvt1.Location = new Point(12, 12);
-            pcbPlrAvt1.Margin = new Padding(2, 2, 2, 2);
+            pcbPlrAvt1.Margin = new Padding(2);
             pcbPlrAvt1.Name = "pcbPlrAvt1";
             pcbPlrAvt1.Size = new Size(63, 54);
             pcbPlrAvt1.TabIndex = 0;
@@ -614,7 +626,7 @@ namespace Monopoly.Screens
             pnlGame.Controls.Add(pnl3);
             pnlGame.Controls.Add(pnl1);
             pnlGame.Location = new Point(1, 0);
-            pnlGame.Margin = new Padding(1, 1, 1, 1);
+            pnlGame.Margin = new Padding(1);
             pnlGame.Name = "pnlGame";
             pnlGame.Size = new Size(1017, 729);
             pnlGame.TabIndex = 23;
@@ -627,7 +639,7 @@ namespace Monopoly.Screens
             pnl11.Controls.Add(pos11);
             pnl11.Cursor = Cursors.Hand;
             pnl11.Location = new Point(-1, 615);
-            pnl11.Margin = new Padding(1, 1, 1, 1);
+            pnl11.Margin = new Padding(1);
             pnl11.Name = "pnl11";
             pnl11.Size = new Size(131, 112);
             pnl11.TabIndex = 42;
@@ -650,24 +662,30 @@ namespace Monopoly.Screens
             pcbChance.BackColor = Color.Transparent;
             pcbChance.BackgroundImage = Resources.ChanceCards;
             pcbChance.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbChance.Cursor = Cursors.Hand;
             pcbChance.Location = new Point(685, 405);
-            pcbChance.Margin = new Padding(1, 1, 1, 1);
+            pcbChance.Margin = new Padding(1);
             pcbChance.Name = "pcbChance";
             pcbChance.Size = new Size(118, 139);
             pcbChance.TabIndex = 40;
             pcbChance.TabStop = false;
+            pcbChance.MouseEnter += pcb_MouseEnter;
+            pcbChance.MouseLeave += pcb_MouseLeave;
             // 
             // pcbFortune
             // 
             pcbFortune.BackColor = Color.Transparent;
             pcbFortune.BackgroundImage = Resources.FortuneCards;
             pcbFortune.BackgroundImageLayout = ImageLayout.Stretch;
+            pcbFortune.Cursor = Cursors.Hand;
             pcbFortune.Location = new Point(214, 184);
-            pcbFortune.Margin = new Padding(1, 1, 1, 1);
+            pcbFortune.Margin = new Padding(1);
             pcbFortune.Name = "pcbFortune";
             pcbFortune.Size = new Size(118, 139);
             pcbFortune.TabIndex = 41;
             pcbFortune.TabStop = false;
+            pcbFortune.MouseEnter += pcb_MouseEnter;
+            pcbFortune.MouseLeave += pcb_MouseLeave;
             // 
             // pnl35
             // 
@@ -677,7 +695,7 @@ namespace Monopoly.Screens
             pnl35.Controls.Add(pcb20);
             pnl35.Cursor = Cursors.Hand;
             pnl35.Location = new Point(885, 472);
-            pnl35.Margin = new Padding(1, 1, 1, 1);
+            pnl35.Margin = new Padding(1);
             pnl35.Name = "pnl35";
             pnl35.Size = new Size(131, 73);
             pnl35.TabIndex = 35;
@@ -699,7 +717,7 @@ namespace Monopoly.Screens
             pcb20.BackColor = Color.FromArgb(255, 224, 192);
             pcb20.BorderStyle = BorderStyle.FixedSingle;
             pcb20.Location = new Point(-1, -1);
-            pcb20.Margin = new Padding(1, 1, 1, 1);
+            pcb20.Margin = new Padding(1);
             pcb20.Name = "pcb20";
             pcb20.Size = new Size(26, 73);
             pcb20.TabIndex = 40;
@@ -713,7 +731,7 @@ namespace Monopoly.Screens
             pnl30.Controls.Add(pcb17);
             pnl30.Cursor = Cursors.Hand;
             pnl30.Location = new Point(885, 112);
-            pnl30.Margin = new Padding(1, 1, 1, 1);
+            pnl30.Margin = new Padding(1);
             pnl30.Name = "pnl30";
             pnl30.Size = new Size(131, 73);
             pnl30.TabIndex = 29;
@@ -735,7 +753,7 @@ namespace Monopoly.Screens
             pcb17.BackColor = Color.FromArgb(192, 192, 255);
             pcb17.BorderStyle = BorderStyle.FixedSingle;
             pcb17.Location = new Point(-1, -1);
-            pcb17.Margin = new Padding(1, 1, 1, 1);
+            pcb17.Margin = new Padding(1);
             pcb17.Name = "pcb17";
             pcb17.Size = new Size(26, 73);
             pcb17.TabIndex = 38;
@@ -749,7 +767,7 @@ namespace Monopoly.Screens
             pnl33.Controls.Add(pcb19);
             pnl33.Cursor = Cursors.Hand;
             pnl33.Location = new Point(885, 328);
-            pnl33.Margin = new Padding(1, 1, 1, 1);
+            pnl33.Margin = new Padding(1);
             pnl33.Name = "pnl33";
             pnl33.Size = new Size(131, 73);
             pnl33.TabIndex = 32;
@@ -771,7 +789,7 @@ namespace Monopoly.Screens
             pcb19.BackColor = Color.FromArgb(192, 192, 255);
             pcb19.BorderStyle = BorderStyle.FixedSingle;
             pcb19.Location = new Point(-1, -1);
-            pcb19.Margin = new Padding(1, 1, 1, 1);
+            pcb19.Margin = new Padding(1);
             pcb19.Name = "pcb19";
             pcb19.Size = new Size(26, 73);
             pcb19.TabIndex = 40;
@@ -785,7 +803,7 @@ namespace Monopoly.Screens
             pnl31.Controls.Add(pcb18);
             pnl31.Cursor = Cursors.Hand;
             pnl31.Location = new Point(885, 184);
-            pnl31.Margin = new Padding(1, 1, 1, 1);
+            pnl31.Margin = new Padding(1);
             pnl31.Name = "pnl31";
             pnl31.Size = new Size(131, 73);
             pnl31.TabIndex = 30;
@@ -807,7 +825,7 @@ namespace Monopoly.Screens
             pcb18.BackColor = Color.FromArgb(192, 192, 255);
             pcb18.BorderStyle = BorderStyle.FixedSingle;
             pcb18.Location = new Point(-1, -1);
-            pcb18.Margin = new Padding(1, 1, 1, 1);
+            pcb18.Margin = new Padding(1);
             pcb18.Name = "pcb18";
             pcb18.Size = new Size(26, 73);
             pcb18.TabIndex = 39;
@@ -821,7 +839,7 @@ namespace Monopoly.Screens
             pnl36.Controls.Add(pcb21);
             pnl36.Cursor = Cursors.Hand;
             pnl36.Location = new Point(885, 544);
-            pnl36.Margin = new Padding(1, 1, 1, 1);
+            pnl36.Margin = new Padding(1);
             pnl36.Name = "pnl36";
             pnl36.Size = new Size(131, 73);
             pnl36.TabIndex = 37;
@@ -843,7 +861,7 @@ namespace Monopoly.Screens
             pcb21.BackColor = Color.FromArgb(255, 224, 192);
             pcb21.BorderStyle = BorderStyle.FixedSingle;
             pcb21.Location = new Point(-1, -1);
-            pcb21.Margin = new Padding(1, 1, 1, 1);
+            pcb21.Margin = new Padding(1);
             pcb21.Name = "pcb21";
             pcb21.Size = new Size(26, 73);
             pcb21.TabIndex = 40;
@@ -857,7 +875,7 @@ namespace Monopoly.Screens
             pnl34.Controls.Add(pos34);
             pnl34.Cursor = Cursors.Hand;
             pnl34.Location = new Point(885, 400);
-            pnl34.Margin = new Padding(1, 1, 1, 1);
+            pnl34.Margin = new Padding(1);
             pnl34.Name = "pnl34";
             pnl34.Size = new Size(131, 73);
             pnl34.TabIndex = 34;
@@ -883,7 +901,7 @@ namespace Monopoly.Screens
             pnl32.Controls.Add(pos32);
             pnl32.Cursor = Cursors.Hand;
             pnl32.Location = new Point(885, 256);
-            pnl32.Margin = new Padding(1, 1, 1, 1);
+            pnl32.Margin = new Padding(1);
             pnl32.Name = "pnl32";
             pnl32.Size = new Size(131, 73);
             pnl32.TabIndex = 33;
@@ -909,7 +927,7 @@ namespace Monopoly.Screens
             pnl12.Controls.Add(pcb6);
             pnl12.Cursor = Cursors.Hand;
             pnl12.Location = new Point(-1, 543);
-            pnl12.Margin = new Padding(1, 1, 1, 1);
+            pnl12.Margin = new Padding(1);
             pnl12.Name = "pnl12";
             pnl12.Size = new Size(131, 73);
             pnl12.TabIndex = 28;
@@ -931,7 +949,7 @@ namespace Monopoly.Screens
             pcb6.BackColor = Color.Silver;
             pcb6.BorderStyle = BorderStyle.FixedSingle;
             pcb6.Location = new Point(104, -1);
-            pcb6.Margin = new Padding(1, 1, 1, 1);
+            pcb6.Margin = new Padding(1);
             pcb6.Name = "pcb6";
             pcb6.Size = new Size(26, 73);
             pcb6.TabIndex = 39;
@@ -944,7 +962,7 @@ namespace Monopoly.Screens
             pnl13.Controls.Add(pcb7);
             pnl13.Cursor = Cursors.Hand;
             pnl13.Location = new Point(-1, 471);
-            pnl13.Margin = new Padding(1, 1, 1, 1);
+            pnl13.Margin = new Padding(1);
             pnl13.Name = "pnl13";
             pnl13.Size = new Size(131, 73);
             pnl13.TabIndex = 27;
@@ -966,7 +984,7 @@ namespace Monopoly.Screens
             pcb7.BackColor = Color.Silver;
             pcb7.BorderStyle = BorderStyle.FixedSingle;
             pcb7.Location = new Point(104, -1);
-            pcb7.Margin = new Padding(1, 1, 1, 1);
+            pcb7.Margin = new Padding(1);
             pcb7.Name = "pcb7";
             pcb7.Size = new Size(26, 73);
             pcb7.TabIndex = 1;
@@ -980,7 +998,7 @@ namespace Monopoly.Screens
             pnl14.Controls.Add(pcb8);
             pnl14.Cursor = Cursors.Hand;
             pnl14.Location = new Point(-1, 327);
-            pnl14.Margin = new Padding(1, 1, 1, 1);
+            pnl14.Margin = new Padding(1);
             pnl14.Name = "pnl14";
             pnl14.Size = new Size(131, 73);
             pnl14.TabIndex = 26;
@@ -1002,7 +1020,7 @@ namespace Monopoly.Screens
             pcb8.BackColor = Color.FromArgb(255, 192, 255);
             pcb8.BorderStyle = BorderStyle.FixedSingle;
             pcb8.Location = new Point(104, -1);
-            pcb8.Margin = new Padding(1, 1, 1, 1);
+            pcb8.Margin = new Padding(1);
             pcb8.Name = "pcb8";
             pcb8.Size = new Size(26, 73);
             pcb8.TabIndex = 39;
@@ -1016,7 +1034,7 @@ namespace Monopoly.Screens
             pnl18.Controls.Add(pcb10);
             pnl18.Cursor = Cursors.Hand;
             pnl18.Location = new Point(-1, 112);
-            pnl18.Margin = new Padding(1, 1, 1, 1);
+            pnl18.Margin = new Padding(1);
             pnl18.Name = "pnl18";
             pnl18.Size = new Size(131, 73);
             pnl18.TabIndex = 20;
@@ -1038,7 +1056,7 @@ namespace Monopoly.Screens
             pcb10.BackColor = Color.FromArgb(255, 192, 255);
             pcb10.BorderStyle = BorderStyle.FixedSingle;
             pcb10.Location = new Point(104, -1);
-            pcb10.Margin = new Padding(1, 1, 1, 1);
+            pcb10.Margin = new Padding(1);
             pcb10.Name = "pcb10";
             pcb10.Size = new Size(26, 73);
             pcb10.TabIndex = 39;
@@ -1052,7 +1070,7 @@ namespace Monopoly.Screens
             pnl28.Controls.Add(pcb16);
             pnl28.Cursor = Cursors.Hand;
             pnl28.Location = new Point(801, 1);
-            pnl28.Margin = new Padding(1, 1, 1, 1);
+            pnl28.Margin = new Padding(1);
             pnl28.Name = "pnl28";
             pnl28.Size = new Size(85, 112);
             pnl28.TabIndex = 19;
@@ -1074,7 +1092,7 @@ namespace Monopoly.Screens
             pcb16.BackColor = Color.FromArgb(192, 255, 192);
             pcb16.BorderStyle = BorderStyle.FixedSingle;
             pcb16.Location = new Point(-1, 89);
-            pcb16.Margin = new Padding(1, 1, 1, 1);
+            pcb16.Margin = new Padding(1);
             pcb16.Name = "pcb16";
             pcb16.Size = new Size(85, 22);
             pcb16.TabIndex = 2;
@@ -1088,7 +1106,7 @@ namespace Monopoly.Screens
             pnl2.Controls.Add(pcb1);
             pnl2.Cursor = Cursors.Hand;
             pnl2.Location = new Point(801, 616);
-            pnl2.Margin = new Padding(1, 1, 1, 1);
+            pnl2.Margin = new Padding(1);
             pnl2.Name = "pnl2";
             pnl2.Size = new Size(85, 112);
             pnl2.TabIndex = 2;
@@ -1110,7 +1128,7 @@ namespace Monopoly.Screens
             pcb1.BackColor = Color.FromArgb(255, 224, 192);
             pcb1.BorderStyle = BorderStyle.FixedSingle;
             pcb1.Location = new Point(-1, -1);
-            pcb1.Margin = new Padding(1, 1, 1, 1);
+            pcb1.Margin = new Padding(1);
             pcb1.Name = "pcb1";
             pcb1.Size = new Size(85, 22);
             pcb1.TabIndex = 0;
@@ -1124,7 +1142,7 @@ namespace Monopoly.Screens
             pnl29.Controls.Add(pos29);
             pnl29.Cursor = Cursors.Hand;
             pnl29.Location = new Point(885, 1);
-            pnl29.Margin = new Padding(1, 1, 1, 1);
+            pnl29.Margin = new Padding(1);
             pnl29.Name = "pnl29";
             pnl29.Size = new Size(131, 112);
             pnl29.TabIndex = 9;
@@ -1150,7 +1168,7 @@ namespace Monopoly.Screens
             pnl19.Controls.Add(pos19);
             pnl19.Cursor = Cursors.Hand;
             pnl19.Location = new Point(-1, 1);
-            pnl19.Margin = new Padding(1, 1, 1, 1);
+            pnl19.Margin = new Padding(1);
             pnl19.Name = "pnl19";
             pnl19.Size = new Size(131, 112);
             pnl19.TabIndex = 17;
@@ -1176,7 +1194,7 @@ namespace Monopoly.Screens
             pnl20.Controls.Add(pcb11);
             pnl20.Cursor = Cursors.Hand;
             pnl20.Location = new Point(129, 1);
-            pnl20.Margin = new Padding(1, 1, 1, 1);
+            pnl20.Margin = new Padding(1);
             pnl20.Name = "pnl20";
             pnl20.Size = new Size(85, 112);
             pnl20.TabIndex = 18;
@@ -1198,7 +1216,7 @@ namespace Monopoly.Screens
             pcb11.BackColor = Color.FromArgb(255, 192, 192);
             pcb11.BorderStyle = BorderStyle.FixedSingle;
             pcb11.Location = new Point(-1, 89);
-            pcb11.Margin = new Padding(1, 1, 1, 1);
+            pcb11.Margin = new Padding(1);
             pcb11.Name = "pcb11";
             pcb11.Size = new Size(85, 22);
             pcb11.TabIndex = 2;
@@ -1212,7 +1230,7 @@ namespace Monopoly.Screens
             pnl21.Controls.Add(pos21);
             pnl21.Cursor = Cursors.Hand;
             pnl21.Location = new Point(214, 1);
-            pnl21.Margin = new Padding(1, 1, 1, 1);
+            pnl21.Margin = new Padding(1);
             pnl21.Name = "pnl21";
             pnl21.Size = new Size(85, 112);
             pnl21.TabIndex = 16;
@@ -1238,7 +1256,7 @@ namespace Monopoly.Screens
             pnl22.Controls.Add(pcb12);
             pnl22.Cursor = Cursors.Hand;
             pnl22.Location = new Point(297, 1);
-            pnl22.Margin = new Padding(1, 1, 1, 1);
+            pnl22.Margin = new Padding(1);
             pnl22.Name = "pnl22";
             pnl22.Size = new Size(85, 112);
             pnl22.TabIndex = 15;
@@ -1260,7 +1278,7 @@ namespace Monopoly.Screens
             pcb12.BackColor = Color.FromArgb(255, 192, 192);
             pcb12.BorderStyle = BorderStyle.FixedSingle;
             pcb12.Location = new Point(-1, 89);
-            pcb12.Margin = new Padding(1, 1, 1, 1);
+            pcb12.Margin = new Padding(1);
             pcb12.Name = "pcb12";
             pcb12.Size = new Size(85, 22);
             pcb12.TabIndex = 2;
@@ -1274,7 +1292,7 @@ namespace Monopoly.Screens
             pnl23.Controls.Add(pcb13);
             pnl23.Cursor = Cursors.Hand;
             pnl23.Location = new Point(381, 1);
-            pnl23.Margin = new Padding(1, 1, 1, 1);
+            pnl23.Margin = new Padding(1);
             pnl23.Name = "pnl23";
             pnl23.Size = new Size(85, 112);
             pnl23.TabIndex = 14;
@@ -1296,7 +1314,7 @@ namespace Monopoly.Screens
             pcb13.BackColor = Color.FromArgb(255, 192, 192);
             pcb13.BorderStyle = BorderStyle.FixedSingle;
             pcb13.Location = new Point(-1, 90);
-            pcb13.Margin = new Padding(1, 1, 1, 1);
+            pcb13.Margin = new Padding(1);
             pcb13.Name = "pcb13";
             pcb13.Size = new Size(85, 22);
             pcb13.TabIndex = 2;
@@ -1310,7 +1328,7 @@ namespace Monopoly.Screens
             pnl24.Controls.Add(pos24);
             pnl24.Cursor = Cursors.Hand;
             pnl24.Location = new Point(465, 1);
-            pnl24.Margin = new Padding(1, 1, 1, 1);
+            pnl24.Margin = new Padding(1);
             pnl24.Name = "pnl24";
             pnl24.Size = new Size(85, 112);
             pnl24.TabIndex = 13;
@@ -1336,7 +1354,7 @@ namespace Monopoly.Screens
             pnl25.Controls.Add(pcb14);
             pnl25.Cursor = Cursors.Hand;
             pnl25.Location = new Point(549, 1);
-            pnl25.Margin = new Padding(1, 1, 1, 1);
+            pnl25.Margin = new Padding(1);
             pnl25.Name = "pnl25";
             pnl25.Size = new Size(85, 112);
             pnl25.TabIndex = 12;
@@ -1358,7 +1376,7 @@ namespace Monopoly.Screens
             pcb14.BackColor = Color.FromArgb(192, 255, 192);
             pcb14.BorderStyle = BorderStyle.FixedSingle;
             pcb14.Location = new Point(-1, 89);
-            pcb14.Margin = new Padding(1, 1, 1, 1);
+            pcb14.Margin = new Padding(1);
             pcb14.Name = "pcb14";
             pcb14.Size = new Size(85, 22);
             pcb14.TabIndex = 2;
@@ -1372,7 +1390,7 @@ namespace Monopoly.Screens
             pnl26.Controls.Add(pcb15);
             pnl26.Cursor = Cursors.Hand;
             pnl26.Location = new Point(633, 1);
-            pnl26.Margin = new Padding(1, 1, 1, 1);
+            pnl26.Margin = new Padding(1);
             pnl26.Name = "pnl26";
             pnl26.Size = new Size(85, 112);
             pnl26.TabIndex = 11;
@@ -1394,7 +1412,7 @@ namespace Monopoly.Screens
             pcb15.BackColor = Color.FromArgb(192, 255, 192);
             pcb15.BorderStyle = BorderStyle.FixedSingle;
             pcb15.Location = new Point(-1, 89);
-            pcb15.Margin = new Padding(1, 1, 1, 1);
+            pcb15.Margin = new Padding(1);
             pcb15.Name = "pcb15";
             pcb15.Size = new Size(85, 22);
             pcb15.TabIndex = 2;
@@ -1408,7 +1426,7 @@ namespace Monopoly.Screens
             pnl27.Controls.Add(pos27);
             pnl27.Cursor = Cursors.Hand;
             pnl27.Location = new Point(715, 1);
-            pnl27.Margin = new Padding(1, 1, 1, 1);
+            pnl27.Margin = new Padding(1);
             pnl27.Name = "pnl27";
             pnl27.Size = new Size(87, 112);
             pnl27.TabIndex = 10;
@@ -1434,7 +1452,7 @@ namespace Monopoly.Screens
             pnl10.Controls.Add(pcb5);
             pnl10.Cursor = Cursors.Hand;
             pnl10.Location = new Point(129, 616);
-            pnl10.Margin = new Padding(1, 1, 1, 1);
+            pnl10.Margin = new Padding(1);
             pnl10.Name = "pnl10";
             pnl10.Size = new Size(85, 112);
             pnl10.TabIndex = 8;
@@ -1456,7 +1474,7 @@ namespace Monopoly.Screens
             pcb5.BackColor = Color.Silver;
             pcb5.BorderStyle = BorderStyle.FixedSingle;
             pcb5.Location = new Point(-1, -1);
-            pcb5.Margin = new Padding(1, 1, 1, 1);
+            pcb5.Margin = new Padding(1);
             pcb5.Name = "pcb5";
             pcb5.Size = new Size(85, 22);
             pcb5.TabIndex = 39;
@@ -1471,7 +1489,7 @@ namespace Monopoly.Screens
             pnl9.Controls.Add(pos9);
             pnl9.Cursor = Cursors.Hand;
             pnl9.Location = new Point(213, 616);
-            pnl9.Margin = new Padding(1, 1, 1, 1);
+            pnl9.Margin = new Padding(1);
             pnl9.Name = "pnl9";
             pnl9.Size = new Size(85, 112);
             pnl9.TabIndex = 7;
@@ -1497,7 +1515,7 @@ namespace Monopoly.Screens
             pnl8.Controls.Add(pcb4);
             pnl8.Cursor = Cursors.Hand;
             pnl8.Location = new Point(297, 616);
-            pnl8.Margin = new Padding(1, 1, 1, 1);
+            pnl8.Margin = new Padding(1);
             pnl8.Name = "pnl8";
             pnl8.Size = new Size(85, 112);
             pnl8.TabIndex = 6;
@@ -1519,7 +1537,7 @@ namespace Monopoly.Screens
             pcb4.BackColor = Color.Chocolate;
             pcb4.BorderStyle = BorderStyle.FixedSingle;
             pcb4.Location = new Point(-1, -1);
-            pcb4.Margin = new Padding(1, 1, 1, 1);
+            pcb4.Margin = new Padding(1);
             pcb4.Name = "pcb4";
             pcb4.Size = new Size(85, 22);
             pcb4.TabIndex = 1;
@@ -1533,7 +1551,7 @@ namespace Monopoly.Screens
             pnl7.Controls.Add(pcb3);
             pnl7.Cursor = Cursors.Hand;
             pnl7.Location = new Point(381, 616);
-            pnl7.Margin = new Padding(1, 1, 1, 1);
+            pnl7.Margin = new Padding(1);
             pnl7.Name = "pnl7";
             pnl7.Size = new Size(85, 112);
             pnl7.TabIndex = 5;
@@ -1555,7 +1573,7 @@ namespace Monopoly.Screens
             pcb3.BackColor = Color.Chocolate;
             pcb3.BorderStyle = BorderStyle.FixedSingle;
             pcb3.Location = new Point(-1, -1);
-            pcb3.Margin = new Padding(1, 1, 1, 1);
+            pcb3.Margin = new Padding(1);
             pcb3.Name = "pcb3";
             pcb3.Size = new Size(85, 22);
             pcb3.TabIndex = 1;
@@ -1568,7 +1586,7 @@ namespace Monopoly.Screens
             pnl6.Controls.Add(pcb2);
             pnl6.Cursor = Cursors.Hand;
             pnl6.Location = new Point(465, 616);
-            pnl6.Margin = new Padding(1, 1, 1, 1);
+            pnl6.Margin = new Padding(1);
             pnl6.Name = "pnl6";
             pnl6.Size = new Size(85, 112);
             pnl6.TabIndex = 4;
@@ -1590,7 +1608,7 @@ namespace Monopoly.Screens
             pcb2.BackColor = Color.Chocolate;
             pcb2.BorderStyle = BorderStyle.FixedSingle;
             pcb2.Location = new Point(-1, -1);
-            pcb2.Margin = new Padding(1, 1, 1, 1);
+            pcb2.Margin = new Padding(1);
             pcb2.Name = "pcb2";
             pcb2.Size = new Size(85, 22);
             pcb2.TabIndex = 1;
@@ -1604,7 +1622,7 @@ namespace Monopoly.Screens
             pnl5.Controls.Add(pos5);
             pnl5.Cursor = Cursors.Hand;
             pnl5.Location = new Point(549, 616);
-            pnl5.Margin = new Padding(1, 1, 1, 1);
+            pnl5.Margin = new Padding(1);
             pnl5.Name = "pnl5";
             pnl5.Size = new Size(85, 112);
             pnl5.TabIndex = 3;
@@ -1631,7 +1649,7 @@ namespace Monopoly.Screens
             pnl4.Controls.Add(pos4);
             pnl4.Cursor = Cursors.Hand;
             pnl4.Location = new Point(633, 616);
-            pnl4.Margin = new Padding(1, 1, 1, 1);
+            pnl4.Margin = new Padding(1);
             pnl4.Name = "pnl4";
             pnl4.Size = new Size(85, 112);
             pnl4.TabIndex = 2;
@@ -1657,7 +1675,7 @@ namespace Monopoly.Screens
             pnl3.Controls.Add(pos3);
             pnl3.Cursor = Cursors.Hand;
             pnl3.Location = new Point(717, 616);
-            pnl3.Margin = new Padding(1, 1, 1, 1);
+            pnl3.Margin = new Padding(1);
             pnl3.Name = "pnl3";
             pnl3.Size = new Size(85, 112);
             pnl3.TabIndex = 1;
@@ -1683,7 +1701,7 @@ namespace Monopoly.Screens
             pnl1.Controls.Add(pos1);
             pnl1.Cursor = Cursors.Hand;
             pnl1.Location = new Point(885, 616);
-            pnl1.Margin = new Padding(1, 1, 1, 1);
+            pnl1.Margin = new Padding(1);
             pnl1.Name = "pnl1";
             pnl1.Size = new Size(131, 112);
             pnl1.TabIndex = 0;
@@ -1710,7 +1728,7 @@ namespace Monopoly.Screens
             pnl15.Controls.Add(pos14);
             pnl15.Cursor = Cursors.Hand;
             pnl15.Location = new Point(1, 400);
-            pnl15.Margin = new Padding(1, 1, 1, 1);
+            pnl15.Margin = new Padding(1);
             pnl15.Name = "pnl15";
             pnl15.Size = new Size(131, 73);
             pnl15.TabIndex = 42;
@@ -1737,7 +1755,7 @@ namespace Monopoly.Screens
             Controls.Add(pnl16);
             Controls.Add(pnlSide);
             Controls.Add(pnlGame);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "Game";
             Size = new Size(1255, 728);
             pnl17.ResumeLayout(false);
