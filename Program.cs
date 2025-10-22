@@ -12,6 +12,6 @@ static class Program
         // see https://aka.ms/applicationconfiguration.
         Application.SetHighDpiMode(HighDpiMode.DpiUnaware);
         ApplicationConfiguration.Initialize();
-        Application.Run(new Menu());
+        Application.Run(new Monopoly());
     }    
 }

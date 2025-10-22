@@ -152,7 +152,7 @@
             // pcbAvt1
             // 
             pcbAvt1.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt1.Image = Properties.Resources.VuVjp;
+            pcbAvt1.Image =     Properties.Resources.VuVjp;
             pcbAvt1.Location = new Point(284, 69);
             pcbAvt1.Margin = new Padding(2);
             pcbAvt1.Name = "pcbAvt1";
