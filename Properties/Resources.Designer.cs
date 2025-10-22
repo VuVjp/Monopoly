@@ -263,16 +263,6 @@ namespace Monopoly.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap plr9 {
-            get {
-                object obj = ResourceManager.GetObject("plr9", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Return {
             get {
                 object obj = ResourceManager.GetObject("Return", resourceCulture);
@@ -346,6 +336,16 @@ namespace Monopoly.Properties {
         internal static System.Drawing.Bitmap VisitJail {
             get {
                 object obj = ResourceManager.GetObject("VisitJail", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VuVjp {
+            get {
+                object obj = ResourceManager.GetObject("VuVjp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
