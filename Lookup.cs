@@ -182,10 +182,24 @@ namespace LookupHelper
 
                     lock (locker)
                     {
-                        results.Add(new MyTcpInfo(resp, remote));
+                        MyTcpInfo info = new MyTcpInfo(resp, remote);
+
+                        string addr_info = info.GetRemote().Address.ToString();
+                        int port_info = info.GetRemote().Port;
+
+                        foreach (var res in results)
+                        {
+                            if (res.GetRemote().Address.ToString() == addr_info && res.GetRemote().Port == port_info)
+                            {
+                                s.Close();
+                                return;
+                            }
+                        }
+
+                        results.Add(info);
                     }
                 }
-
+    
                 s.Close();
             } catch
             {
@@ -240,4 +254,3 @@ namespace LookupHelper
         }
     }
 };
-
