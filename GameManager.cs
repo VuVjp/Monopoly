@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Monopoly
         }
         static void LoadPlayer()
         {
-            for (int i = 0; i < PlayerManager.PlayerCount; i++)
+            for (int i = 0; i < PlayerManager.playerCount; i++)
             {
                 switch (i)
                 {

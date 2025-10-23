@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -213,7 +214,7 @@ namespace Monopoly
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            PlayerManager.PlayerCount = int.Parse(txbPlrCounter.Text);
+            PlayerManager.playerCount = int.Parse(txbPlrCounter.Text);
             this.Hide();
             Forms.game.Show();
         }

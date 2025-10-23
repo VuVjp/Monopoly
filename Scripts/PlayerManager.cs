@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monopoly
+namespace Monopoly.Scripts
 {
     class PlayerManager
     {
-        public static int PlayerCount;
+        public static PictureBox curPlayer = null!;
+        public static PictureBox curAvt = null!;
+        public static bool isOnline;
+        public static bool isAdmin;
+        public static int playerCount;
     }
     class PlayerInfo
     {

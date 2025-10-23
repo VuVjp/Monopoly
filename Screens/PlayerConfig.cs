@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,10 +14,115 @@ namespace Monopoly.Screens
     public partial class PlayerConfig : UserControl
     {
         private Monopoly monopoly;
+        List<PictureBox> plrImgs = null!;
+        List<PictureBox> playerBoxes = null!;
         public PlayerConfig(Monopoly monopoly)
         {
             InitializeComponent();
             this.monopoly = monopoly;
+            FormLoader();
+        }
+
+        private void FormLoader()
+        {
+            plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8 };
+            playerBoxes = new List<PictureBox> { pcbPlr1, pcbPlr2, pcbPlr3, pcbPlr4};
+            int counter = 1;
+            foreach (PictureBox img in plrImgs)
+            {
+                img.Image = (Image)Properties.Resources.ResourceManager.GetObject("plr" +
+                    counter++)!;
+                img.Click += pcb_AvtClick!;
+                img.MouseEnter += pcb_AvtMouseEnter!;
+                img.MouseLeave += pcb_AvtMouseLeave!;
+            }
+            if (PlayerManager.isOnline)
+            {
+                OnlineModeSetup();
+            }
+            else
+            {
+                OfflineModeSetup();
+            }
+        }
+
+        private void OnlineModeSetup()
+        {
+            if (PlayerManager.isAdmin)
+            {
+                btnPlay.Enabled = false;
+                btnPlus.Enabled = false;
+                btnMinus.Enabled = false;
+                //txbPlrCounter.Text = Socket nhận từ server
+                //SelectPlrUI(); socket nhận từ server
+            }
+        }
+        private void OfflineModeSetup()
+        {
+            PlayerManager.curPlayer = playerBoxes[0];
+            foreach (PictureBox pcb in playerBoxes)
+            {
+                pcb.MouseEnter += pcb_PlayerMouseEnter!;
+                pcb.MouseLeave += pcb_PlayerMouseLeave!;
+                pcb.Click += pcb_PlayerClick!;
+            }
+        }
+
+        private void pcb_AvtClick(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            if (PlayerManager.curPlayer != null)
+            {
+                PlayerManager.curPlayer.Image = pcb.Image;
+            }
+        }
+        private void pcb_AvtMouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width + 10, pcb.Size.Height + 10);
+            pcb.Location = new Point(pcb.Location.X - 5, pcb.Location.Y - 5);
+            selectedImg.Location = new Point(pcb.Location.X-10, pcb.Location.Y-10);
+            selectedImg.Size = new Size(pcb.Size.Width+20, pcb.Size.Height+20);
+        }
+        private void pcb_AvtMouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
+            pcb.Location = new Point(pcb.Location.X + 5, pcb.Location.Y + 5);
+            selectedImg.Location = new Point(pcb.Location.X - 10, pcb.Location.Y - 10);
+            selectedImg.Size = new Size(pcb.Size.Width + 20, pcb.Size.Height + 20);
+        }
+
+        private void pcb_PlayerClick(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            PlayerManager.curPlayer = pcb;
+            selectedUI.Location = new Point(pcb.Location.X-10, pcb.Location.Y-10);
+            selectedUI.Size = new Size(pcb.Size.Width+20, pcb.Size.Height+20);  
+        }
+
+        private void pcb_PlayerMouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width + 10, pcb.Size.Height + 10);
+            pcb.Location = new Point(pcb.Location.X - 5, pcb.Location.Y - 5);
+            if (PlayerManager.curPlayer == pcb)
+            {
+                selectedUI.Location = new Point(pcb.Location.X - 10, pcb.Location.Y - 10);
+                selectedUI.Size = new Size(pcb.Size.Width + 20, pcb.Size.Height + 20);
+            }
+        }
+
+        private void pcb_PlayerMouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pcb = (PictureBox)sender;
+            pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
+            pcb.Location = new Point(pcb.Location.X + 5, pcb.Location.Y + 5);
+            if (PlayerManager.curPlayer == pcb)
+            {
+                selectedUI.Location = new Point(pcb.Location.X - 10, pcb.Location.Y - 10);
+                selectedUI.Size = new Size(pcb.Size.Width + 20, pcb.Size.Height + 20);
+            }
         }
 
         private void btnPlay_Click(object sender, EventArgs e)
