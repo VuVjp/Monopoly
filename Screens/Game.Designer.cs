@@ -30,6 +30,7 @@ namespace Monopoly.Screens
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Game));
             pnl17 = new Panel();
             pos17 = new Label();
@@ -61,6 +62,8 @@ namespace Monopoly.Screens
             lblPlayerName1 = new Label();
             pcbPlrAvt1 = new PictureBox();
             pnlGame = new Panel();
+            Dice2 = new PictureBox();
+            Dice1 = new PictureBox();
             pnl11 = new Panel();
             pos11 = new Label();
             pcbChance = new PictureBox();
@@ -151,6 +154,7 @@ namespace Monopoly.Screens
             pos1 = new Label();
             pnl15 = new Panel();
             pos14 = new Label();
+            RollTime = new System.Windows.Forms.Timer(components);
             pnl17.SuspendLayout();
             pnl16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
@@ -169,6 +173,8 @@ namespace Monopoly.Screens
             pnlPlr1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).BeginInit();
             pnlGame.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Dice2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Dice1).BeginInit();
             pnl11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcbChance).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbFortune).BeginInit();
@@ -590,6 +596,8 @@ namespace Monopoly.Screens
             // pnlGame
             // 
             pnlGame.BorderStyle = BorderStyle.FixedSingle;
+            pnlGame.Controls.Add(Dice2);
+            pnlGame.Controls.Add(Dice1);
             pnlGame.Controls.Add(pnl11);
             pnlGame.Controls.Add(pcbChance);
             pnlGame.Controls.Add(pcbFortune);
@@ -630,6 +638,28 @@ namespace Monopoly.Screens
             pnlGame.Name = "pnlGame";
             pnlGame.Size = new Size(1017, 729);
             pnlGame.TabIndex = 23;
+            // 
+            // Dice2
+            // 
+            Dice2.BackColor = Color.Transparent;
+            Dice2.BackgroundImage = Resources.Dice1;
+            Dice2.BackgroundImageLayout = ImageLayout.Stretch;
+            Dice2.Location = new Point(516, 340);
+            Dice2.Name = "Dice2";
+            Dice2.Size = new Size(60, 60);
+            Dice2.TabIndex = 44;
+            Dice2.TabStop = false;
+            // 
+            // Dice1
+            // 
+            Dice1.BackColor = Color.Transparent;
+            Dice1.BackgroundImage = Resources.Dice1;
+            Dice1.BackgroundImageLayout = ImageLayout.Stretch;
+            Dice1.Location = new Point(440, 340);
+            Dice1.Name = "Dice1";
+            Dice1.Size = new Size(60, 60);
+            Dice1.TabIndex = 43;
+            Dice1.TabStop = false;
             // 
             // pnl11
             // 
@@ -1783,6 +1813,8 @@ namespace Monopoly.Screens
             pnlPlr1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).EndInit();
             pnlGame.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)Dice2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Dice1).EndInit();
             pnl11.ResumeLayout(false);
             pnl11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcbChance).EndInit();
@@ -1998,5 +2030,8 @@ namespace Monopoly.Screens
         private Label pos14;
         private Panel pnl11;
         private Label pos11;
+        private System.Windows.Forms.Timer RollTime;
+        private PictureBox Dice1;
+        private PictureBox Dice2;
     }
 }
