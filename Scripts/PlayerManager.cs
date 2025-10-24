@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Screens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,26 +14,24 @@ namespace Monopoly.Scripts
         public static bool isOnline;
         public static bool isAdmin;
         public static int playerCount;
+        public static Dictionary<string, Color> colorMapping = new Dictionary<string, Color>()
+        {
+            { "pcbAvt1", Color.Red },
+            { "pcbAvt2", Color.Purple },
+            { "pcbAvt3", Color.Yellow },
+            { "pcbAvt4", Color.Orange },
+            { "pcbAvt5", Color.Green },
+            { "pcbAvt6", Color.Gray },
+            { "pcbAvt7", Color.Cyan },
+            { "pcbAvt8", Color.White },
+        };
+        public static List<PlayerInfo> Players = null!;
     }
-    class PlayerInfo
+    public class PlayerInfo
     {
         public string Name = null!; 
         public PictureBox Avt = null!;
         public Color Color;
-    }
-    class PlayerInfoManager
-    {
-        internal static Dictionary<string, PlayerInfo> plrInfo = null!;
-    }
-    class PlayerColor
-    {
-        internal readonly Color Red = Color.Red;
-        internal readonly Color Green = Color.Green;
-        internal readonly Color Blue = Color.Cyan;
-        internal readonly Color Yellow = Color.Yellow;
-        internal readonly Color Pink = Color.Pink;
-        internal readonly Color Orange = Color.Orange;
-        internal readonly Color Black = Color.Black;
-        internal readonly Color White = Color.White;
+        public double PlayerMoney = 10000;
     }
 }

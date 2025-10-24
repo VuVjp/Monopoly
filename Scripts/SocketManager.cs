@@ -48,9 +48,19 @@ namespace Monopoly.Scripts.Sockets
             socketServer.Bind(new System.Net.IPEndPoint(System.Net.IPAddress.Parse(ip), port));
             socketServer.Listen(4);
         }
-        public Socket Accept()
+
+        public async Task Send(Socket socket, byte[] data)
         {
-            return socketServer.Accept();
+            await socket.SendAsync(data);
+        }
+        public async Task<int> Receive(Socket socket, byte[] buffer)
+        {
+            return await socket.ReceiveAsync(buffer);
+        }
+
+        public async Task<Socket> Accept()
+        {
+           return await socketServer.AcceptAsync();
         }
         public void Stop()
         {

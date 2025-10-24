@@ -36,6 +36,41 @@ namespace Monopoly.Screens
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32}
           ;
             this.monopoly = monopoly;
+            LoadPlayerInfo();
+        }
+        private void LoadPlayerInfo()
+        {
+            for (int i = 0; i < PlayerManager.playerCount; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        pcbPlrAvt1.Image = PlayerManager.Players[i].Avt.Image;
+                        lblPlayerName1.Text = PlayerManager.Players[i].Name;
+                        lblPlayerMoney1.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
+                        pnlPlr1.Visible = true;
+                        break;
+                    case 1:
+                        pcbPlrAvt2.Image = PlayerManager.Players[i].Avt.Image;
+                        lblPlayerName2.Text = PlayerManager.Players[i].Name;
+                        lblPlayerMoney2.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
+                        pnlPlr2.Visible = true;
+                        break;
+                    case 2:
+                        pcbPlrAvt3.Image = PlayerManager.Players[i].Avt.Image;
+                        lblPlayerName3.Text = PlayerManager.Players[i].Name;
+                        lblPlayerMoney3.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
+                        pnlPlr3.Visible = true;
+                        break;
+                    case 3:
+                        pcbPlrAvt4.Image = PlayerManager.Players[i].Avt.Image;
+                        lblPlayerName4.Text = PlayerManager.Players[i].Name;
+                        lblPlayerMoney4.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
+                        pnlPlr4.Visible = true;
+                        break;
+                }
+            }
+        }
             LoadPlayerInBoard();
             Dice1.Click += RollDice;
             Dice2.Click += RollDice;

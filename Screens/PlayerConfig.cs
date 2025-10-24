@@ -16,6 +16,7 @@ namespace Monopoly.Screens
         private Monopoly monopoly;
         List<PictureBox> plrImgs = null!;
         List<PictureBox> playerBoxes = null!;
+
         public PlayerConfig(Monopoly monopoly)
         {
             InitializeComponent();
@@ -162,6 +163,7 @@ namespace Monopoly.Screens
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            PlayerManager.Players = new List<PlayerInfo>();
             for (int i = 0; i < int.Parse(txbPlrCounter.Text); i++)
             {
                 var pcb = playerBoxes[i];
@@ -170,8 +172,16 @@ namespace Monopoly.Screens
                     MessageBox.Show("All players must select an avatar!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                var pictureBox = (PictureBox)pcb.Tag!;
+                PlayerInfo plr = new PlayerInfo()
+                {
+                    Name = "Player " + (i + 1),
+                    Avt = pictureBox,
+                    Color = PlayerManager.colorMapping[pictureBox.Name]
+                };
+                PlayerManager.Players.Add(plr);
             }
-            PlayerManager.playerCount = int.Parse(txbPlrCounter.Text);
+            PlayerManager.playerCount = PlayerManager.Players.Count;
             monopoly.LoadScreen(new Game(monopoly));
         }
 
