@@ -16,9 +16,13 @@ namespace Monopoly
         { 
 
         }
-        static void RollDice()
+        static int RollDice()
         {
-
+            int result = 0;
+            Random x = new Random();
+            result =  x.Next(6);
+            return result;
+            
         }
         static void EndTurn()
         {
