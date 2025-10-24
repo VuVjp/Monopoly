@@ -45,19 +45,19 @@ namespace Monopoly.Screens
             pcbSave = new PictureBox();
             pcbReturn = new PictureBox();
             pnlPlr4 = new Panel();
-            label5 = new Label();
+            lblPlayerMoney4 = new Label();
             lblPlayerName4 = new Label();
             pcbPlrAvt4 = new PictureBox();
             pnlPlr3 = new Panel();
-            label4 = new Label();
+            lblPlayerMoney3 = new Label();
             lblPlayerName3 = new Label();
             pcbPlrAvt3 = new PictureBox();
             pnlPlr2 = new Panel();
-            label3 = new Label();
+            lblPlayerMoney2 = new Label();
             lblPlayerName2 = new Label();
             pcbPlrAvt2 = new PictureBox();
             pnlPlr1 = new Panel();
-            label2 = new Label();
+            lblPlayerMoney1 = new Label();
             lblPlayerName1 = new Label();
             pcbPlrAvt1 = new PictureBox();
             pnlGame = new Panel();
@@ -410,7 +410,7 @@ namespace Monopoly.Screens
             // pnlPlr4
             // 
             pnlPlr4.BackColor = Color.Transparent;
-            pnlPlr4.Controls.Add(label5);
+            pnlPlr4.Controls.Add(lblPlayerMoney4);
             pnlPlr4.Controls.Add(lblPlayerName4);
             pnlPlr4.Controls.Add(pcbPlrAvt4);
             pnlPlr4.Location = new Point(1, 513);
@@ -420,16 +420,16 @@ namespace Monopoly.Screens
             pnlPlr4.TabIndex = 5;
             pnlPlr4.Visible = false;
             // 
-            // label5
+            // lblPlayerMoney4
             // 
-            label5.Font = new Font("Cooper Black", 12F);
-            label5.ForeColor = Color.FromArgb(0, 192, 0);
-            label5.Location = new Point(79, 38);
-            label5.Margin = new Padding(2, 0, 2, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(149, 21);
-            label5.TabIndex = 3;
-            label5.Text = "0000$";
+            lblPlayerMoney4.Font = new Font("Cooper Black", 12F);
+            lblPlayerMoney4.ForeColor = Color.FromArgb(0, 192, 0);
+            lblPlayerMoney4.Location = new Point(79, 38);
+            lblPlayerMoney4.Margin = new Padding(2, 0, 2, 0);
+            lblPlayerMoney4.Name = "lblPlayerMoney4";
+            lblPlayerMoney4.Size = new Size(149, 21);
+            lblPlayerMoney4.TabIndex = 3;
+            lblPlayerMoney4.Text = "0000$";
             // 
             // lblPlayerName4
             // 
@@ -449,13 +449,14 @@ namespace Monopoly.Screens
             pcbPlrAvt4.Margin = new Padding(2);
             pcbPlrAvt4.Name = "pcbPlrAvt4";
             pcbPlrAvt4.Size = new Size(63, 54);
+            pcbPlrAvt4.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlrAvt4.TabIndex = 1;
             pcbPlrAvt4.TabStop = false;
             // 
             // pnlPlr3
             // 
             pnlPlr3.BackColor = Color.Transparent;
-            pnlPlr3.Controls.Add(label4);
+            pnlPlr3.Controls.Add(lblPlayerMoney3);
             pnlPlr3.Controls.Add(lblPlayerName3);
             pnlPlr3.Controls.Add(pcbPlrAvt3);
             pnlPlr3.Location = new Point(1, 434);
@@ -465,16 +466,16 @@ namespace Monopoly.Screens
             pnlPlr3.TabIndex = 4;
             pnlPlr3.Visible = false;
             // 
-            // label4
+            // lblPlayerMoney3
             // 
-            label4.Font = new Font("Cooper Black", 12F);
-            label4.ForeColor = Color.FromArgb(0, 192, 0);
-            label4.Location = new Point(79, 37);
-            label4.Margin = new Padding(2, 0, 2, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(149, 21);
-            label4.TabIndex = 3;
-            label4.Text = "0000$";
+            lblPlayerMoney3.Font = new Font("Cooper Black", 12F);
+            lblPlayerMoney3.ForeColor = Color.FromArgb(0, 192, 0);
+            lblPlayerMoney3.Location = new Point(79, 37);
+            lblPlayerMoney3.Margin = new Padding(2, 0, 2, 0);
+            lblPlayerMoney3.Name = "lblPlayerMoney3";
+            lblPlayerMoney3.Size = new Size(149, 21);
+            lblPlayerMoney3.TabIndex = 3;
+            lblPlayerMoney3.Text = "0000$";
             // 
             // lblPlayerName3
             // 
@@ -494,13 +495,14 @@ namespace Monopoly.Screens
             pcbPlrAvt3.Margin = new Padding(2);
             pcbPlrAvt3.Name = "pcbPlrAvt3";
             pcbPlrAvt3.Size = new Size(63, 54);
+            pcbPlrAvt3.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlrAvt3.TabIndex = 1;
             pcbPlrAvt3.TabStop = false;
             // 
             // pnlPlr2
             // 
             pnlPlr2.BackColor = Color.Transparent;
-            pnlPlr2.Controls.Add(label3);
+            pnlPlr2.Controls.Add(lblPlayerMoney2);
             pnlPlr2.Controls.Add(lblPlayerName2);
             pnlPlr2.Controls.Add(pcbPlrAvt2);
             pnlPlr2.Location = new Point(1, 355);
@@ -510,16 +512,16 @@ namespace Monopoly.Screens
             pnlPlr2.TabIndex = 3;
             pnlPlr2.Visible = false;
             // 
-            // label3
+            // lblPlayerMoney2
             // 
-            label3.Font = new Font("Cooper Black", 12F);
-            label3.ForeColor = Color.FromArgb(0, 192, 0);
-            label3.Location = new Point(79, 38);
-            label3.Margin = new Padding(2, 0, 2, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(149, 21);
-            label3.TabIndex = 3;
-            label3.Text = "0000$";
+            lblPlayerMoney2.Font = new Font("Cooper Black", 12F);
+            lblPlayerMoney2.ForeColor = Color.FromArgb(0, 192, 0);
+            lblPlayerMoney2.Location = new Point(79, 38);
+            lblPlayerMoney2.Margin = new Padding(2, 0, 2, 0);
+            lblPlayerMoney2.Name = "lblPlayerMoney2";
+            lblPlayerMoney2.Size = new Size(149, 21);
+            lblPlayerMoney2.TabIndex = 3;
+            lblPlayerMoney2.Text = "0000$";
             // 
             // lblPlayerName2
             // 
@@ -539,13 +541,14 @@ namespace Monopoly.Screens
             pcbPlrAvt2.Margin = new Padding(2);
             pcbPlrAvt2.Name = "pcbPlrAvt2";
             pcbPlrAvt2.Size = new Size(63, 54);
+            pcbPlrAvt2.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlrAvt2.TabIndex = 1;
             pcbPlrAvt2.TabStop = false;
             // 
             // pnlPlr1
             // 
             pnlPlr1.BackColor = Color.Transparent;
-            pnlPlr1.Controls.Add(label2);
+            pnlPlr1.Controls.Add(lblPlayerMoney1);
             pnlPlr1.Controls.Add(lblPlayerName1);
             pnlPlr1.Controls.Add(pcbPlrAvt1);
             pnlPlr1.Location = new Point(1, 277);
@@ -555,16 +558,16 @@ namespace Monopoly.Screens
             pnlPlr1.TabIndex = 2;
             pnlPlr1.Visible = false;
             // 
-            // label2
+            // lblPlayerMoney1
             // 
-            label2.Font = new Font("Cooper Black", 12F);
-            label2.ForeColor = Color.FromArgb(0, 192, 0);
-            label2.Location = new Point(79, 39);
-            label2.Margin = new Padding(2, 0, 2, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(149, 21);
-            label2.TabIndex = 2;
-            label2.Text = "0000$";
+            lblPlayerMoney1.Font = new Font("Cooper Black", 12F);
+            lblPlayerMoney1.ForeColor = Color.FromArgb(0, 192, 0);
+            lblPlayerMoney1.Location = new Point(79, 39);
+            lblPlayerMoney1.Margin = new Padding(2, 0, 2, 0);
+            lblPlayerMoney1.Name = "lblPlayerMoney1";
+            lblPlayerMoney1.Size = new Size(149, 21);
+            lblPlayerMoney1.TabIndex = 2;
+            lblPlayerMoney1.Text = "0000$";
             // 
             // lblPlayerName1
             // 
@@ -584,6 +587,7 @@ namespace Monopoly.Screens
             pcbPlrAvt1.Margin = new Padding(2);
             pcbPlrAvt1.Name = "pcbPlrAvt1";
             pcbPlrAvt1.Size = new Size(63, 54);
+            pcbPlrAvt1.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlrAvt1.TabIndex = 0;
             pcbPlrAvt1.TabStop = false;
             // 
@@ -1892,19 +1896,19 @@ namespace Monopoly.Screens
         private PictureBox pcbSave;
         private PictureBox pcbReturn;
         public Panel pnlPlr4;
-        public Label label5;
+        public Label lblPlayerMoney4;
         public Label lblPlayerName4;
         public PictureBox pcbPlrAvt4;
         public Panel pnlPlr3;
-        public Label label4;
+        public Label lblPlayerMoney3;
         public Label lblPlayerName3;
         public PictureBox pcbPlrAvt3;
         public Panel pnlPlr2;
-        public Label label3;
+        public Label lblPlayerMoney2;
         public Label lblPlayerName2;
         public PictureBox pcbPlrAvt2;
         public Panel pnlPlr1;
-        public Label label2;
+        public Label lblPlayerMoney1;
         public Label lblPlayerName1;
         public PictureBox pcbPlrAvt1;
         private Panel pnlGame;
