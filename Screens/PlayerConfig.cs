@@ -191,7 +191,7 @@ namespace Monopoly.Screens
 
         private void btnMinus_Click(object sender, EventArgs e)
         {
-            if(int.Parse(txbPlrCounter.Text) > 2)
+            if (int.Parse(txbPlrCounter.Text) > 2)
             {
                 if (PlayerManager.curPlayer == playerBoxes[int.Parse(txbPlrCounter.Text) - 1])
                 {
@@ -204,9 +204,9 @@ namespace Monopoly.Screens
                     PictureBox oldImg = (PictureBox)playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag!;
                     oldImg.Tag = null;
                     oldImg.BackgroundImage = null;
+                    playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Image = Properties.Resources.user;
+                    playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag = null;
                 }
-                playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Image = Properties.Resources.user;
-                playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag = null;
                 playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Visible = false;
                 txbPlrCounter.Text = (int.Parse(txbPlrCounter.Text) - 1).ToString();
             }
