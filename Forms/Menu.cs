@@ -1,3 +1,5 @@
+using Monopoly.Scripts;
+
 namespace Monopoly;
 
 public partial class Menu : Form
