@@ -29,7 +29,7 @@ namespace Monopoly.Screens
         private Monopoly monopoly;
         public Game(Monopoly monopoly)
         {
-           
+
             InitializeComponent();
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
@@ -37,6 +37,14 @@ namespace Monopoly.Screens
           ;
             this.monopoly = monopoly;
             LoadPlayerInfo();
+
+            LoadPlayerInBoard();
+            Dice1.Click += RollDice;
+            Dice2.Click += RollDice;
+            RollTime.Tick += RollTime_Tick;
+            RollTime.Interval = 300;
+            endTime = 2000;
+            X1 = Dice1.Location.X;
         }
         private void LoadPlayerInfo()
         {
@@ -71,15 +79,8 @@ namespace Monopoly.Screens
                 }
             }
         }
-            LoadPlayerInBoard();
-            Dice1.Click += RollDice;
-            Dice2.Click += RollDice;
-            RollTime.Tick += RollTime_Tick;
-            RollTime.Interval = 300;
-            endTime = 2000;
-            X1 = Dice1.Location.X;
-           
-        }
+
+
         private void RollDice(object sender, EventArgs e)
         {
             if (Rolling == false)
@@ -101,8 +102,8 @@ namespace Monopoly.Screens
                 {
                     result[i] = GameManager.RollDice();
                 }
-                Dice1.BackgroundImage = listImage[result[0]-1];
-                Dice2.BackgroundImage = listImage[result[1]-1];
+                Dice1.BackgroundImage = listImage[result[0] - 1];
+                Dice2.BackgroundImage = listImage[result[1] - 1];
             }
             else
             {
@@ -130,32 +131,55 @@ namespace Monopoly.Screens
         }
         private void LoadPlayerInBoard()
         {
-            int dist = 5;
             for (int i = 0; i < PlayerManager.playerCount; i++)
             {
-                if (i < 1)
+                if (i == 0)
                 {
                     PictureBox pictureBox = new PictureBox();
                     pictureBox.Name = "Player" + (i + 1).ToString();
-                    pictureBox.Size = new Size(45, 50);
-                    pictureBox.Location = new Point(labels[0].Location.X-25, labels[0].Location.Y-30);
-                    pictureBox.BackgroundImage = Properties.Resources.VuVjp;
-                    pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.Size = new Size(35, 35);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y-15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl36.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                }
+                else if (i == 1)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Name = "Player" + (i + 1).ToString();
+                    pictureBox.Size = new Size(35, 35);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36-1, labels[0].Location.Y-15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl36.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                }
+                else if (i == 2)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Name = "Player" + (i + 1).ToString();
+                    pictureBox.Size = new Size(35, 35);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36-16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl36.Controls.Add(pictureBox);
                     pictureBox.BringToFront();
                 }
                 else
                 {
                     PictureBox pictureBox = new PictureBox();
                     pictureBox.Name = "Player" + (i + 1).ToString();
-                    pictureBox.Size = new Size(45, 50);
-                    pictureBox.Location = new Point(labels[0].Location.X-25+dist, labels[0].Location.Y-30);
-                    pictureBox.BackgroundImage = Properties.Resources.VuVjp;
-                    pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-                    pnl1.Controls.Add(pictureBox);
-                   pictureBox.BringToFront();
-                 
-                    dist += 5;
+                    pictureBox.Size = new Size(35, 35);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36-1, labels[0].Location.Y + 36-16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl36.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
                 }
             }
         }

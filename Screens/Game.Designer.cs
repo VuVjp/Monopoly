@@ -229,7 +229,6 @@ namespace Monopoly.Screens
             pnl5.SuspendLayout();
             pnl4.SuspendLayout();
             pnl3.SuspendLayout();
-            pnl1.SuspendLayout();
             pnl15.SuspendLayout();
             SuspendLayout();
             // 
@@ -869,6 +868,7 @@ namespace Monopoly.Screens
             // 
             pnl36.BackColor = Color.Transparent;
             pnl36.BorderStyle = BorderStyle.FixedSingle;
+            pnl36.Controls.Add(pos1);
             pnl36.Controls.Add(pos36);
             pnl36.Controls.Add(pcb21);
             pnl36.Cursor = Cursors.Hand;
@@ -1732,7 +1732,6 @@ namespace Monopoly.Screens
             pnl1.BackgroundImage = Resources.Start;
             pnl1.BackgroundImageLayout = ImageLayout.Stretch;
             pnl1.BorderStyle = BorderStyle.FixedSingle;
-            pnl1.Controls.Add(pos1);
             pnl1.Cursor = Cursors.Hand;
             pnl1.Location = new Point(885, 616);
             pnl1.Margin = new Padding(1);
@@ -1745,7 +1744,7 @@ namespace Monopoly.Screens
             pos1.AutoSize = true;
             pos1.BackColor = Color.Transparent;
             pos1.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos1.Location = new Point(57, 53);
+            pos1.Location = new Point(35, 17);
             pos1.Margin = new Padding(1, 0, 1, 0);
             pos1.Name = "pos1";
             pos1.Size = new Size(10, 14);
@@ -1905,8 +1904,6 @@ namespace Monopoly.Screens
             pnl4.PerformLayout();
             pnl3.ResumeLayout(false);
             pnl3.PerformLayout();
-            pnl1.ResumeLayout(false);
-            pnl1.PerformLayout();
             pnl15.ResumeLayout(false);
             pnl15.PerformLayout();
             ResumeLayout(false);
