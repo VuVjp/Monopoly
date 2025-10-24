@@ -534834,7 +534834,6 @@
         AAAAAElFTkSuQmCC
 </value>
   </data>
-<<<<<<< HEAD:Screens/Game.resx
   <data name="pnl9.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAp0AAAQ8CAYAAADQRSVPAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -559823,6 +559822,4 @@
         nV3F+tMuAAAAAElFTkSuQmCC
 </value>
   </data>
-=======
->>>>>>> parent of 8a14018 (init):Game.resx
 </root>
