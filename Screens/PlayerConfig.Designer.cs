@@ -1,6 +1,6 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Screens
 {
-    partial class Test
+    partial class PlayerConfig
     {
         /// <summary> 
         /// Required designer variable.
@@ -64,31 +64,36 @@
             // btnMinus
             // 
             btnMinus.Font = new Font("Showcard Gothic", 9F);
-            btnMinus.Location = new Point(416, 624);
+            btnMinus.Location = new Point(531, 553);
+            btnMinus.Margin = new Padding(2);
             btnMinus.Name = "btnMinus";
-            btnMinus.Size = new Size(60, 60);
+            btnMinus.Size = new Size(42, 36);
             btnMinus.TabIndex = 37;
             btnMinus.Text = "-";
             btnMinus.UseVisualStyleBackColor = true;
+            btnMinus.Click += btnMinus_Click;
             // 
             // btnPlus
             // 
             btnPlus.Font = new Font("Showcard Gothic", 9F);
-            btnPlus.Location = new Point(638, 623);
+            btnPlus.Location = new Point(687, 552);
+            btnPlus.Margin = new Padding(2);
             btnPlus.Name = "btnPlus";
-            btnPlus.Size = new Size(60, 60);
+            btnPlus.Size = new Size(42, 36);
             btnPlus.TabIndex = 36;
             btnPlus.Text = "+";
             btnPlus.UseVisualStyleBackColor = true;
+            btnPlus.Click += btnPlus_Click;
             // 
             // txbPlrCounter
             // 
             txbPlrCounter.Font = new Font("Showcard Gothic", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txbPlrCounter.Location = new Point(482, 638);
+            txbPlrCounter.Location = new Point(577, 560);
+            txbPlrCounter.Margin = new Padding(2);
             txbPlrCounter.Multiline = true;
             txbPlrCounter.Name = "txbPlrCounter";
             txbPlrCounter.ReadOnly = true;
-            txbPlrCounter.Size = new Size(150, 46);
+            txbPlrCounter.Size = new Size(106, 29);
             txbPlrCounter.TabIndex = 35;
             txbPlrCounter.Text = "2";
             txbPlrCounter.TextAlign = HorizontalAlignment.Center;
@@ -96,10 +101,10 @@
             // pcbAvt8
             // 
             pcbAvt8.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt8.Image = Properties.Resources.VuVjp;
-            pcbAvt8.Location = new Point(764, 221);
+            pcbAvt8.Location = new Point(779, 207);
+            pcbAvt8.Margin = new Padding(2);
             pcbAvt8.Name = "pcbAvt8";
-            pcbAvt8.Size = new Size(140, 140);
+            pcbAvt8.Size = new Size(90, 90);
             pcbAvt8.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt8.TabIndex = 33;
             pcbAvt8.TabStop = false;
@@ -107,10 +112,10 @@
             // pcbAvt7
             // 
             pcbAvt7.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt7.Image = Properties.Resources.VuVjp;
-            pcbAvt7.Location = new Point(581, 221);
+            pcbAvt7.Location = new Point(651, 207);
+            pcbAvt7.Margin = new Padding(2);
             pcbAvt7.Name = "pcbAvt7";
-            pcbAvt7.Size = new Size(140, 140);
+            pcbAvt7.Size = new Size(90, 90);
             pcbAvt7.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt7.TabIndex = 32;
             pcbAvt7.TabStop = false;
@@ -118,10 +123,10 @@
             // pcbAvt6
             // 
             pcbAvt6.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt6.Image = Properties.Resources.VuVjp;
-            pcbAvt6.Location = new Point(398, 221);
+            pcbAvt6.Location = new Point(525, 207);
+            pcbAvt6.Margin = new Padding(2);
             pcbAvt6.Name = "pcbAvt6";
-            pcbAvt6.Size = new Size(140, 140);
+            pcbAvt6.Size = new Size(90, 90);
             pcbAvt6.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt6.TabIndex = 31;
             pcbAvt6.TabStop = false;
@@ -129,10 +134,10 @@
             // pcbAvt5
             // 
             pcbAvt5.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt5.Image = Properties.Resources.VuVjp;
-            pcbAvt5.Location = new Point(215, 221);
+            pcbAvt5.Location = new Point(397, 207);
+            pcbAvt5.Margin = new Padding(2);
             pcbAvt5.Name = "pcbAvt5";
-            pcbAvt5.Size = new Size(140, 140);
+            pcbAvt5.Size = new Size(90, 90);
             pcbAvt5.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt5.TabIndex = 30;
             pcbAvt5.TabStop = false;
@@ -140,10 +145,10 @@
             // pcbAvt4
             // 
             pcbAvt4.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt4.Image = Properties.Resources.VuVjp;
-            pcbAvt4.Location = new Point(764, 56);
+            pcbAvt4.Location = new Point(779, 96);
+            pcbAvt4.Margin = new Padding(2);
             pcbAvt4.Name = "pcbAvt4";
-            pcbAvt4.Size = new Size(140, 140);
+            pcbAvt4.Size = new Size(90, 90);
             pcbAvt4.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt4.TabIndex = 29;
             pcbAvt4.TabStop = false;
@@ -151,10 +156,10 @@
             // pcbAvt3
             // 
             pcbAvt3.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt3.Image = Properties.Resources.VuVjp;
-            pcbAvt3.Location = new Point(581, 56);
+            pcbAvt3.Location = new Point(651, 96);
+            pcbAvt3.Margin = new Padding(2);
             pcbAvt3.Name = "pcbAvt3";
-            pcbAvt3.Size = new Size(140, 140);
+            pcbAvt3.Size = new Size(90, 90);
             pcbAvt3.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt3.TabIndex = 28;
             pcbAvt3.TabStop = false;
@@ -162,10 +167,10 @@
             // pcbAvt1
             // 
             pcbAvt1.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt1.Image = Properties.Resources.VuVjp;
-            pcbAvt1.Location = new Point(215, 56);
+            pcbAvt1.Location = new Point(397, 96);
+            pcbAvt1.Margin = new Padding(2);
             pcbAvt1.Name = "pcbAvt1";
-            pcbAvt1.Size = new Size(140, 140);
+            pcbAvt1.Size = new Size(90, 90);
             pcbAvt1.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt1.TabIndex = 27;
             pcbAvt1.TabStop = false;
@@ -173,55 +178,61 @@
             // btnPlay
             // 
             btnPlay.Font = new Font("Showcard Gothic", 24F);
-            btnPlay.Location = new Point(581, 712);
+            btnPlay.Location = new Point(645, 607);
+            btnPlay.Margin = new Padding(2);
             btnPlay.Name = "btnPlay";
-            btnPlay.Size = new Size(448, 86);
+            btnPlay.Size = new Size(314, 52);
             btnPlay.TabIndex = 26;
             btnPlay.Text = "Play";
             btnPlay.UseVisualStyleBackColor = true;
+            btnPlay.Click += btnPlay_Click;
             // 
             // btnReturn
             // 
             btnReturn.Font = new Font("Showcard Gothic", 24F);
-            btnReturn.Location = new Point(89, 712);
+            btnReturn.Location = new Point(300, 607);
+            btnReturn.Margin = new Padding(2);
             btnReturn.Name = "btnReturn";
-            btnReturn.Size = new Size(448, 86);
+            btnReturn.Size = new Size(314, 52);
             btnReturn.TabIndex = 25;
             btnReturn.Text = "Return";
             btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
             // 
             // pcbPlr4
             // 
             pcbPlr4.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr4.Cursor = Cursors.Hand;
-            pcbPlr4.Image = Properties.Resources.user;
-            pcbPlr4.Location = new Point(825, 401);
+            pcbPlr4.Location = new Point(815, 351);
+            pcbPlr4.Margin = new Padding(2);
             pcbPlr4.Name = "pcbPlr4";
-            pcbPlr4.Size = new Size(200, 200);
+            pcbPlr4.Size = new Size(150, 150);
             pcbPlr4.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlr4.TabIndex = 24;
             pcbPlr4.TabStop = false;
+            pcbPlr4.Visible = false;
             // 
             // pcbPlr3
             // 
             pcbPlr3.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr3.Cursor = Cursors.Hand;
-            pcbPlr3.Image = Properties.Resources.user;
-            pcbPlr3.Location = new Point(581, 401);
+            pcbPlr3.Location = new Point(645, 351);
+            pcbPlr3.Margin = new Padding(2);
             pcbPlr3.Name = "pcbPlr3";
-            pcbPlr3.Size = new Size(200, 200);
+            pcbPlr3.Size = new Size(150, 150);
             pcbPlr3.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlr3.TabIndex = 23;
             pcbPlr3.TabStop = false;
+            pcbPlr3.Visible = false;
             // 
             // pcbPlr2
             // 
             pcbPlr2.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr2.Cursor = Cursors.Hand;
-            pcbPlr2.Image = Properties.Resources.user;
-            pcbPlr2.Location = new Point(337, 401);
+            pcbPlr2.Location = new Point(474, 351);
+            pcbPlr2.Margin = new Padding(2);
             pcbPlr2.Name = "pcbPlr2";
-            pcbPlr2.Size = new Size(200, 200);
+            pcbPlr2.Size = new Size(150, 150);
             pcbPlr2.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlr2.TabIndex = 22;
             pcbPlr2.TabStop = false;
@@ -230,10 +241,10 @@
             // 
             pcbPlr1.BorderStyle = BorderStyle.FixedSingle;
             pcbPlr1.Cursor = Cursors.Hand;
-            pcbPlr1.Image = Properties.Resources.user;
-            pcbPlr1.Location = new Point(93, 401);
+            pcbPlr1.Location = new Point(303, 351);
+            pcbPlr1.Margin = new Padding(2);
             pcbPlr1.Name = "pcbPlr1";
-            pcbPlr1.Size = new Size(200, 200);
+            pcbPlr1.Size = new Size(150, 150);
             pcbPlr1.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbPlr1.TabIndex = 21;
             pcbPlr1.TabStop = false;
@@ -241,10 +252,10 @@
             // pcbAvt2
             // 
             pcbAvt2.BackgroundImageLayout = ImageLayout.Stretch;
-            pcbAvt2.Image = Properties.Resources.VuVjp;
-            pcbAvt2.Location = new Point(398, 56);
+            pcbAvt2.Location = new Point(525, 96);
+            pcbAvt2.Margin = new Padding(2);
             pcbAvt2.Name = "pcbAvt2";
-            pcbAvt2.Size = new Size(140, 140);
+            pcbAvt2.Size = new Size(90, 90);
             pcbAvt2.SizeMode = PictureBoxSizeMode.StretchImage;
             pcbAvt2.TabIndex = 20;
             pcbAvt2.TabStop = false;
@@ -253,25 +264,28 @@
             // 
             selectedUI.BackColor = Color.Lime;
             selectedUI.Enabled = false;
-            selectedUI.Location = new Point(83, 391);
+            selectedUI.Location = new Point(293, 341);
+            selectedUI.Margin = new Padding(2);
             selectedUI.Name = "selectedUI";
-            selectedUI.Size = new Size(220, 220);
+            selectedUI.Size = new Size(170, 170);
             selectedUI.TabIndex = 34;
             selectedUI.UseVisualStyleBackColor = false;
             // 
             // selectedImg
             // 
             selectedImg.BackColor = Color.DodgerBlue;
-            selectedImg.Location = new Point(205, 46);
+            selectedImg.Location = new Point(387, 86);
+            selectedImg.Margin = new Padding(2);
             selectedImg.Name = "selectedImg";
-            selectedImg.Size = new Size(160, 160);
+            selectedImg.Size = new Size(110, 110);
             selectedImg.TabIndex = 38;
             selectedImg.UseVisualStyleBackColor = false;
             // 
-            // Test
+            // PlayerConfig
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(233, 227, 208);
             Controls.Add(btnMinus);
             Controls.Add(btnPlus);
             Controls.Add(txbPlrCounter);
@@ -291,8 +305,8 @@
             Controls.Add(pcbAvt2);
             Controls.Add(selectedUI);
             Controls.Add(selectedImg);
-            Name = "Test";
-            Size = new Size(1113, 844);
+            Name = "PlayerConfig";
+            Size = new Size(1255, 728);
             ((System.ComponentModel.ISupportInitialize)pcbAvt8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt7).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt6).EndInit();

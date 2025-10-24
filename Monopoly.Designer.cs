@@ -1,6 +1,6 @@
 ﻿namespace Monopoly
 {
-    partial class Monopoly_cs
+    partial class Monopoly
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
+            pnlMain = new Panel();
             SuspendLayout();
             // 
-            // Monopoly_cs
+            // pnlMain
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            pnlMain.Location = new Point(0, 1);
+            pnlMain.Margin = new Padding(2);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Size = new Size(1255, 728);
+            pnlMain.TabIndex = 0;
+            // 
+            // Monopoly
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1517, 917);
-            Name = "Monopoly_cs";
-            Text = "Monopoly_cs";
+            ClientSize = new Size(1256, 729);
+            Controls.Add(pnlMain);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(2);
+            MaximizeBox = false;
+            Name = "Monopoly";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Monopoly";
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel pnlMain;
     }
 }

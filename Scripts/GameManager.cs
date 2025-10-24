@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monopoly
+namespace Monopoly.Scripts
 {
     interface GameManager
     {
@@ -16,13 +16,9 @@ namespace Monopoly
         { 
 
         }
-        static int RollDice()
+        static void RollDice()
         {
-            int result = 0;
-            Random x = new Random();
-            result =  x.Next(6);
-            return result;
-            
+
         }
         static void EndTurn()
         {
@@ -30,7 +26,7 @@ namespace Monopoly
         }
         static void LoadPlayer()
         {
-            for (int i = 0; i < PlayerManager.PlayerCount; i++)
+            for (int i = 0; i < PlayerManager.playerCount; i++)
             {
                 switch (i)
                 {
