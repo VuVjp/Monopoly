@@ -100,6 +100,7 @@ namespace Monopoly.Scripts.Sockets
                         {
                             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+                        if (received == null) break;
                     }
                 }
             }
