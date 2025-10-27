@@ -22,12 +22,19 @@ namespace Monopoly.Scripts
             Auction,
             Bankrupt,
             PlayerInfo,
+            ChatMessage,
+            PlayerJoin,
+            ChangeAvt,
+            GetAvtList
         }
-        public string Msg = null!;
+        public string? Msg = null!;
+        public string? From = null!; 
         public ActionType Action;
-        public Data(ActionType ActionType, string msg)
+       
+        public Data(ActionType ActionType, string? msg = null!,string? from = null!)
         {
             Msg = msg;
+            From = from;
             Action = ActionType;
         }
     }

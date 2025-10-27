@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,12 +22,19 @@ namespace Monopoly.Screens
 
         private void btnSingle_Click(object sender, EventArgs e)
         {
+            PlayerManager.isOnline = false;
             monopoly.LoadScreen(new GameConfig(monopoly));
         }
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
             monopoly.Close();
+        }
+
+        private void btnOnline_Click(object sender, EventArgs e)
+        {
+            PlayerManager.isOnline = true;
+            monopoly.LoadScreen(new GameConfig(monopoly));
         }
     }
 }

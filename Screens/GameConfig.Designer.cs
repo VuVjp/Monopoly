@@ -103,6 +103,7 @@
             btnCreate.TabIndex = 9;
             btnCreate.Text = "Create New Game";
             btnCreate.UseVisualStyleBackColor = true;
+            btnCreate.Click += btnCreate_Click;
             // 
             // GameConfig
             // 
