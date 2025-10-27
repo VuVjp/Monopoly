@@ -1,11 +1,16 @@
 ﻿using Monopoly.Scripts;
+using Monopoly.Scripts.Sockets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,8 +19,10 @@ namespace Monopoly.Screens
     public partial class PlayerConfig : UserControl
     {
         private Monopoly monopoly;
-        List<PictureBox> plrImgs = null!;
-        List<PictureBox> playerBoxes = null!;
+        public static List<PictureBox> plrImgs = null!;
+        public static List<PictureBox> playerBoxes = null!;
+        public static Dictionary<string, PictureBox> playerMapping;
+        public static Button SelectedUI = null!;
 
         public PlayerConfig(Monopoly monopoly)
         {
@@ -26,6 +33,14 @@ namespace Monopoly.Screens
 
         private void FormLoader()
         {
+            SelectedUI = selectedUI;
+            playerMapping = new Dictionary<string, PictureBox>()
+            {
+                { "Player1", pcbPlr1 },
+                { "Player2", pcbPlr2 },
+                { "Player3", pcbPlr3 },
+                { "Player4", pcbPlr4 },
+            };
             plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8 };
             playerBoxes = new List<PictureBox> { pcbPlr1, pcbPlr2, pcbPlr3, pcbPlr4 };
             int counter = 1;
@@ -37,7 +52,7 @@ namespace Monopoly.Screens
                 img.MouseEnter += pcb_AvtMouseEnter!;
                 img.MouseLeave += pcb_AvtMouseLeave!;
             }
-            foreach(PictureBox pcb in playerBoxes)
+            foreach (PictureBox pcb in playerBoxes)
             {
                 pcb.Image = Properties.Resources.user;
             }
@@ -53,13 +68,70 @@ namespace Monopoly.Screens
 
         private void OnlineModeSetup()
         {
+            pcbPlr3.Visible = true;
+            pcbPlr4.Visible = true;
             if (PlayerManager.isAdmin)
             {
-                btnPlay.Enabled = false;
+                SocketServerManager.SocketServer.Start(IPAddress.Any.ToString(), 9999);
+                SocketServerManager.isListening = true;
+                SocketServerManager.isAcceptingPlayers = true;
+                PlayerManager.curPlayer = pcbPlr1;
+                btnPlay.Enabled = true;
+                btnPlus.Enabled = true;
+                btnMinus.Enabled = true;
+                Task.Run(async () =>
+                {
+                    while (SocketServerManager.isListening)
+                    {
+                        string PlayerName = null!;
+                        if (!SocketServerManager.isAcceptingPlayers)
+                        {
+                            byte[] msg = Encoding.UTF8.GetBytes("Room is full or game already started");
+                            await Task.Delay(1000);
+                            continue;
+                        }
+                        var clientSocket = await SocketServerManager.SocketServer.Accept();
+                        for (int i = 1; i < SocketServerManager.ClientSockets.Count; i++)
+                        {
+                            if (SocketServerManager.ClientSockets["Player" + (i + 1)] == null)
+                            {
+                                PlayerName = "Player" + (i + 1);
+                                SocketServerManager.ClientSockets["Player" + (i + 1)] = clientSocket;
+                                break;
+                            }
+                        };
+                        if (PlayerName == null)
+                        {
+                            byte[] msg = Encoding.UTF8.GetBytes("Room is full");
+                            //await SocketServerManager.SocketServer.Send(clientSocket, msg);
+                            clientSocket.Close();
+                            continue;
+                        }
+                        SocketServerManager.ClientSockets[PlayerName] = clientSocket;
+                        await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.PlayerInfo, PlayerName));
+                        foreach (var pcb in PlayerConfig.playerBoxes)
+                        {
+                            if (pcb.Tag != null)
+                            {
+                                await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.ChangeAvt, ((PictureBox)pcb.Tag!).Name, pcb.Name));
+                            }
+                        }
+                        _ = SocketServerManager.SocketHandler(clientSocket, PlayerName);
+                    }
+                });
+            }
+            else
+            {
+                btnPlay.Text = "Ready";
                 btnPlus.Enabled = false;
                 btnMinus.Enabled = false;
-                //txbPlrCounter.Text = Socket nhận từ server
-                //SelectPlrUI(); socket nhận từ server
+                txbPlrCounter.Enabled = false;
+                //Nhập IP ở đây sau
+                SocketClientManager.SocketClient.Connect("", 9999);
+                Task.Run(async () =>
+                {
+                    _ = SocketClientManager.ClientReciever();
+                });
             }
         }
         private void OfflineModeSetup()
@@ -73,9 +145,36 @@ namespace Monopoly.Screens
             }
         }
 
+        private void ChangeAvatarOnline(PictureBox pcb)
+        {
+            var data1 = new Data(Data.ActionType.ChangeAvt, pcb.Name, PlayerManager.curPlayer.Name);
+            if (PlayerManager.isAdmin)
+            {
+                Task.Run(async () =>
+                {
+                    foreach (var client in SocketServerManager.ClientSockets.Values)
+                    {
+                        if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                        if (client != null)
+                        {
+                            await SocketServerManager.SocketServer.Send(client, data1);
+                        }
+                    }
+                });
+            }
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await SocketClientManager.SocketClient.Send(data1);
+                });
+            }
+        }
+
         private void pcb_AvtClick(object sender, EventArgs e)
         {
             PictureBox pcb = (PictureBox)sender;
+            if (btnPlay.Enabled == false) return;
             if (PlayerManager.curPlayer == null) return;
             if (PlayerManager.curPlayer.Tag != null && pcb.Tag == null)
             {
@@ -86,6 +185,10 @@ namespace Monopoly.Screens
                 pcb.BackgroundImage = Properties.Resources.Ban;
                 PlayerManager.curPlayer.Tag = pcb;
                 PlayerManager.curPlayer.Image = pcb.Image;
+                if (PlayerManager.isOnline)
+                {
+                    ChangeAvatarOnline(pcb);
+                }
                 LeaveAnimation(pcb);
                 return;
             }
@@ -96,6 +199,10 @@ namespace Monopoly.Screens
                 pcb.BackgroundImage = Properties.Resources.Ban;
                 PlayerManager.curPlayer.Image = pcb.Image;
                 PlayerManager.curPlayer.Tag = pcb;
+                if (PlayerManager.isOnline)
+                {
+                    ChangeAvatarOnline(pcb);
+                }
                 LeaveAnimation(pcb);
                 return;
             }
@@ -192,7 +299,7 @@ namespace Monopoly.Screens
 
         private void btnPlus_Click(object sender, EventArgs e)
         {
-            if(int.Parse(txbPlrCounter.Text) < 4)
+            if (int.Parse(txbPlrCounter.Text) < 4)
             {
                 txbPlrCounter.Text = (int.Parse(txbPlrCounter.Text) + 1).ToString();
                 playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Visible = true;
@@ -209,7 +316,7 @@ namespace Monopoly.Screens
                     selectedUI.Location = new Point(PlayerManager.curPlayer.Location.X - 10, PlayerManager.curPlayer.Location.Y - 10);
                     selectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
                 }
-                if(playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag != null)
+                if (playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag != null)
                 {
                     PictureBox oldImg = (PictureBox)playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Tag!;
                     oldImg.Tag = null;
