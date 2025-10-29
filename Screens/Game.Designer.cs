@@ -64,72 +64,69 @@ namespace Monopoly.Screens
             pnlGame = new Panel();
             Dice2 = new PictureBox();
             Dice1 = new PictureBox();
-            pnl11 = new Panel();
-            pos11 = new Label();
             pcbChance = new PictureBox();
             pcbFortune = new PictureBox();
-            pnl35 = new Panel();
-            pos35 = new Label();
-            pcb20 = new PictureBox();
-            pnl30 = new Panel();
-            pos30 = new Label();
-            pcb17 = new PictureBox();
-            pnl33 = new Panel();
-            pos33 = new Label();
-            pcb19 = new PictureBox();
-            pnl31 = new Panel();
-            pos31 = new Label();
-            pcb18 = new PictureBox();
             pnl36 = new Panel();
             pos36 = new Label();
             pcb21 = new PictureBox();
+            pnl35 = new Panel();
+            pos35 = new Label();
+            pcb20 = new PictureBox();
             pnl34 = new Panel();
             pos34 = new Label();
+            pnl33 = new Panel();
+            pos33 = new Label();
+            pcb19 = new PictureBox();
             pnl32 = new Panel();
             pos32 = new Label();
-            pnl12 = new Panel();
-            pos12 = new Label();
-            pcb6 = new PictureBox();
-            pnl13 = new Panel();
-            pos13 = new Label();
-            pcb7 = new PictureBox();
-            pnl14 = new Panel();
-            pos15 = new Label();
-            pcb8 = new PictureBox();
-            pnl18 = new Panel();
-            pos18 = new Label();
-            pcb10 = new PictureBox();
+            pnl31 = new Panel();
+            pos31 = new Label();
+            pcb18 = new PictureBox();
+            pnl30 = new Panel();
+            pos30 = new Label();
+            pcb17 = new PictureBox();
+            pnl29 = new Panel();
+            pos29 = new Label();
             pnl28 = new Panel();
             pos28 = new Label();
             pcb16 = new PictureBox();
-            pnl2 = new Panel();
-            pos2 = new Label();
-            pcb1 = new PictureBox();
-            pnl29 = new Panel();
-            pos29 = new Label();
-            pnl19 = new Panel();
-            pos19 = new Label();
-            pnl20 = new Panel();
-            pos20 = new Label();
-            pcb11 = new PictureBox();
-            pnl21 = new Panel();
-            pos21 = new Label();
-            pnl22 = new Panel();
-            pos22 = new Label();
-            pcb12 = new PictureBox();
-            pnl23 = new Panel();
-            pos23 = new Label();
-            pcb13 = new PictureBox();
-            pnl24 = new Panel();
-            pos24 = new Label();
-            pnl25 = new Panel();
-            pos25 = new Label();
-            pcb14 = new PictureBox();
+            pnl27 = new Panel();
+            pos27 = new Label();
             pnl26 = new Panel();
             pos26 = new Label();
             pcb15 = new PictureBox();
-            pnl27 = new Panel();
-            pos27 = new Label();
+            pnl25 = new Panel();
+            pos25 = new Label();
+            pcb14 = new PictureBox();
+            pnl24 = new Panel();
+            pos24 = new Label();
+            pnl23 = new Panel();
+            pos23 = new Label();
+            pcb13 = new PictureBox();
+            pnl22 = new Panel();
+            pos22 = new Label();
+            pcb12 = new PictureBox();
+            pnl21 = new Panel();
+            pos21 = new Label();
+            pnl20 = new Panel();
+            pos20 = new Label();
+            pcb11 = new PictureBox();
+            pnl19 = new Panel();
+            pos19 = new Label();
+            pnl18 = new Panel();
+            pos18 = new Label();
+            pcb10 = new PictureBox();
+            pnl15 = new Panel();
+            pos15 = new Label();
+            pcb8 = new PictureBox();
+            pnl13 = new Panel();
+            pos13 = new Label();
+            pcb7 = new PictureBox();
+            pnl12 = new Panel();
+            pos12 = new Label();
+            pcb6 = new PictureBox();
+            pnl11 = new Panel();
+            pos11 = new Label();
             pnl10 = new Panel();
             pos10 = new Label();
             pcb5 = new PictureBox();
@@ -150,11 +147,15 @@ namespace Monopoly.Screens
             pos4 = new Label();
             pnl3 = new Panel();
             pos3 = new Label();
+            pnl2 = new Panel();
+            pos2 = new Label();
+            pcb1 = new PictureBox();
             pnl1 = new Panel();
             pos1 = new Label();
-            pnl15 = new Panel();
+            pnl14 = new Panel();
             pos14 = new Label();
-            RollTime = new System.Windows.Forms.Timer(components);
+            RollTimer = new System.Windows.Forms.Timer(components);
+            MoveTimer = new System.Windows.Forms.Timer(components);
             pnl17.SuspendLayout();
             pnl16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb9).BeginInit();
@@ -175,48 +176,46 @@ namespace Monopoly.Screens
             pnlGame.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Dice2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Dice1).BeginInit();
-            pnl11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcbChance).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbFortune).BeginInit();
-            pnl35.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb20).BeginInit();
-            pnl30.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb17).BeginInit();
-            pnl33.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb19).BeginInit();
-            pnl31.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb18).BeginInit();
             pnl36.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb21).BeginInit();
+            pnl35.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb20).BeginInit();
             pnl34.SuspendLayout();
+            pnl33.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb19).BeginInit();
             pnl32.SuspendLayout();
-            pnl12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb6).BeginInit();
-            pnl13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb7).BeginInit();
-            pnl14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
-            pnl18.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb10).BeginInit();
+            pnl31.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb18).BeginInit();
+            pnl30.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb17).BeginInit();
+            pnl29.SuspendLayout();
             pnl28.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb16).BeginInit();
-            pnl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb1).BeginInit();
-            pnl29.SuspendLayout();
-            pnl19.SuspendLayout();
-            pnl20.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb11).BeginInit();
-            pnl21.SuspendLayout();
-            pnl22.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb12).BeginInit();
-            pnl23.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb13).BeginInit();
-            pnl24.SuspendLayout();
-            pnl25.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb14).BeginInit();
+            pnl27.SuspendLayout();
             pnl26.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb15).BeginInit();
-            pnl27.SuspendLayout();
+            pnl25.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb14).BeginInit();
+            pnl24.SuspendLayout();
+            pnl23.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb13).BeginInit();
+            pnl22.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb12).BeginInit();
+            pnl21.SuspendLayout();
+            pnl20.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb11).BeginInit();
+            pnl19.SuspendLayout();
+            pnl18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb10).BeginInit();
+            pnl15.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb8).BeginInit();
+            pnl13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb7).BeginInit();
+            pnl12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb6).BeginInit();
+            pnl11.SuspendLayout();
             pnl10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcb5).BeginInit();
             pnl9.SuspendLayout();
@@ -229,7 +228,10 @@ namespace Monopoly.Screens
             pnl5.SuspendLayout();
             pnl4.SuspendLayout();
             pnl3.SuspendLayout();
-            pnl15.SuspendLayout();
+            pnl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb1).BeginInit();
+            pnl1.SuspendLayout();
+            pnl14.SuspendLayout();
             SuspendLayout();
             // 
             // pnl17
@@ -251,7 +253,7 @@ namespace Monopoly.Screens
             pos17.AutoSize = true;
             pos17.BackColor = Color.Transparent;
             pos17.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos17.Location = new Point(39, 29);
+            pos17.Location = new Point(30, 29);
             pos17.Margin = new Padding(1, 0, 1, 0);
             pos17.Name = "pos17";
             pos17.Size = new Size(10, 14);
@@ -275,7 +277,7 @@ namespace Monopoly.Screens
             // 
             pos16.AutoSize = true;
             pos16.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos16.Location = new Point(1, 21);
+            pos16.Location = new Point(6, 21);
             pos16.Margin = new Padding(1, 0, 1, 0);
             pos16.Name = "pos16";
             pos16.Size = new Size(95, 28);
@@ -374,10 +376,12 @@ namespace Monopoly.Screens
             // pnlLogo
             // 
             pnlLogo.BackColor = Color.Transparent;
-            pnlLogo.Location = new Point(1, 1);
+            pnlLogo.Image = Resources.Logo;
+            pnlLogo.Location = new Point(17, 1);
             pnlLogo.Margin = new Padding(1);
             pnlLogo.Name = "pnlLogo";
-            pnlLogo.Size = new Size(237, 203);
+            pnlLogo.Size = new Size(205, 205);
+            pnlLogo.SizeMode = PictureBoxSizeMode.StretchImage;
             pnlLogo.TabIndex = 8;
             pnlLogo.TabStop = false;
             // 
@@ -601,32 +605,31 @@ namespace Monopoly.Screens
             pnlGame.BorderStyle = BorderStyle.FixedSingle;
             pnlGame.Controls.Add(Dice2);
             pnlGame.Controls.Add(Dice1);
-            pnlGame.Controls.Add(pnl11);
             pnlGame.Controls.Add(pcbChance);
             pnlGame.Controls.Add(pcbFortune);
-            pnlGame.Controls.Add(pnl35);
-            pnlGame.Controls.Add(pnl30);
-            pnlGame.Controls.Add(pnl33);
-            pnlGame.Controls.Add(pnl31);
             pnlGame.Controls.Add(pnl36);
+            pnlGame.Controls.Add(pnl35);
             pnlGame.Controls.Add(pnl34);
+            pnlGame.Controls.Add(pnl33);
             pnlGame.Controls.Add(pnl32);
-            pnlGame.Controls.Add(pnl12);
-            pnlGame.Controls.Add(pnl13);
-            pnlGame.Controls.Add(pnl14);
-            pnlGame.Controls.Add(pnl18);
-            pnlGame.Controls.Add(pnl28);
-            pnlGame.Controls.Add(pnl2);
+            pnlGame.Controls.Add(pnl31);
+            pnlGame.Controls.Add(pnl30);
             pnlGame.Controls.Add(pnl29);
-            pnlGame.Controls.Add(pnl19);
-            pnlGame.Controls.Add(pnl20);
-            pnlGame.Controls.Add(pnl21);
-            pnlGame.Controls.Add(pnl22);
-            pnlGame.Controls.Add(pnl23);
-            pnlGame.Controls.Add(pnl24);
-            pnlGame.Controls.Add(pnl25);
-            pnlGame.Controls.Add(pnl26);
+            pnlGame.Controls.Add(pnl28);
             pnlGame.Controls.Add(pnl27);
+            pnlGame.Controls.Add(pnl26);
+            pnlGame.Controls.Add(pnl25);
+            pnlGame.Controls.Add(pnl24);
+            pnlGame.Controls.Add(pnl23);
+            pnlGame.Controls.Add(pnl22);
+            pnlGame.Controls.Add(pnl21);
+            pnlGame.Controls.Add(pnl20);
+            pnlGame.Controls.Add(pnl19);
+            pnlGame.Controls.Add(pnl18);
+            pnlGame.Controls.Add(pnl15);
+            pnlGame.Controls.Add(pnl13);
+            pnlGame.Controls.Add(pnl12);
+            pnlGame.Controls.Add(pnl11);
             pnlGame.Controls.Add(pnl10);
             pnlGame.Controls.Add(pnl9);
             pnlGame.Controls.Add(pnl8);
@@ -635,6 +638,7 @@ namespace Monopoly.Screens
             pnlGame.Controls.Add(pnl5);
             pnlGame.Controls.Add(pnl4);
             pnlGame.Controls.Add(pnl3);
+            pnlGame.Controls.Add(pnl2);
             pnlGame.Controls.Add(pnl1);
             pnlGame.Location = new Point(1, 0);
             pnlGame.Margin = new Padding(1);
@@ -663,32 +667,6 @@ namespace Monopoly.Screens
             Dice1.Size = new Size(60, 60);
             Dice1.TabIndex = 43;
             Dice1.TabStop = false;
-            // 
-            // pnl11
-            // 
-            pnl11.BackgroundImage = Resources.VisitJail;
-            pnl11.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl11.BorderStyle = BorderStyle.FixedSingle;
-            pnl11.Controls.Add(pos11);
-            pnl11.Cursor = Cursors.Hand;
-            pnl11.Location = new Point(-1, 615);
-            pnl11.Margin = new Padding(1);
-            pnl11.Name = "pnl11";
-            pnl11.Size = new Size(131, 112);
-            pnl11.TabIndex = 42;
-            // 
-            // pos11
-            // 
-            pos11.AutoSize = true;
-            pos11.BackColor = Color.Transparent;
-            pos11.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos11.Location = new Point(60, 54);
-            pos11.Margin = new Padding(1, 0, 1, 0);
-            pos11.Name = "pos11";
-            pos11.Size = new Size(10, 14);
-            pos11.TabIndex = 52;
-            pos11.Text = " ";
-            pos11.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pcbChance
             // 
@@ -720,6 +698,41 @@ namespace Monopoly.Screens
             pcbFortune.MouseEnter += pcb_MouseEnter;
             pcbFortune.MouseLeave += pcb_MouseLeave;
             // 
+            // pnl36
+            // 
+            pnl36.BackColor = Color.Transparent;
+            pnl36.BorderStyle = BorderStyle.FixedSingle;
+            pnl36.Controls.Add(pos36);
+            pnl36.Controls.Add(pcb21);
+            pnl36.Cursor = Cursors.Hand;
+            pnl36.Location = new Point(885, 544);
+            pnl36.Margin = new Padding(1);
+            pnl36.Name = "pnl36";
+            pnl36.Size = new Size(131, 73);
+            pnl36.TabIndex = 37;
+            // 
+            // pos36
+            // 
+            pos36.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos36.Location = new Point(42, 18);
+            pos36.Margin = new Padding(1, 0, 1, 0);
+            pos36.Name = "pos36";
+            pos36.Size = new Size(73, 28);
+            pos36.TabIndex = 46;
+            pos36.Text = "Thanh Hoa\r\n3600 $";
+            pos36.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb21
+            // 
+            pcb21.BackColor = Color.FromArgb(255, 224, 192);
+            pcb21.BorderStyle = BorderStyle.FixedSingle;
+            pcb21.Location = new Point(-1, -1);
+            pcb21.Margin = new Padding(1);
+            pcb21.Name = "pcb21";
+            pcb21.Size = new Size(26, 73);
+            pcb21.TabIndex = 40;
+            pcb21.TabStop = false;
+            // 
             // pnl35
             // 
             pnl35.BackColor = Color.Transparent;
@@ -735,12 +748,11 @@ namespace Monopoly.Screens
             // 
             // pos35
             // 
-            pos35.AutoSize = true;
             pos35.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos35.Location = new Point(48, 23);
             pos35.Margin = new Padding(1, 0, 1, 0);
             pos35.Name = "pos35";
-            pos35.Size = new Size(48, 28);
+            pos35.Size = new Size(60, 28);
             pos35.TabIndex = 45;
             pos35.Text = "Ha Noi\r\n2900 $";
             pos35.TextAlign = ContentAlignment.MiddleCenter;
@@ -756,41 +768,31 @@ namespace Monopoly.Screens
             pcb20.TabIndex = 40;
             pcb20.TabStop = false;
             // 
-            // pnl30
+            // pnl34
             // 
-            pnl30.BackColor = Color.Transparent;
-            pnl30.BorderStyle = BorderStyle.FixedSingle;
-            pnl30.Controls.Add(pos30);
-            pnl30.Controls.Add(pcb17);
-            pnl30.Cursor = Cursors.Hand;
-            pnl30.Location = new Point(885, 112);
-            pnl30.Margin = new Padding(1);
-            pnl30.Name = "pnl30";
-            pnl30.Size = new Size(131, 73);
-            pnl30.TabIndex = 29;
+            pnl34.BackgroundImage = Resources.Tax;
+            pnl34.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl34.BorderStyle = BorderStyle.FixedSingle;
+            pnl34.Controls.Add(pos34);
+            pnl34.Cursor = Cursors.Hand;
+            pnl34.Location = new Point(885, 400);
+            pnl34.Margin = new Padding(1);
+            pnl34.Name = "pnl34";
+            pnl34.Size = new Size(131, 73);
+            pnl34.TabIndex = 34;
             // 
-            // pos30
+            // pos34
             // 
-            pos30.AutoSize = true;
-            pos30.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos30.Location = new Point(39, 21);
-            pos30.Margin = new Padding(1, 0, 1, 0);
-            pos30.Name = "pos30";
-            pos30.Size = new Size(69, 28);
-            pos30.TabIndex = 45;
-            pos30.Text = "New York\r\n2200 $";
-            pos30.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb17
-            // 
-            pcb17.BackColor = Color.FromArgb(192, 192, 255);
-            pcb17.BorderStyle = BorderStyle.FixedSingle;
-            pcb17.Location = new Point(-1, -1);
-            pcb17.Margin = new Padding(1);
-            pcb17.Name = "pcb17";
-            pcb17.Size = new Size(26, 73);
-            pcb17.TabIndex = 38;
-            pcb17.TabStop = false;
+            pos34.AutoSize = true;
+            pos34.BackColor = Color.Transparent;
+            pos34.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos34.Location = new Point(57, 34);
+            pos34.Margin = new Padding(1, 0, 1, 0);
+            pos34.Name = "pos34";
+            pos34.Size = new Size(10, 14);
+            pos34.TabIndex = 60;
+            pos34.Text = " ";
+            pos34.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnl33
             // 
@@ -828,6 +830,32 @@ namespace Monopoly.Screens
             pcb19.TabIndex = 40;
             pcb19.TabStop = false;
             // 
+            // pnl32
+            // 
+            pnl32.BackgroundImage = Resources.Fortune90;
+            pnl32.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl32.BorderStyle = BorderStyle.FixedSingle;
+            pnl32.Controls.Add(pos32);
+            pnl32.Cursor = Cursors.Hand;
+            pnl32.Location = new Point(885, 256);
+            pnl32.Margin = new Padding(1);
+            pnl32.Name = "pnl32";
+            pnl32.Size = new Size(131, 73);
+            pnl32.TabIndex = 33;
+            // 
+            // pos32
+            // 
+            pos32.AutoSize = true;
+            pos32.BackColor = Color.Transparent;
+            pos32.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos32.Location = new Point(57, 27);
+            pos32.Margin = new Padding(1, 0, 1, 0);
+            pos32.Name = "pos32";
+            pos32.Size = new Size(10, 14);
+            pos32.TabIndex = 59;
+            pos32.Text = " ";
+            pos32.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // pnl31
             // 
             pnl31.BackColor = Color.Transparent;
@@ -864,237 +892,67 @@ namespace Monopoly.Screens
             pcb18.TabIndex = 39;
             pcb18.TabStop = false;
             // 
-            // pnl36
+            // pnl30
             // 
-            pnl36.BackColor = Color.Transparent;
-            pnl36.BorderStyle = BorderStyle.FixedSingle;
-            pnl36.Controls.Add(pos1);
-            pnl36.Controls.Add(pos36);
-            pnl36.Controls.Add(pcb21);
-            pnl36.Cursor = Cursors.Hand;
-            pnl36.Location = new Point(885, 544);
-            pnl36.Margin = new Padding(1);
-            pnl36.Name = "pnl36";
-            pnl36.Size = new Size(131, 73);
-            pnl36.TabIndex = 37;
+            pnl30.BackColor = Color.Transparent;
+            pnl30.BorderStyle = BorderStyle.FixedSingle;
+            pnl30.Controls.Add(pos30);
+            pnl30.Controls.Add(pcb17);
+            pnl30.Cursor = Cursors.Hand;
+            pnl30.Location = new Point(885, 112);
+            pnl30.Margin = new Padding(1);
+            pnl30.Name = "pnl30";
+            pnl30.Size = new Size(131, 73);
+            pnl30.TabIndex = 29;
             // 
-            // pos36
+            // pos30
             // 
-            pos36.AutoSize = true;
-            pos36.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos36.Location = new Point(35, 18);
-            pos36.Margin = new Padding(1, 0, 1, 0);
-            pos36.Name = "pos36";
-            pos36.Size = new Size(73, 28);
-            pos36.TabIndex = 46;
-            pos36.Text = "Thanh Hoa\r\n3600 $";
-            pos36.TextAlign = ContentAlignment.MiddleCenter;
+            pos30.AutoSize = true;
+            pos30.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos30.Location = new Point(39, 21);
+            pos30.Margin = new Padding(1, 0, 1, 0);
+            pos30.Name = "pos30";
+            pos30.Size = new Size(69, 28);
+            pos30.TabIndex = 45;
+            pos30.Text = "New York\r\n2200 $";
+            pos30.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // pcb21
+            // pcb17
             // 
-            pcb21.BackColor = Color.FromArgb(255, 224, 192);
-            pcb21.BorderStyle = BorderStyle.FixedSingle;
-            pcb21.Location = new Point(-1, -1);
-            pcb21.Margin = new Padding(1);
-            pcb21.Name = "pcb21";
-            pcb21.Size = new Size(26, 73);
-            pcb21.TabIndex = 40;
-            pcb21.TabStop = false;
+            pcb17.BackColor = Color.FromArgb(192, 192, 255);
+            pcb17.BorderStyle = BorderStyle.FixedSingle;
+            pcb17.Location = new Point(-1, -1);
+            pcb17.Margin = new Padding(1);
+            pcb17.Name = "pcb17";
+            pcb17.Size = new Size(26, 73);
+            pcb17.TabIndex = 38;
+            pcb17.TabStop = false;
             // 
-            // pnl34
+            // pnl29
             // 
-            pnl34.BackgroundImage = Resources.Tax;
-            pnl34.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl34.BorderStyle = BorderStyle.FixedSingle;
-            pnl34.Controls.Add(pos34);
-            pnl34.Cursor = Cursors.Hand;
-            pnl34.Location = new Point(885, 400);
-            pnl34.Margin = new Padding(1);
-            pnl34.Name = "pnl34";
-            pnl34.Size = new Size(131, 73);
-            pnl34.TabIndex = 34;
+            pnl29.BackgroundImage = Resources.GoToJail;
+            pnl29.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl29.BorderStyle = BorderStyle.FixedSingle;
+            pnl29.Controls.Add(pos29);
+            pnl29.Cursor = Cursors.Hand;
+            pnl29.Location = new Point(885, 1);
+            pnl29.Margin = new Padding(1);
+            pnl29.Name = "pnl29";
+            pnl29.Size = new Size(131, 112);
+            pnl29.TabIndex = 9;
             // 
-            // pos34
+            // pos29
             // 
-            pos34.AutoSize = true;
-            pos34.BackColor = Color.Transparent;
-            pos34.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos34.Location = new Point(57, 34);
-            pos34.Margin = new Padding(1, 0, 1, 0);
-            pos34.Name = "pos34";
-            pos34.Size = new Size(10, 14);
-            pos34.TabIndex = 60;
-            pos34.Text = " ";
-            pos34.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl32
-            // 
-            pnl32.BackgroundImage = Resources.Fortune90;
-            pnl32.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl32.BorderStyle = BorderStyle.FixedSingle;
-            pnl32.Controls.Add(pos32);
-            pnl32.Cursor = Cursors.Hand;
-            pnl32.Location = new Point(885, 256);
-            pnl32.Margin = new Padding(1);
-            pnl32.Name = "pnl32";
-            pnl32.Size = new Size(131, 73);
-            pnl32.TabIndex = 33;
-            // 
-            // pos32
-            // 
-            pos32.AutoSize = true;
-            pos32.BackColor = Color.Transparent;
-            pos32.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos32.Location = new Point(57, 27);
-            pos32.Margin = new Padding(1, 0, 1, 0);
-            pos32.Name = "pos32";
-            pos32.Size = new Size(10, 14);
-            pos32.TabIndex = 59;
-            pos32.Text = " ";
-            pos32.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl12
-            // 
-            pnl12.BackColor = Color.Transparent;
-            pnl12.BorderStyle = BorderStyle.FixedSingle;
-            pnl12.Controls.Add(pos12);
-            pnl12.Controls.Add(pcb6);
-            pnl12.Cursor = Cursors.Hand;
-            pnl12.Location = new Point(-1, 543);
-            pnl12.Margin = new Padding(1);
-            pnl12.Name = "pnl12";
-            pnl12.Size = new Size(131, 73);
-            pnl12.TabIndex = 28;
-            // 
-            // pos12
-            // 
-            pos12.AutoSize = true;
-            pos12.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos12.Location = new Point(21, 19);
-            pos12.Margin = new Padding(1, 0, 1, 0);
-            pos12.Name = "pos12";
-            pos12.Size = new Size(45, 28);
-            pos12.TabIndex = 46;
-            pos12.Text = "Busan\r\n1600 $";
-            pos12.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb6
-            // 
-            pcb6.BackColor = Color.Silver;
-            pcb6.BorderStyle = BorderStyle.FixedSingle;
-            pcb6.Location = new Point(104, -1);
-            pcb6.Margin = new Padding(1);
-            pcb6.Name = "pcb6";
-            pcb6.Size = new Size(26, 73);
-            pcb6.TabIndex = 39;
-            pcb6.TabStop = false;
-            // 
-            // pnl13
-            // 
-            pnl13.BorderStyle = BorderStyle.FixedSingle;
-            pnl13.Controls.Add(pos13);
-            pnl13.Controls.Add(pcb7);
-            pnl13.Cursor = Cursors.Hand;
-            pnl13.Location = new Point(-1, 471);
-            pnl13.Margin = new Padding(1);
-            pnl13.Name = "pnl13";
-            pnl13.Size = new Size(131, 73);
-            pnl13.TabIndex = 27;
-            // 
-            // pos13
-            // 
-            pos13.AutoSize = true;
-            pos13.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos13.Location = new Point(21, 24);
-            pos13.Margin = new Padding(1, 0, 1, 0);
-            pos13.Name = "pos13";
-            pos13.Size = new Size(45, 28);
-            pos13.TabIndex = 45;
-            pos13.Text = "Seoul\r\n2300 $";
-            pos13.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb7
-            // 
-            pcb7.BackColor = Color.Silver;
-            pcb7.BorderStyle = BorderStyle.FixedSingle;
-            pcb7.Location = new Point(104, -1);
-            pcb7.Margin = new Padding(1);
-            pcb7.Name = "pcb7";
-            pcb7.Size = new Size(26, 73);
-            pcb7.TabIndex = 1;
-            pcb7.TabStop = false;
-            // 
-            // pnl14
-            // 
-            pnl14.BackColor = Color.Transparent;
-            pnl14.BorderStyle = BorderStyle.FixedSingle;
-            pnl14.Controls.Add(pos15);
-            pnl14.Controls.Add(pcb8);
-            pnl14.Cursor = Cursors.Hand;
-            pnl14.Location = new Point(-1, 327);
-            pnl14.Margin = new Padding(1);
-            pnl14.Name = "pnl14";
-            pnl14.Size = new Size(131, 73);
-            pnl14.TabIndex = 26;
-            // 
-            // pos15
-            // 
-            pos15.AutoSize = true;
-            pos15.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos15.Location = new Point(21, 21);
-            pos15.Margin = new Padding(1, 0, 1, 0);
-            pos15.Name = "pos15";
-            pos15.Size = new Size(56, 28);
-            pos15.TabIndex = 44;
-            pos15.Text = "Moscow\r\n2500 $";
-            pos15.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb8
-            // 
-            pcb8.BackColor = Color.FromArgb(255, 192, 255);
-            pcb8.BorderStyle = BorderStyle.FixedSingle;
-            pcb8.Location = new Point(104, -1);
-            pcb8.Margin = new Padding(1);
-            pcb8.Name = "pcb8";
-            pcb8.Size = new Size(26, 73);
-            pcb8.TabIndex = 39;
-            pcb8.TabStop = false;
-            // 
-            // pnl18
-            // 
-            pnl18.BackColor = Color.Transparent;
-            pnl18.BorderStyle = BorderStyle.FixedSingle;
-            pnl18.Controls.Add(pos18);
-            pnl18.Controls.Add(pcb10);
-            pnl18.Cursor = Cursors.Hand;
-            pnl18.Location = new Point(-1, 112);
-            pnl18.Margin = new Padding(1);
-            pnl18.Name = "pnl18";
-            pnl18.Size = new Size(131, 73);
-            pnl18.TabIndex = 20;
-            // 
-            // pos18
-            // 
-            pos18.AutoSize = true;
-            pos18.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos18.Location = new Point(27, 21);
-            pos18.Margin = new Padding(1, 0, 1, 0);
-            pos18.Name = "pos18";
-            pos18.Size = new Size(45, 28);
-            pos18.TabIndex = 46;
-            pos18.Text = "Kazan\r\n1300 $";
-            pos18.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb10
-            // 
-            pcb10.BackColor = Color.FromArgb(255, 192, 255);
-            pcb10.BorderStyle = BorderStyle.FixedSingle;
-            pcb10.Location = new Point(104, -1);
-            pcb10.Margin = new Padding(1);
-            pcb10.Name = "pcb10";
-            pcb10.Size = new Size(26, 73);
-            pcb10.TabIndex = 39;
-            pcb10.TabStop = false;
+            pos29.AutoSize = true;
+            pos29.BackColor = Color.Transparent;
+            pos29.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos29.Location = new Point(57, 45);
+            pos29.Margin = new Padding(1, 0, 1, 0);
+            pos29.Name = "pos29";
+            pos29.Size = new Size(10, 14);
+            pos29.TabIndex = 59;
+            pos29.Text = " ";
+            pos29.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnl28
             // 
@@ -1132,289 +990,31 @@ namespace Monopoly.Screens
             pcb16.TabIndex = 2;
             pcb16.TabStop = false;
             // 
-            // pnl2
+            // pnl27
             // 
-            pnl2.BackColor = Color.Transparent;
-            pnl2.BorderStyle = BorderStyle.FixedSingle;
-            pnl2.Controls.Add(pos2);
-            pnl2.Controls.Add(pcb1);
-            pnl2.Cursor = Cursors.Hand;
-            pnl2.Location = new Point(801, 616);
-            pnl2.Margin = new Padding(1);
-            pnl2.Name = "pnl2";
-            pnl2.Size = new Size(85, 112);
-            pnl2.TabIndex = 2;
+            pnl27.BackgroundImage = Resources.ChanceCard;
+            pnl27.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl27.BorderStyle = BorderStyle.FixedSingle;
+            pnl27.Controls.Add(pos27);
+            pnl27.Cursor = Cursors.Hand;
+            pnl27.Location = new Point(715, 1);
+            pnl27.Margin = new Padding(1);
+            pnl27.Name = "pnl27";
+            pnl27.Size = new Size(87, 112);
+            pnl27.TabIndex = 10;
             // 
-            // pos2
+            // pos27
             // 
-            pos2.AutoSize = true;
-            pos2.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos2.Location = new Point(8, 53);
-            pos2.Margin = new Padding(1, 0, 1, 0);
-            pos2.Name = "pos2";
-            pos2.Size = new Size(60, 28);
-            pos2.TabIndex = 46;
-            pos2.Text = "TP. HCM\r\n3100 $";
-            pos2.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb1
-            // 
-            pcb1.BackColor = Color.FromArgb(255, 224, 192);
-            pcb1.BorderStyle = BorderStyle.FixedSingle;
-            pcb1.Location = new Point(-1, -1);
-            pcb1.Margin = new Padding(1);
-            pcb1.Name = "pcb1";
-            pcb1.Size = new Size(85, 22);
-            pcb1.TabIndex = 0;
-            pcb1.TabStop = false;
-            // 
-            // pnl29
-            // 
-            pnl29.BackgroundImage = Resources.GoToJail;
-            pnl29.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl29.BorderStyle = BorderStyle.FixedSingle;
-            pnl29.Controls.Add(pos29);
-            pnl29.Cursor = Cursors.Hand;
-            pnl29.Location = new Point(885, 1);
-            pnl29.Margin = new Padding(1);
-            pnl29.Name = "pnl29";
-            pnl29.Size = new Size(131, 112);
-            pnl29.TabIndex = 9;
-            // 
-            // pos29
-            // 
-            pos29.AutoSize = true;
-            pos29.BackColor = Color.Transparent;
-            pos29.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos29.Location = new Point(57, 45);
-            pos29.Margin = new Padding(1, 0, 1, 0);
-            pos29.Name = "pos29";
-            pos29.Size = new Size(10, 14);
-            pos29.TabIndex = 59;
-            pos29.Text = " ";
-            pos29.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl19
-            // 
-            pnl19.BackgroundImage = Resources.FreeParking;
-            pnl19.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl19.BorderStyle = BorderStyle.FixedSingle;
-            pnl19.Controls.Add(pos19);
-            pnl19.Cursor = Cursors.Hand;
-            pnl19.Location = new Point(-1, 1);
-            pnl19.Margin = new Padding(1);
-            pnl19.Name = "pnl19";
-            pnl19.Size = new Size(131, 112);
-            pnl19.TabIndex = 17;
-            // 
-            // pos19
-            // 
-            pos19.AutoSize = true;
-            pos19.BackColor = Color.Transparent;
-            pos19.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos19.Location = new Point(39, 45);
-            pos19.Margin = new Padding(1, 0, 1, 0);
-            pos19.Name = "pos19";
-            pos19.Size = new Size(10, 14);
-            pos19.TabIndex = 55;
-            pos19.Text = " ";
-            pos19.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl20
-            // 
-            pnl20.BackColor = Color.Transparent;
-            pnl20.BorderStyle = BorderStyle.FixedSingle;
-            pnl20.Controls.Add(pos20);
-            pnl20.Controls.Add(pcb11);
-            pnl20.Cursor = Cursors.Hand;
-            pnl20.Location = new Point(129, 1);
-            pnl20.Margin = new Padding(1);
-            pnl20.Name = "pnl20";
-            pnl20.Size = new Size(85, 112);
-            pnl20.TabIndex = 18;
-            // 
-            // pos20
-            // 
-            pos20.AutoSize = true;
-            pos20.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos20.Location = new Point(-1, 32);
-            pos20.Margin = new Padding(1, 0, 1, 0);
-            pos20.Name = "pos20";
-            pos20.Size = new Size(76, 28);
-            pos20.TabIndex = 43;
-            pos20.Text = "Guangzhou\r\n1700 $";
-            pos20.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb11
-            // 
-            pcb11.BackColor = Color.FromArgb(255, 192, 192);
-            pcb11.BorderStyle = BorderStyle.FixedSingle;
-            pcb11.Location = new Point(-1, 89);
-            pcb11.Margin = new Padding(1);
-            pcb11.Name = "pcb11";
-            pcb11.Size = new Size(85, 22);
-            pcb11.TabIndex = 2;
-            pcb11.TabStop = false;
-            // 
-            // pnl21
-            // 
-            pnl21.BackgroundImage = Resources.FortuneCard;
-            pnl21.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl21.BorderStyle = BorderStyle.FixedSingle;
-            pnl21.Controls.Add(pos21);
-            pnl21.Cursor = Cursors.Hand;
-            pnl21.Location = new Point(214, 1);
-            pnl21.Margin = new Padding(1);
-            pnl21.Name = "pnl21";
-            pnl21.Size = new Size(85, 112);
-            pnl21.TabIndex = 16;
-            // 
-            // pos21
-            // 
-            pos21.AutoSize = true;
-            pos21.BackColor = Color.Transparent;
-            pos21.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos21.Location = new Point(36, 39);
-            pos21.Margin = new Padding(1, 0, 1, 0);
-            pos21.Name = "pos21";
-            pos21.Size = new Size(10, 14);
-            pos21.TabIndex = 56;
-            pos21.Text = " ";
-            pos21.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl22
-            // 
-            pnl22.BackColor = Color.Transparent;
-            pnl22.BorderStyle = BorderStyle.FixedSingle;
-            pnl22.Controls.Add(pos22);
-            pnl22.Controls.Add(pcb12);
-            pnl22.Cursor = Cursors.Hand;
-            pnl22.Location = new Point(297, 1);
-            pnl22.Margin = new Padding(1);
-            pnl22.Name = "pnl22";
-            pnl22.Size = new Size(85, 112);
-            pnl22.TabIndex = 15;
-            // 
-            // pos22
-            // 
-            pos22.AutoSize = true;
-            pos22.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos22.Location = new Point(18, 32);
-            pos22.Margin = new Padding(1, 0, 1, 0);
-            pos22.Name = "pos22";
-            pos22.Size = new Size(49, 28);
-            pos22.TabIndex = 42;
-            pos22.Text = "Beijing\r\n2400 $";
-            pos22.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb12
-            // 
-            pcb12.BackColor = Color.FromArgb(255, 192, 192);
-            pcb12.BorderStyle = BorderStyle.FixedSingle;
-            pcb12.Location = new Point(-1, 89);
-            pcb12.Margin = new Padding(1);
-            pcb12.Name = "pcb12";
-            pcb12.Size = new Size(85, 22);
-            pcb12.TabIndex = 2;
-            pcb12.TabStop = false;
-            // 
-            // pnl23
-            // 
-            pnl23.BackColor = Color.Transparent;
-            pnl23.BorderStyle = BorderStyle.FixedSingle;
-            pnl23.Controls.Add(pos23);
-            pnl23.Controls.Add(pcb13);
-            pnl23.Cursor = Cursors.Hand;
-            pnl23.Location = new Point(381, 1);
-            pnl23.Margin = new Padding(1);
-            pnl23.Name = "pnl23";
-            pnl23.Size = new Size(85, 112);
-            pnl23.TabIndex = 14;
-            // 
-            // pos23
-            // 
-            pos23.AutoSize = true;
-            pos23.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos23.Location = new Point(6, 32);
-            pos23.Margin = new Padding(1, 0, 1, 0);
-            pos23.Name = "pos23";
-            pos23.Size = new Size(64, 28);
-            pos23.TabIndex = 43;
-            pos23.Text = "Shanghai\r\n1800 $";
-            pos23.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb13
-            // 
-            pcb13.BackColor = Color.FromArgb(255, 192, 192);
-            pcb13.BorderStyle = BorderStyle.FixedSingle;
-            pcb13.Location = new Point(-1, 90);
-            pcb13.Margin = new Padding(1);
-            pcb13.Name = "pcb13";
-            pcb13.Size = new Size(85, 22);
-            pcb13.TabIndex = 2;
-            pcb13.TabStop = false;
-            // 
-            // pnl24
-            // 
-            pnl24.BackgroundImage = Resources.Train;
-            pnl24.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl24.BorderStyle = BorderStyle.FixedSingle;
-            pnl24.Controls.Add(pos24);
-            pnl24.Cursor = Cursors.Hand;
-            pnl24.Location = new Point(465, 1);
-            pnl24.Margin = new Padding(1);
-            pnl24.Name = "pnl24";
-            pnl24.Size = new Size(85, 112);
-            pnl24.TabIndex = 13;
-            // 
-            // pos24
-            // 
-            pos24.AutoSize = true;
-            pos24.BackColor = Color.Transparent;
-            pos24.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos24.Location = new Point(36, 39);
-            pos24.Margin = new Padding(1, 0, 1, 0);
-            pos24.Name = "pos24";
-            pos24.Size = new Size(10, 14);
-            pos24.TabIndex = 57;
-            pos24.Text = " ";
-            pos24.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pnl25
-            // 
-            pnl25.BackColor = Color.Transparent;
-            pnl25.BorderStyle = BorderStyle.FixedSingle;
-            pnl25.Controls.Add(pos25);
-            pnl25.Controls.Add(pcb14);
-            pnl25.Cursor = Cursors.Hand;
-            pnl25.Location = new Point(549, 1);
-            pnl25.Margin = new Padding(1);
-            pnl25.Name = "pnl25";
-            pnl25.Size = new Size(85, 112);
-            pnl25.TabIndex = 12;
-            // 
-            // pos25
-            // 
-            pos25.AutoSize = true;
-            pos25.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos25.Location = new Point(17, 32);
-            pos25.Margin = new Padding(1, 0, 1, 0);
-            pos25.Name = "pos25";
-            pos25.Size = new Size(45, 28);
-            pos25.TabIndex = 40;
-            pos25.Text = "Tokyo\r\n2200 $";
-            pos25.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pcb14
-            // 
-            pcb14.BackColor = Color.FromArgb(192, 255, 192);
-            pcb14.BorderStyle = BorderStyle.FixedSingle;
-            pcb14.Location = new Point(-1, 89);
-            pcb14.Margin = new Padding(1);
-            pcb14.Name = "pcb14";
-            pcb14.Size = new Size(85, 22);
-            pcb14.TabIndex = 2;
-            pcb14.TabStop = false;
+            pos27.AutoSize = true;
+            pos27.BackColor = Color.Transparent;
+            pos27.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos27.Location = new Point(35, 45);
+            pos27.Margin = new Padding(1, 0, 1, 0);
+            pos27.Name = "pos27";
+            pos27.Size = new Size(10, 14);
+            pos27.TabIndex = 58;
+            pos27.Text = " ";
+            pos27.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnl26
             // 
@@ -1452,31 +1052,396 @@ namespace Monopoly.Screens
             pcb15.TabIndex = 2;
             pcb15.TabStop = false;
             // 
-            // pnl27
+            // pnl25
             // 
-            pnl27.BackgroundImage = Resources.ChanceCard;
-            pnl27.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl27.BorderStyle = BorderStyle.FixedSingle;
-            pnl27.Controls.Add(pos27);
-            pnl27.Cursor = Cursors.Hand;
-            pnl27.Location = new Point(715, 1);
-            pnl27.Margin = new Padding(1);
-            pnl27.Name = "pnl27";
-            pnl27.Size = new Size(87, 112);
-            pnl27.TabIndex = 10;
+            pnl25.BackColor = Color.Transparent;
+            pnl25.BorderStyle = BorderStyle.FixedSingle;
+            pnl25.Controls.Add(pos25);
+            pnl25.Controls.Add(pcb14);
+            pnl25.Cursor = Cursors.Hand;
+            pnl25.Location = new Point(549, 1);
+            pnl25.Margin = new Padding(1);
+            pnl25.Name = "pnl25";
+            pnl25.Size = new Size(85, 112);
+            pnl25.TabIndex = 12;
             // 
-            // pos27
+            // pos25
             // 
-            pos27.AutoSize = true;
-            pos27.BackColor = Color.Transparent;
-            pos27.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos27.Location = new Point(35, 45);
-            pos27.Margin = new Padding(1, 0, 1, 0);
-            pos27.Name = "pos27";
-            pos27.Size = new Size(10, 14);
-            pos27.TabIndex = 58;
-            pos27.Text = " ";
-            pos27.TextAlign = ContentAlignment.MiddleCenter;
+            pos25.AutoSize = true;
+            pos25.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos25.Location = new Point(17, 32);
+            pos25.Margin = new Padding(1, 0, 1, 0);
+            pos25.Name = "pos25";
+            pos25.Size = new Size(45, 28);
+            pos25.TabIndex = 40;
+            pos25.Text = "Tokyo\r\n2200 $";
+            pos25.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb14
+            // 
+            pcb14.BackColor = Color.FromArgb(192, 255, 192);
+            pcb14.BorderStyle = BorderStyle.FixedSingle;
+            pcb14.Location = new Point(-1, 89);
+            pcb14.Margin = new Padding(1);
+            pcb14.Name = "pcb14";
+            pcb14.Size = new Size(85, 22);
+            pcb14.TabIndex = 2;
+            pcb14.TabStop = false;
+            // 
+            // pnl24
+            // 
+            pnl24.BackgroundImage = Resources.Train;
+            pnl24.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl24.BorderStyle = BorderStyle.FixedSingle;
+            pnl24.Controls.Add(pos24);
+            pnl24.Cursor = Cursors.Hand;
+            pnl24.Location = new Point(465, 1);
+            pnl24.Margin = new Padding(1);
+            pnl24.Name = "pnl24";
+            pnl24.Size = new Size(85, 112);
+            pnl24.TabIndex = 13;
+            // 
+            // pos24
+            // 
+            pos24.AutoSize = true;
+            pos24.BackColor = Color.Transparent;
+            pos24.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos24.Location = new Point(36, 39);
+            pos24.Margin = new Padding(1, 0, 1, 0);
+            pos24.Name = "pos24";
+            pos24.Size = new Size(10, 14);
+            pos24.TabIndex = 57;
+            pos24.Text = " ";
+            pos24.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pnl23
+            // 
+            pnl23.BackColor = Color.Transparent;
+            pnl23.BorderStyle = BorderStyle.FixedSingle;
+            pnl23.Controls.Add(pos23);
+            pnl23.Controls.Add(pcb13);
+            pnl23.Cursor = Cursors.Hand;
+            pnl23.Location = new Point(381, 1);
+            pnl23.Margin = new Padding(1);
+            pnl23.Name = "pnl23";
+            pnl23.Size = new Size(85, 112);
+            pnl23.TabIndex = 14;
+            // 
+            // pos23
+            // 
+            pos23.AutoSize = true;
+            pos23.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos23.Location = new Point(6, 32);
+            pos23.Margin = new Padding(1, 0, 1, 0);
+            pos23.Name = "pos23";
+            pos23.Size = new Size(64, 28);
+            pos23.TabIndex = 43;
+            pos23.Text = "Shanghai\r\n1800 $";
+            pos23.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb13
+            // 
+            pcb13.BackColor = Color.FromArgb(255, 192, 192);
+            pcb13.BorderStyle = BorderStyle.FixedSingle;
+            pcb13.Location = new Point(-1, 90);
+            pcb13.Margin = new Padding(1);
+            pcb13.Name = "pcb13";
+            pcb13.Size = new Size(85, 22);
+            pcb13.TabIndex = 2;
+            pcb13.TabStop = false;
+            // 
+            // pnl22
+            // 
+            pnl22.BackColor = Color.Transparent;
+            pnl22.BorderStyle = BorderStyle.FixedSingle;
+            pnl22.Controls.Add(pos22);
+            pnl22.Controls.Add(pcb12);
+            pnl22.Cursor = Cursors.Hand;
+            pnl22.Location = new Point(297, 1);
+            pnl22.Margin = new Padding(1);
+            pnl22.Name = "pnl22";
+            pnl22.Size = new Size(85, 112);
+            pnl22.TabIndex = 15;
+            // 
+            // pos22
+            // 
+            pos22.AutoSize = true;
+            pos22.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos22.Location = new Point(18, 32);
+            pos22.Margin = new Padding(1, 0, 1, 0);
+            pos22.Name = "pos22";
+            pos22.Size = new Size(49, 28);
+            pos22.TabIndex = 42;
+            pos22.Text = "Beijing\r\n2400 $";
+            pos22.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb12
+            // 
+            pcb12.BackColor = Color.FromArgb(255, 192, 192);
+            pcb12.BorderStyle = BorderStyle.FixedSingle;
+            pcb12.Location = new Point(-1, 89);
+            pcb12.Margin = new Padding(1);
+            pcb12.Name = "pcb12";
+            pcb12.Size = new Size(85, 22);
+            pcb12.TabIndex = 2;
+            pcb12.TabStop = false;
+            // 
+            // pnl21
+            // 
+            pnl21.BackgroundImage = Resources.FortuneCard;
+            pnl21.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl21.BorderStyle = BorderStyle.FixedSingle;
+            pnl21.Controls.Add(pos21);
+            pnl21.Cursor = Cursors.Hand;
+            pnl21.Location = new Point(214, 1);
+            pnl21.Margin = new Padding(1);
+            pnl21.Name = "pnl21";
+            pnl21.Size = new Size(85, 112);
+            pnl21.TabIndex = 16;
+            // 
+            // pos21
+            // 
+            pos21.AutoSize = true;
+            pos21.BackColor = Color.Transparent;
+            pos21.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos21.Location = new Point(36, 39);
+            pos21.Margin = new Padding(1, 0, 1, 0);
+            pos21.Name = "pos21";
+            pos21.Size = new Size(10, 14);
+            pos21.TabIndex = 56;
+            pos21.Text = " ";
+            pos21.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pnl20
+            // 
+            pnl20.BackColor = Color.Transparent;
+            pnl20.BorderStyle = BorderStyle.FixedSingle;
+            pnl20.Controls.Add(pos20);
+            pnl20.Controls.Add(pcb11);
+            pnl20.Cursor = Cursors.Hand;
+            pnl20.Location = new Point(129, 1);
+            pnl20.Margin = new Padding(1);
+            pnl20.Name = "pnl20";
+            pnl20.Size = new Size(85, 112);
+            pnl20.TabIndex = 18;
+            // 
+            // pos20
+            // 
+            pos20.AutoSize = true;
+            pos20.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos20.Location = new Point(-1, 32);
+            pos20.Margin = new Padding(1, 0, 1, 0);
+            pos20.Name = "pos20";
+            pos20.Size = new Size(76, 28);
+            pos20.TabIndex = 43;
+            pos20.Text = "Guangzhou\r\n1700 $";
+            pos20.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb11
+            // 
+            pcb11.BackColor = Color.FromArgb(255, 192, 192);
+            pcb11.BorderStyle = BorderStyle.FixedSingle;
+            pcb11.Location = new Point(-1, 89);
+            pcb11.Margin = new Padding(1);
+            pcb11.Name = "pcb11";
+            pcb11.Size = new Size(85, 22);
+            pcb11.TabIndex = 2;
+            pcb11.TabStop = false;
+            // 
+            // pnl19
+            // 
+            pnl19.BackgroundImage = Resources.FreeParking;
+            pnl19.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl19.BorderStyle = BorderStyle.FixedSingle;
+            pnl19.Controls.Add(pos19);
+            pnl19.Cursor = Cursors.Hand;
+            pnl19.Location = new Point(-1, 1);
+            pnl19.Margin = new Padding(1);
+            pnl19.Name = "pnl19";
+            pnl19.Size = new Size(131, 112);
+            pnl19.TabIndex = 17;
+            // 
+            // pos19
+            // 
+            pos19.AutoSize = true;
+            pos19.BackColor = Color.Transparent;
+            pos19.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos19.Location = new Point(39, 45);
+            pos19.Margin = new Padding(1, 0, 1, 0);
+            pos19.Name = "pos19";
+            pos19.Size = new Size(10, 14);
+            pos19.TabIndex = 55;
+            pos19.Text = " ";
+            pos19.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pnl18
+            // 
+            pnl18.BackColor = Color.Transparent;
+            pnl18.BorderStyle = BorderStyle.FixedSingle;
+            pnl18.Controls.Add(pos18);
+            pnl18.Controls.Add(pcb10);
+            pnl18.Cursor = Cursors.Hand;
+            pnl18.Location = new Point(-1, 112);
+            pnl18.Margin = new Padding(1);
+            pnl18.Name = "pnl18";
+            pnl18.Size = new Size(131, 73);
+            pnl18.TabIndex = 20;
+            // 
+            // pos18
+            // 
+            pos18.AutoSize = true;
+            pos18.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos18.Location = new Point(27, 21);
+            pos18.Margin = new Padding(1, 0, 1, 0);
+            pos18.Name = "pos18";
+            pos18.Size = new Size(45, 28);
+            pos18.TabIndex = 46;
+            pos18.Text = "Kazan\r\n1300 $";
+            pos18.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb10
+            // 
+            pcb10.BackColor = Color.FromArgb(255, 192, 255);
+            pcb10.BorderStyle = BorderStyle.FixedSingle;
+            pcb10.Location = new Point(104, -1);
+            pcb10.Margin = new Padding(1);
+            pcb10.Name = "pcb10";
+            pcb10.Size = new Size(26, 73);
+            pcb10.TabIndex = 39;
+            pcb10.TabStop = false;
+            // 
+            // pnl15
+            // 
+            pnl15.BackColor = Color.Transparent;
+            pnl15.BorderStyle = BorderStyle.FixedSingle;
+            pnl15.Controls.Add(pos15);
+            pnl15.Controls.Add(pcb8);
+            pnl15.Cursor = Cursors.Hand;
+            pnl15.Location = new Point(-1, 327);
+            pnl15.Margin = new Padding(1);
+            pnl15.Name = "pnl15";
+            pnl15.Size = new Size(131, 73);
+            pnl15.TabIndex = 26;
+            // 
+            // pos15
+            // 
+            pos15.AutoSize = true;
+            pos15.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos15.Location = new Point(21, 21);
+            pos15.Margin = new Padding(1, 0, 1, 0);
+            pos15.Name = "pos15";
+            pos15.Size = new Size(56, 28);
+            pos15.TabIndex = 46;
+            pos15.Text = "Moscow\r\n2200 $";
+            pos15.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb8
+            // 
+            pcb8.BackColor = Color.FromArgb(255, 192, 255);
+            pcb8.BorderStyle = BorderStyle.FixedSingle;
+            pcb8.Location = new Point(104, -1);
+            pcb8.Margin = new Padding(1);
+            pcb8.Name = "pcb8";
+            pcb8.Size = new Size(26, 73);
+            pcb8.TabIndex = 39;
+            pcb8.TabStop = false;
+            // 
+            // pnl13
+            // 
+            pnl13.BorderStyle = BorderStyle.FixedSingle;
+            pnl13.Controls.Add(pos13);
+            pnl13.Controls.Add(pcb7);
+            pnl13.Cursor = Cursors.Hand;
+            pnl13.Location = new Point(-1, 471);
+            pnl13.Margin = new Padding(1);
+            pnl13.Name = "pnl13";
+            pnl13.Size = new Size(131, 73);
+            pnl13.TabIndex = 27;
+            // 
+            // pos13
+            // 
+            pos13.AutoSize = true;
+            pos13.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos13.Location = new Point(21, 24);
+            pos13.Margin = new Padding(1, 0, 1, 0);
+            pos13.Name = "pos13";
+            pos13.Size = new Size(45, 28);
+            pos13.TabIndex = 45;
+            pos13.Text = "Seoul\r\n2300 $";
+            pos13.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb7
+            // 
+            pcb7.BackColor = Color.Silver;
+            pcb7.BorderStyle = BorderStyle.FixedSingle;
+            pcb7.Location = new Point(104, -1);
+            pcb7.Margin = new Padding(1);
+            pcb7.Name = "pcb7";
+            pcb7.Size = new Size(26, 73);
+            pcb7.TabIndex = 1;
+            pcb7.TabStop = false;
+            // 
+            // pnl12
+            // 
+            pnl12.BackColor = Color.Transparent;
+            pnl12.BorderStyle = BorderStyle.FixedSingle;
+            pnl12.Controls.Add(pos12);
+            pnl12.Controls.Add(pcb6);
+            pnl12.Cursor = Cursors.Hand;
+            pnl12.Location = new Point(-1, 543);
+            pnl12.Margin = new Padding(1);
+            pnl12.Name = "pnl12";
+            pnl12.Size = new Size(131, 73);
+            pnl12.TabIndex = 28;
+            // 
+            // pos12
+            // 
+            pos12.AutoSize = true;
+            pos12.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos12.Location = new Point(21, 19);
+            pos12.Margin = new Padding(1, 0, 1, 0);
+            pos12.Name = "pos12";
+            pos12.Size = new Size(45, 28);
+            pos12.TabIndex = 46;
+            pos12.Text = "Busan\r\n1600 $";
+            pos12.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb6
+            // 
+            pcb6.BackColor = Color.Silver;
+            pcb6.BorderStyle = BorderStyle.FixedSingle;
+            pcb6.Location = new Point(104, -1);
+            pcb6.Margin = new Padding(1);
+            pcb6.Name = "pcb6";
+            pcb6.Size = new Size(26, 73);
+            pcb6.TabIndex = 39;
+            pcb6.TabStop = false;
+            // 
+            // pnl11
+            // 
+            pnl11.BackgroundImage = Resources.VisitJail;
+            pnl11.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl11.BorderStyle = BorderStyle.FixedSingle;
+            pnl11.Controls.Add(pos11);
+            pnl11.Cursor = Cursors.Hand;
+            pnl11.Location = new Point(-1, 615);
+            pnl11.Margin = new Padding(1);
+            pnl11.Name = "pnl11";
+            pnl11.Size = new Size(131, 112);
+            pnl11.TabIndex = 42;
+            // 
+            // pos11
+            // 
+            pos11.AutoSize = true;
+            pos11.BackColor = Color.Transparent;
+            pos11.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos11.Location = new Point(60, 54);
+            pos11.Margin = new Padding(1, 0, 1, 0);
+            pos11.Name = "pos11";
+            pos11.Size = new Size(10, 14);
+            pos11.TabIndex = 52;
+            pos11.Text = " ";
+            pos11.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnl10
             // 
@@ -1727,11 +1692,48 @@ namespace Monopoly.Screens
             pos3.Text = " ";
             pos3.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // pnl2
+            // 
+            pnl2.BackColor = Color.Transparent;
+            pnl2.BorderStyle = BorderStyle.FixedSingle;
+            pnl2.Controls.Add(pos2);
+            pnl2.Controls.Add(pcb1);
+            pnl2.Cursor = Cursors.Hand;
+            pnl2.Location = new Point(801, 616);
+            pnl2.Margin = new Padding(1);
+            pnl2.Name = "pnl2";
+            pnl2.Size = new Size(85, 112);
+            pnl2.TabIndex = 2;
+            // 
+            // pos2
+            // 
+            pos2.AutoSize = true;
+            pos2.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pos2.Location = new Point(8, 53);
+            pos2.Margin = new Padding(1, 0, 1, 0);
+            pos2.Name = "pos2";
+            pos2.Size = new Size(60, 28);
+            pos2.TabIndex = 46;
+            pos2.Text = "TP. HCM\r\n3100 $";
+            pos2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pcb1
+            // 
+            pcb1.BackColor = Color.FromArgb(255, 224, 192);
+            pcb1.BorderStyle = BorderStyle.FixedSingle;
+            pcb1.Location = new Point(-1, -1);
+            pcb1.Margin = new Padding(1);
+            pcb1.Name = "pcb1";
+            pcb1.Size = new Size(85, 22);
+            pcb1.TabIndex = 0;
+            pcb1.TabStop = false;
+            // 
             // pnl1
             // 
             pnl1.BackgroundImage = Resources.Start;
             pnl1.BackgroundImageLayout = ImageLayout.Stretch;
             pnl1.BorderStyle = BorderStyle.FixedSingle;
+            pnl1.Controls.Add(pos1);
             pnl1.Cursor = Cursors.Hand;
             pnl1.Location = new Point(885, 616);
             pnl1.Margin = new Padding(1);
@@ -1744,7 +1746,7 @@ namespace Monopoly.Screens
             pos1.AutoSize = true;
             pos1.BackColor = Color.Transparent;
             pos1.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos1.Location = new Point(35, 17);
+            pos1.Location = new Point(34, 33);
             pos1.Margin = new Padding(1, 0, 1, 0);
             pos1.Name = "pos1";
             pos1.Size = new Size(10, 14);
@@ -1752,26 +1754,26 @@ namespace Monopoly.Screens
             pos1.Text = " ";
             pos1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // pnl15
+            // pnl14
             // 
-            pnl15.BackColor = Color.Transparent;
-            pnl15.BackgroundImage = Resources.ChanceCard_90;
-            pnl15.BackgroundImageLayout = ImageLayout.Stretch;
-            pnl15.BorderStyle = BorderStyle.FixedSingle;
-            pnl15.Controls.Add(pos14);
-            pnl15.Cursor = Cursors.Hand;
-            pnl15.Location = new Point(1, 400);
-            pnl15.Margin = new Padding(1);
-            pnl15.Name = "pnl15";
-            pnl15.Size = new Size(131, 73);
-            pnl15.TabIndex = 42;
+            pnl14.BackColor = Color.Transparent;
+            pnl14.BackgroundImage = Resources.ChanceCard_90;
+            pnl14.BackgroundImageLayout = ImageLayout.Stretch;
+            pnl14.BorderStyle = BorderStyle.FixedSingle;
+            pnl14.Controls.Add(pos14);
+            pnl14.Cursor = Cursors.Hand;
+            pnl14.Location = new Point(1, 400);
+            pnl14.Margin = new Padding(1);
+            pnl14.Name = "pnl14";
+            pnl14.Size = new Size(131, 73);
+            pnl14.TabIndex = 42;
             // 
             // pos14
             // 
             pos14.AutoSize = true;
             pos14.BackColor = Color.Transparent;
             pos14.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos14.Location = new Point(39, 28);
+            pos14.Location = new Point(30, 34);
             pos14.Margin = new Padding(1, 0, 1, 0);
             pos14.Name = "pos14";
             pos14.Size = new Size(10, 14);
@@ -1783,7 +1785,7 @@ namespace Monopoly.Screens
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(pnl15);
+            Controls.Add(pnl14);
             Controls.Add(pnl17);
             Controls.Add(pnl16);
             Controls.Add(pnlSide);
@@ -1818,72 +1820,67 @@ namespace Monopoly.Screens
             pnlGame.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Dice2).EndInit();
             ((System.ComponentModel.ISupportInitialize)Dice1).EndInit();
-            pnl11.ResumeLayout(false);
-            pnl11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcbChance).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbFortune).EndInit();
+            pnl36.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pcb21).EndInit();
             pnl35.ResumeLayout(false);
-            pnl35.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb20).EndInit();
-            pnl30.ResumeLayout(false);
-            pnl30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb17).EndInit();
+            pnl34.ResumeLayout(false);
+            pnl34.PerformLayout();
             pnl33.ResumeLayout(false);
             pnl33.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb19).EndInit();
+            pnl32.ResumeLayout(false);
+            pnl32.PerformLayout();
             pnl31.ResumeLayout(false);
             pnl31.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb18).EndInit();
-            pnl36.ResumeLayout(false);
-            pnl36.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb21).EndInit();
-            pnl34.ResumeLayout(false);
-            pnl34.PerformLayout();
-            pnl32.ResumeLayout(false);
-            pnl32.PerformLayout();
-            pnl12.ResumeLayout(false);
-            pnl12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb6).EndInit();
-            pnl13.ResumeLayout(false);
-            pnl13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb7).EndInit();
-            pnl14.ResumeLayout(false);
-            pnl14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
-            pnl18.ResumeLayout(false);
-            pnl18.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb10).EndInit();
+            pnl30.ResumeLayout(false);
+            pnl30.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb17).EndInit();
+            pnl29.ResumeLayout(false);
+            pnl29.PerformLayout();
             pnl28.ResumeLayout(false);
             pnl28.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb16).EndInit();
-            pnl2.ResumeLayout(false);
-            pnl2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb1).EndInit();
-            pnl29.ResumeLayout(false);
-            pnl29.PerformLayout();
-            pnl19.ResumeLayout(false);
-            pnl19.PerformLayout();
-            pnl20.ResumeLayout(false);
-            pnl20.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb11).EndInit();
-            pnl21.ResumeLayout(false);
-            pnl21.PerformLayout();
-            pnl22.ResumeLayout(false);
-            pnl22.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb12).EndInit();
-            pnl23.ResumeLayout(false);
-            pnl23.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb13).EndInit();
-            pnl24.ResumeLayout(false);
-            pnl24.PerformLayout();
-            pnl25.ResumeLayout(false);
-            pnl25.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pcb14).EndInit();
+            pnl27.ResumeLayout(false);
+            pnl27.PerformLayout();
             pnl26.ResumeLayout(false);
             pnl26.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb15).EndInit();
-            pnl27.ResumeLayout(false);
-            pnl27.PerformLayout();
+            pnl25.ResumeLayout(false);
+            pnl25.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb14).EndInit();
+            pnl24.ResumeLayout(false);
+            pnl24.PerformLayout();
+            pnl23.ResumeLayout(false);
+            pnl23.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb13).EndInit();
+            pnl22.ResumeLayout(false);
+            pnl22.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb12).EndInit();
+            pnl21.ResumeLayout(false);
+            pnl21.PerformLayout();
+            pnl20.ResumeLayout(false);
+            pnl20.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb11).EndInit();
+            pnl19.ResumeLayout(false);
+            pnl19.PerformLayout();
+            pnl18.ResumeLayout(false);
+            pnl18.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb10).EndInit();
+            pnl15.ResumeLayout(false);
+            pnl15.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb8).EndInit();
+            pnl13.ResumeLayout(false);
+            pnl13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb7).EndInit();
+            pnl12.ResumeLayout(false);
+            pnl12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb6).EndInit();
+            pnl11.ResumeLayout(false);
+            pnl11.PerformLayout();
             pnl10.ResumeLayout(false);
             pnl10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcb5).EndInit();
@@ -1904,8 +1901,13 @@ namespace Monopoly.Screens
             pnl4.PerformLayout();
             pnl3.ResumeLayout(false);
             pnl3.PerformLayout();
-            pnl15.ResumeLayout(false);
-            pnl15.PerformLayout();
+            pnl2.ResumeLayout(false);
+            pnl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pcb1).EndInit();
+            pnl1.ResumeLayout(false);
+            pnl1.PerformLayout();
+            pnl14.ResumeLayout(false);
+            pnl14.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1968,8 +1970,7 @@ namespace Monopoly.Screens
         private Panel pnl13;
         private Label pos13;
         private PictureBox pcb7;
-        private Panel pnl14;
-        private Label pos15;
+        private Panel pnl15;
         private PictureBox pcb8;
         private Panel pnl18;
         private Label pos18;
@@ -2027,12 +2028,14 @@ namespace Monopoly.Screens
         private Label pos3;
         private Panel pnl1;
         private Label pos1;
-        private Panel pnl15;
-        private Label pos14;
+        private Panel pnl14;
         private Panel pnl11;
         private Label pos11;
-        private System.Windows.Forms.Timer RollTime;
+        private System.Windows.Forms.Timer RollTimer;
         private PictureBox Dice1;
         private PictureBox Dice2;
+        private System.Windows.Forms.Timer MoveTimer;
+        private Label pos14;
+        private Label pos15;
     }
 }

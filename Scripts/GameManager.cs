@@ -21,7 +21,7 @@ namespace Monopoly.Scripts
 
             int result = 0;
             Random x = new Random();
-            result = x.Next(6);
+            result = x.Next(1,7);
             return result;
 
         }
