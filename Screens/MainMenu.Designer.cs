@@ -93,6 +93,7 @@
             btnOnline.TabIndex = 10;
             btnOnline.Text = "Multiplayer";
             btnOnline.UseVisualStyleBackColor = true;
+            btnOnline.Click += btnOnline_Click;
             // 
             // btnSingle
             // 

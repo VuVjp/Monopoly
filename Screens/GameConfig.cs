@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monopoly.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,12 +22,25 @@ namespace Monopoly.Screens
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
+            if (PlayerManager.isOnline)
+            {
+                PlayerManager.isAdmin = false;
+            }
             monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
         {
             monopoly.LoadScreen(new MainMenu(monopoly));
+        }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            if (PlayerManager.isOnline)
+            {
+                PlayerManager.isAdmin = true;
+            }
+            monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
     }
 }
