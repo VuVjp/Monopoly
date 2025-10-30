@@ -18,6 +18,12 @@ namespace Monopoly.Screens
         {
             InitializeComponent();
             this.monopoly = monopoly;
+            if(PlayerManager.isOnline)
+            {
+                btnCreate.Text = "Create Room";
+                btnJoin.Text = "Join Room";
+                btnDelete.Visible = false;
+            }
         }
 
         private void btnJoin_Click(object sender, EventArgs e)
@@ -39,6 +45,8 @@ namespace Monopoly.Screens
             if (PlayerManager.isOnline)
             {
                 PlayerManager.isAdmin = true;
+                monopoly.LoadScreen(new OnlineConfig(monopoly));
+                return;
             }
             monopoly.LoadScreen(new PlayerConfig(monopoly));
         }

@@ -10,6 +10,8 @@ namespace Monopoly.Scripts
     {
         public enum ActionType
         {
+            gameInfo,
+            message,
             StartGame,
             EndGame,
             RollDice,

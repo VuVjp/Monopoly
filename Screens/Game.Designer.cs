@@ -770,6 +770,7 @@ namespace Monopoly.Screens
             // 
             // pnl34
             // 
+            pnl34.BackColor = SystemColors.Control;
             pnl34.BackgroundImage = Resources.Tax;
             pnl34.BackgroundImageLayout = ImageLayout.Stretch;
             pnl34.BorderStyle = BorderStyle.FixedSingle;

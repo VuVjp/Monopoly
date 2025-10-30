@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Media;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Monopoly.Scripts.Sockets
 {
@@ -59,7 +59,7 @@ namespace Monopoly.Scripts.Sockets
         {
             socketClient.Dispose();
         }
-        public static async Task ClientReciever()
+        public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
         {
             try
             {
@@ -72,10 +72,45 @@ namespace Monopoly.Scripts.Sockets
                         {
                             switch (received!.Action)
                             {
+                                case Data.ActionType.message:
+                                    MessageBox.Show(received.Msg!, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    if (received.Msg == "Room is full or game already started")
+                                    {
+                                        monopoly.Invoke(new Action(() =>
+                                        {
+                                            monopoly.LoadScreen(new GameConfig(monopoly));
+                                        }));
+                                    }
+                                    break;
+                                case Data.ActionType.gameInfo:
+                                    if (received.From == "PlayerCount") 
+                                    {
+                                        monopoly.Invoke(new Action(() =>
+                                        {
+                                            PlayerManager.playerCount = int.Parse(received.Msg!.ToString());
+                                            for (int i = 2; i < PlayerManager.playerCount; i++)
+                                            {
+                                                PlayerConfig.playerBoxes[i].Visible = true;
+                                                PlayerConfig.playerBoxes[i].Image = Properties.Resources.user;
+                                            }
+                                            txbCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
+                                        }));
+                                    }
+                                    else
+                                    {
+                                        monopoly.Invoke(new Action(() =>
+                                        {
+                                            txbCounter.Text = received.Msg!.ToString();
+                                        }));
+                                    }
+                                    break;
                                 case Data.ActionType.PlayerInfo:
-                                    PlayerManager.curPlayer = PlayerConfig.playerMapping[received.Msg!];
-                                    PlayerConfig.SelectedUI.Location = new Point(PlayerManager.curPlayer.Location.X - 10, PlayerManager.curPlayer.Location.Y - 10);
-                                    PlayerConfig.SelectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
+                                    monopoly.Invoke(new Action(() =>
+                                    {
+                                        PlayerManager.curPlayer = PlayerConfig.playerMapping[received.Msg!];
+                                        PlayerConfig.SelectedUI.Location = new Point(PlayerManager.curPlayer.Location.X - 10, PlayerManager.curPlayer.Location.Y - 10);
+                                        PlayerConfig.SelectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
+                                    }));
                                     break;
                                 case Data.ActionType.ChangeAvt:
                                     if (received.Msg == "User")
@@ -120,6 +155,10 @@ namespace Monopoly.Scripts.Sockets
             catch (Exception ex)
             {
                 MessageBox.Show("Disconnected from server.", "Connection Lost", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                monopoly.Invoke(new Action(() =>
+                {
+                    monopoly.LoadScreen(new GameConfig(monopoly));
+                }));
             }
         }
     }
@@ -188,7 +227,7 @@ namespace Monopoly.Scripts.Sockets
         {
             socketServer.Dispose();
         }
-        public static async Task SocketHandler(Socket socket, string plr)
+        public static async Task SocketHandler(Socket socket, string plr, TextBox textBox)
         {
             try
             {
@@ -248,7 +287,21 @@ namespace Monopoly.Scripts.Sockets
                     if (client == SocketServerManager.ClientSockets["Player1"]) continue;
                     if (client != socket && client != null)
                     {
-                        var data = new Data(Data.ActionType.ChangeAvt, "User" ,pB.Name);
+                        var data = new Data(Data.ActionType.ChangeAvt, "User", pB.Name);
+                        await SocketServerManager.SocketServer.Send(client, data);
+                    }
+                }
+                PlayerManager.curPlayerIndex--;
+                textBox.Invoke(new Action(() =>
+                {
+                    textBox.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
+                }));
+                foreach (var client in SocketServerManager.ClientSockets.Values)
+                {
+                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                    if (client != socket && client != null)
+                    {
+                        var data = new Data(Data.ActionType.gameInfo, textBox.Text.ToString());
                         await SocketServerManager.SocketServer.Send(client, data);
                     }
                 }

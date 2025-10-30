@@ -68,28 +68,26 @@ namespace Monopoly.Screens
 
         private void OnlineModeSetup()
         {
-            pcbPlr3.Visible = true;
-            pcbPlr4.Visible = true;
+            btnMinus.Visible = false;
+            btnPlus.Visible = false;
+            PlayerManager.curPlayerIndex = 1;
+            txbPlrCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
             if (PlayerManager.isAdmin)
             {
+                for (int i = 2; i < PlayerManager.playerCount; i++)
+                {
+                    playerBoxes[i].Visible = true;
+                }
                 SocketServerManager.SocketServer.Start(IPAddress.Any.ToString(), 9999);
                 SocketServerManager.isListening = true;
                 SocketServerManager.isAcceptingPlayers = true;
                 PlayerManager.curPlayer = pcbPlr1;
                 btnPlay.Enabled = true;
-                btnPlus.Enabled = true;
-                btnMinus.Enabled = true;
                 Task.Run(async () =>
                 {
                     while (SocketServerManager.isListening)
                     {
                         string PlayerName = null!;
-                        if (!SocketServerManager.isAcceptingPlayers)
-                        {
-                            byte[] msg = Encoding.UTF8.GetBytes("Room is full or game already started");
-                            await Task.Delay(1000);
-                            continue;
-                        }
                         var clientSocket = await SocketServerManager.SocketServer.Accept();
                         for (int i = 1; i < SocketServerManager.ClientSockets.Count; i++)
                         {
@@ -100,15 +98,15 @@ namespace Monopoly.Screens
                                 break;
                             }
                         };
-                        if (PlayerName == null)
+                        if (PlayerName == null || PlayerManager.playerCount == PlayerManager.curPlayerIndex)
                         {
-                            byte[] msg = Encoding.UTF8.GetBytes("Room is full");
-                            //await SocketServerManager.SocketServer.Send(clientSocket, msg);
+                            await SocketServerManager.SocketServer.Send(clientSocket,new Data(Data.ActionType.message, "Room is full or game already started"));
                             clientSocket.Close();
                             continue;
                         }
                         SocketServerManager.ClientSockets[PlayerName] = clientSocket;
                         await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.PlayerInfo, PlayerName));
+                        await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.gameInfo, PlayerManager.playerCount.ToString(), "PlayerCount"));
                         foreach (var pcb in PlayerConfig.playerBoxes)
                         {
                             if (pcb.Tag != null)
@@ -116,13 +114,23 @@ namespace Monopoly.Screens
                                 await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.ChangeAvt, ((PictureBox)pcb.Tag!).Name, pcb.Name));
                             }
                         }
-                        _ = SocketServerManager.SocketHandler(clientSocket, PlayerName);
+                        PlayerManager.curPlayerIndex++;
+                        txbPlrCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
+                        foreach (var client in SocketServerManager.ClientSockets.Values)
+                        {
+                            if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                            if(client != null)
+                            {
+                                await SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.gameInfo, txbPlrCounter.Text.ToString()));
+                            }
+                        }
+                        _ = SocketServerManager.SocketHandler(clientSocket, PlayerName,txbPlrCounter);
                     }
                 });
             }
             else
             {
-                btnPlay.Text = "Ready";
+                btnPlay.Enabled = false;
                 btnPlus.Enabled = false;
                 btnMinus.Enabled = false;
                 txbPlrCounter.Enabled = false;
@@ -130,10 +138,11 @@ namespace Monopoly.Screens
                 SocketClientManager.SocketClient.Connect("", 9999);
                 Task.Run(async () =>
                 {
-                    _ = SocketClientManager.ClientReciever();
+                    _ =  SocketClientManager.ClientReciever(monopoly,txbPlrCounter);
                 });
             }
         }
+
         private void OfflineModeSetup()
         {
             PlayerManager.curPlayer = playerBoxes[0];
@@ -271,8 +280,8 @@ namespace Monopoly.Screens
         private void btnPlay_Click(object sender, EventArgs e)
         {
             PlayerManager.Players = new List<PlayerInfo>();
-            for (int i = 0; i < int.Parse(txbPlrCounter.Text); i++)
-            {
+            for (int i = 0; i < int.Parse(txbPlrCounter.Text.First().ToString()); i++)
+            { 
                 var pcb = playerBoxes[i];
                 if (pcb.Tag == null)
                 {
@@ -289,6 +298,18 @@ namespace Monopoly.Screens
                 PlayerManager.Players.Add(plr);
             }
             PlayerManager.playerCount = PlayerManager.Players.Count;
+            if(PlayerManager.isOnline && PlayerManager.isAdmin)
+            {
+                SocketServerManager.isAcceptingPlayers = false;
+                foreach (var client in SocketServerManager.ClientSockets.Values)
+                {
+                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                    if (client != null)
+                    {
+                        _ = SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.StartGame));
+                    }
+                }
+            }
             monopoly.LoadScreen(new Game(monopoly));
         }
 

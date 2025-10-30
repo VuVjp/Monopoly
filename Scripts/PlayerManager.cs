@@ -14,6 +14,7 @@ namespace Monopoly.Scripts
         public static bool isOnline;
         public static bool isAdmin;
         public static int playerCount;
+        public static int curPlayerIndex;
         public static Dictionary<string, Color> colorMapping = new Dictionary<string, Color>()
         {
             { "pcbAvt1", Color.Red },
