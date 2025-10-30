@@ -22,6 +22,7 @@ namespace Monopoly.Screens
         public static List<PictureBox> plrImgs = null!;
         public static List<PictureBox> playerBoxes = null!;
         public static Dictionary<string, PictureBox> playerMapping;
+        public static TextBox TxbChatHistory = null!;
         public static Button SelectedUI = null!;
 
         public PlayerConfig(Monopoly monopoly)
@@ -34,6 +35,7 @@ namespace Monopoly.Screens
         private void FormLoader()
         {
             SelectedUI = selectedUI;
+            TxbChatHistory = txbChatHistory;
             playerMapping = new Dictionary<string, PictureBox>()
             {
                 { "Player1", pcbPlr1 },
@@ -97,10 +99,11 @@ namespace Monopoly.Screens
                                 SocketServerManager.ClientSockets["Player" + (i + 1)] = clientSocket;
                                 break;
                             }
-                        };
+                        }
+                        ;
                         if (PlayerName == null || PlayerManager.playerCount == PlayerManager.curPlayerIndex)
                         {
-                            await SocketServerManager.SocketServer.Send(clientSocket,new Data(Data.ActionType.message, "Room is full or game already started"));
+                            await SocketServerManager.SocketServer.Send(clientSocket, new Data(Data.ActionType.message, "Room is full or game already started"));
                             clientSocket.Close();
                             continue;
                         }
@@ -119,12 +122,12 @@ namespace Monopoly.Screens
                         foreach (var client in SocketServerManager.ClientSockets.Values)
                         {
                             if (client == SocketServerManager.ClientSockets["Player1"]) continue;
-                            if(client != null)
+                            if (client != null)
                             {
                                 await SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.gameInfo, txbPlrCounter.Text.ToString()));
                             }
                         }
-                        _ = SocketServerManager.SocketHandler(clientSocket, PlayerName,txbPlrCounter);
+                        _ = SocketServerManager.SocketHandler(clientSocket, PlayerName, txbPlrCounter);
                     }
                 });
             }
@@ -138,7 +141,7 @@ namespace Monopoly.Screens
                 SocketClientManager.SocketClient.Connect("", 9999);
                 Task.Run(async () =>
                 {
-                    _ =  SocketClientManager.ClientReciever(monopoly,txbPlrCounter);
+                    _ = SocketClientManager.ClientReciever(monopoly, txbPlrCounter);
                 });
             }
         }
@@ -281,7 +284,7 @@ namespace Monopoly.Screens
         {
             PlayerManager.Players = new List<PlayerInfo>();
             for (int i = 0; i < int.Parse(txbPlrCounter.Text.First().ToString()); i++)
-            { 
+            {
                 var pcb = playerBoxes[i];
                 if (pcb.Tag == null)
                 {
@@ -298,7 +301,7 @@ namespace Monopoly.Screens
                 PlayerManager.Players.Add(plr);
             }
             PlayerManager.playerCount = PlayerManager.Players.Count;
-            if(PlayerManager.isOnline && PlayerManager.isAdmin)
+            if (PlayerManager.isOnline && PlayerManager.isAdmin)
             {
                 SocketServerManager.isAcceptingPlayers = false;
                 foreach (var client in SocketServerManager.ClientSockets.Values)
@@ -315,21 +318,21 @@ namespace Monopoly.Screens
 
         private void btnReturn_Click(object sender, EventArgs e)
         {
-            if( PlayerManager.isOnline && PlayerManager.isAdmin)
+            if (PlayerManager.isOnline && PlayerManager.isAdmin)
             {
                 SocketServerManager.isListening = false;
                 SocketServerManager.isAcceptingPlayers = false;
                 SocketServerManager.SocketServer.Stop();
                 foreach (var item in SocketServerManager.ClientSockets)
                 {
-                    if(item.Value != null)
+                    if (item.Value != null)
                     {
                         item.Value.Dispose();
                         SocketServerManager.ClientSockets[item.Key] = null!;
                     }
                 }
             }
-            if( PlayerManager.isOnline && !PlayerManager.isAdmin)
+            if (PlayerManager.isOnline && !PlayerManager.isAdmin)
             {
                 SocketClientManager.SocketClient.Disconnect();
             }
@@ -365,6 +368,44 @@ namespace Monopoly.Screens
                 }
                 playerBoxes[int.Parse(txbPlrCounter.Text) - 1].Visible = false;
                 txbPlrCounter.Text = (int.Parse(txbPlrCounter.Text) - 1).ToString();
+            }
+        }
+
+        private void txbChat_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                if (txbChat.Text.Trim() == "") return;
+                if (PlayerManager.isOnline)
+                {
+                    var data = new Data(Data.ActionType.ChatMessage, txbChat.Text.Trim());
+                    if (PlayerManager.isAdmin)
+                    {
+                        Task.Run(async () =>
+                        {
+                            foreach (var client in SocketServerManager.ClientSockets.Values)
+                            {
+                                data.From = "Player1";
+                                if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                                if (client != null)
+                                {
+                                    await SocketServerManager.SocketServer.Send(client, data);
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Task.Run(async () =>
+                        {
+                            data.From = playerMapping.FirstOrDefault(x => x.Value == PlayerManager.curPlayer).Key;
+                            await SocketClientManager.SocketClient.Send(data);
+                        });
+                    }
+                    txbChatHistory.AppendText("You: " + txbChat.Text.Trim() + Environment.NewLine);
+                    txbChat.Clear();
+                }
             }
         }
     }

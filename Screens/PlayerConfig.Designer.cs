@@ -47,6 +47,9 @@
             pcbAvt2 = new PictureBox();
             selectedUI = new Button();
             selectedImg = new Button();
+            pnlChat = new Panel();
+            txbChat = new TextBox();
+            txbChatHistory = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pcbAvt8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt6).BeginInit();
@@ -59,6 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)pcbPlr2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbPlr1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt2).BeginInit();
+            pnlChat.SuspendLayout();
             SuspendLayout();
             // 
             // btnMinus
@@ -281,11 +285,41 @@
             selectedImg.TabIndex = 38;
             selectedImg.UseVisualStyleBackColor = false;
             // 
+            // pnlChat
+            // 
+            pnlChat.Controls.Add(txbChat);
+            pnlChat.Controls.Add(txbChatHistory);
+            pnlChat.Location = new Point(0, 384);
+            pnlChat.Name = "pnlChat";
+            pnlChat.Size = new Size(288, 344);
+            pnlChat.TabIndex = 39;
+            // 
+            // txbChat
+            // 
+            txbChat.Location = new Point(3, 298);
+            txbChat.Multiline = true;
+            txbChat.Name = "txbChat";
+            txbChat.Size = new Size(282, 43);
+            txbChat.TabIndex = 1;
+            txbChat.KeyPress += txbChat_KeyPress;
+            // 
+            // txbChatHistory
+            // 
+            txbChatHistory.BackColor = SystemColors.Control;
+            txbChatHistory.Location = new Point(3, 1);
+            txbChatHistory.Multiline = true;
+            txbChatHistory.Name = "txbChatHistory";
+            txbChatHistory.ReadOnly = true;
+            txbChatHistory.ScrollBars = ScrollBars.Vertical;
+            txbChatHistory.Size = new Size(282, 297);
+            txbChatHistory.TabIndex = 0;
+            // 
             // PlayerConfig
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(233, 227, 208);
+            Controls.Add(pnlChat);
             Controls.Add(btnMinus);
             Controls.Add(btnPlus);
             Controls.Add(txbPlrCounter);
@@ -319,6 +353,8 @@
             ((System.ComponentModel.ISupportInitialize)pcbPlr2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbPlr1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt2).EndInit();
+            pnlChat.ResumeLayout(false);
+            pnlChat.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -344,5 +380,8 @@
         private PictureBox pcbAvt2;
         private Button selectedUI;
         private Button selectedImg;
+        private Panel pnlChat;
+        private TextBox txbChat;
+        private TextBox txbChatHistory;
     }
 }

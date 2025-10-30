@@ -142,6 +142,12 @@ namespace Monopoly.Scripts.Sockets
                                         pcbAvt.BackgroundImage = Properties.Resources.Ban;
                                     }
                                     break;
+                                case Data.ActionType.ChatMessage:
+                                    monopoly.Invoke(new Action(() =>
+                                    {
+                                        PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}"+ Environment.NewLine);
+                                    }));
+                                    break;
                             }
                         }
                         catch (Exception ex)
@@ -152,7 +158,7 @@ namespace Monopoly.Scripts.Sockets
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 MessageBox.Show("Disconnected from server.", "Connection Lost", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 monopoly.Invoke(new Action(() =>
@@ -263,6 +269,21 @@ namespace Monopoly.Scripts.Sockets
                                         await SocketServerManager.SocketServer.Send(client, data2);
                                     }
                                 }
+                                break;
+                                case Data.ActionType.ChatMessage:
+                                    var data = new Data(Data.ActionType.ChatMessage, received.Msg, received.From);
+                                    foreach (var client in SocketServerManager.ClientSockets.Values)
+                                    {
+                                        if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                                        if (client != socket && client != null)
+                                        {
+                                            await SocketServerManager.SocketServer.Send(client, data);
+                                        }
+                                    }
+                                    PlayerConfig.TxbChatHistory.Invoke(new Action(() =>
+                                    {
+                                        PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}"+ Environment.NewLine);
+                                    }));
                                 break;
 
                         }
