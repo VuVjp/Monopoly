@@ -294,6 +294,24 @@ namespace Monopoly.Screens
 
         private void btnReturn_Click(object sender, EventArgs e)
         {
+            if( PlayerManager.isOnline && PlayerManager.isAdmin)
+            {
+                SocketServerManager.isListening = false;
+                SocketServerManager.isAcceptingPlayers = false;
+                SocketServerManager.SocketServer.Stop();
+                foreach (var item in SocketServerManager.ClientSockets)
+                {
+                    if(item.Value != null)
+                    {
+                        item.Value.Dispose();
+                        SocketServerManager.ClientSockets[item.Key] = null!;
+                    }
+                }
+            }
+            if( PlayerManager.isOnline && !PlayerManager.isAdmin)
+            {
+                SocketClientManager.SocketClient.Disconnect();
+            }
             monopoly.LoadScreen(new GameConfig(monopoly));
         }
 

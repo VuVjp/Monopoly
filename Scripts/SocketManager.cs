@@ -78,6 +78,19 @@ namespace Monopoly.Scripts.Sockets
                                     PlayerConfig.SelectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
                                     break;
                                 case Data.ActionType.ChangeAvt:
+                                    if (received.Msg == "User")
+                                    {
+                                        PictureBox pcbPlrOld = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
+                                        if (pcbPlrOld.Tag != null)
+                                        {
+                                            PictureBox oldImg = (PictureBox)pcbPlrOld.Tag!;
+                                            oldImg.Tag = null;
+                                            oldImg.BackgroundImage = null;
+                                            pcbPlrOld.Tag = null;
+                                            pcbPlrOld.Image = Properties.Resources.user;
+                                        }
+                                        break;
+                                    }
                                     PictureBox pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
                                     PictureBox pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg)!;
                                     if (pcbPlr != null && pcbAvt != null)
@@ -106,11 +119,7 @@ namespace Monopoly.Scripts.Sockets
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                SocketClient.Disconnect();
+                MessageBox.Show("Disconnected from server.", "Connection Lost", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
@@ -225,6 +234,24 @@ namespace Monopoly.Scripts.Sockets
             catch
             {
                 SocketServerManager.ClientSockets[plr] = null!;
+                PictureBox pB = PlayerConfig.playerMapping[plr];
+                if (pB.Tag != null)
+                {
+                    PictureBox oldImg = (PictureBox)pB.Tag!;
+                    oldImg.Tag = null;
+                    oldImg.BackgroundImage = null;
+                    pB.Tag = null;
+                    pB.Image = Properties.Resources.user;
+                }
+                foreach (var client in SocketServerManager.ClientSockets.Values)
+                {
+                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                    if (client != socket && client != null)
+                    {
+                        var data = new Data(Data.ActionType.ChangeAvt, "User" ,pB.Name);
+                        await SocketServerManager.SocketServer.Send(client, data);
+                    }
+                }
                 socket.Dispose();
             }
         }
