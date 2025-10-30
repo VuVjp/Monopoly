@@ -148,6 +148,7 @@ namespace Monopoly.Screens
 
         private void OfflineModeSetup()
         {
+            pnlChat.Visible = false;
             PlayerManager.curPlayer = playerBoxes[0];
             foreach (PictureBox pcb in playerBoxes)
             {
