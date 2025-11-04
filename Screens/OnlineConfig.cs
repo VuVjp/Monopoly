@@ -1,4 +1,5 @@
 ﻿using Monopoly.Scripts;
+using Monopoly.Scripts.Sockets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,6 +47,7 @@ namespace Monopoly.Screens
         private void btnCreate_Click(object sender, EventArgs e)
         {
             PlayerManager.playerCount = int.Parse(lblCounter.Text);
+            SocketServerManager.SocketServer.Start(IPAddress.Any.ToString(), 9999);
             monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
 

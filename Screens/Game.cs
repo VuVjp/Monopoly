@@ -459,5 +459,10 @@ namespace Monopoly.Screens
             PictureBox pcb = (PictureBox)sender;
             pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
         }
+
+        public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
+        {
+
+        }
     }
 }

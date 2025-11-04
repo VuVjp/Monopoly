@@ -13,6 +13,8 @@ namespace Monopoly.Scripts.Sockets
 {
     internal class SocketClientManager
     {
+        private static Task? _receiverTask;
+        public static event Action<Data>? OnDataReceived;
         private static SocketClientManager? _socketClient;
         public static SocketClientManager SocketClient => _socketClient ??= new SocketClientManager()!;
         private Socket socketClient = null!;
@@ -22,6 +24,7 @@ namespace Monopoly.Scripts.Sockets
         {
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socketClient.Connect(ip, port);
+            _receiverTask = Task.Run(SocketClientManager.ClientReceiver);
         }
 
         public async Task Send(Data data)
@@ -57,9 +60,131 @@ namespace Monopoly.Scripts.Sockets
 
         public void Disconnect()
         {
-            socketClient.Dispose();
+            try
+            {
+                try { socketClient.Shutdown(SocketShutdown.Both); } catch { }
+
+                _receiverTask?.Wait(300);
+
+                socketClient.Dispose();
+            }
+            catch { }
         }
-        public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
+        //public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
+        //{
+        //    try
+        //    {
+        //        while (true)
+        //        {
+        //            var received = await SocketClient.Receive();
+        //            if (received != null)
+        //            {
+        //                try
+        //                {
+        //                    switch (received!.Action)
+        //                    {
+        //                        case Data.ActionType.message:
+        //                            MessageBox.Show(received.Msg!, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //                            if (received.Msg == "Room is full or game already started")
+        //                            {
+        //                                monopoly.Invoke(new Action(() =>
+        //                                {
+        //                                    monopoly.LoadScreen(new GameConfig(monopoly));
+        //                                }));
+        //                            }
+        //                            break;
+        //                        case Data.ActionType.gameInfo:
+        //                            if (received.From == "PlayerCount")
+        //                            {
+        //                                monopoly.Invoke(new Action(() =>
+        //                                {
+        //                                    PlayerManager.playerCount = int.Parse(received.Msg!.ToString());
+        //                                    for (int i = 2; i < PlayerManager.playerCount; i++)
+        //                                    {
+        //                                        PlayerConfig.playerBoxes[i].Visible = true;
+        //                                        PlayerConfig.playerBoxes[i].Image = Properties.Resources.user;
+        //                                    }
+        //                                    txbCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
+        //                                }));
+        //                            }
+        //                            else
+        //                            {
+        //                                monopoly.Invoke(new Action(() =>
+        //                                {
+        //                                    txbCounter.Text = received.Msg!.ToString();
+        //                                }));
+        //                            }
+        //                            break;
+        //                        case Data.ActionType.PlayerInfo:
+        //                            monopoly.Invoke(new Action(() =>
+        //                            {
+        //                                PlayerManager.curPlayer = PlayerConfig.playerMapping[received.Msg!];
+        //                                PlayerConfig.SelectedUI.Location = new Point(PlayerManager.curPlayer.Location.X - 10, PlayerManager.curPlayer.Location.Y - 10);
+        //                                PlayerConfig.SelectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
+        //                            }));
+        //                            break;
+        //                        case Data.ActionType.ChangeAvt:
+        //                            if (received.Msg == "User")
+        //                            {
+        //                                PictureBox pcbPlrOld = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
+        //                                if (pcbPlrOld.Tag != null)
+        //                                {
+        //                                    PictureBox oldImg = (PictureBox)pcbPlrOld.Tag!;
+        //                                    oldImg.Tag = null;
+        //                                    oldImg.BackgroundImage = null;
+        //                                    pcbPlrOld.Tag = null;
+        //                                    pcbPlrOld.Image = Properties.Resources.user;
+        //                                }
+        //                                break;
+        //                            }
+        //                            PictureBox pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
+        //                            PictureBox pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg)!;
+        //                            if (pcbPlr != null && pcbAvt != null)
+        //                            {
+        //                                if (pcbPlr.Tag != null)
+        //                                {
+        //                                    PictureBox oldImg = (PictureBox)pcbPlr.Tag!;
+        //                                    oldImg.Tag = null;
+        //                                    oldImg.BackgroundImage = null;
+        //                                }
+        //                                pcbPlr.Tag = pcbAvt;
+        //                                pcbPlr.Image = pcbAvt.Image;
+        //                                pcbAvt.Tag = pcbPlr;
+        //                                pcbAvt.BackgroundImage = Properties.Resources.Ban;
+        //                            }
+        //                            break;
+        //                        case Data.ActionType.ChatMessage:
+        //                            monopoly.Invoke(new Action(() =>
+        //                            {
+        //                                PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}" + Environment.NewLine);
+        //                            }));
+        //                            break;
+        //                        case Data.ActionType.StartGame:
+        //                            monopoly.Invoke(new Action(() =>
+        //                            {
+        //                                monopoly.LoadScreen(new Game(monopoly));
+        //                            }));
+        //                            break;
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //                }
+        //                if (received == null) break;
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        MessageBox.Show("Disconnected from server.", "Connection Lost", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //        monopoly.Invoke(new Action(() =>
+        //        {
+        //            monopoly.LoadScreen(new GameConfig(monopoly));
+        //        }));
+        //    }
+        //}
+        public static async Task ClientReceiver()
         {
             try
             {
@@ -68,103 +193,13 @@ namespace Monopoly.Scripts.Sockets
                     var received = await SocketClient.Receive();
                     if (received != null)
                     {
-                        try
-                        {
-                            switch (received!.Action)
-                            {
-                                case Data.ActionType.message:
-                                    MessageBox.Show(received.Msg!, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    if (received.Msg == "Room is full or game already started")
-                                    {
-                                        monopoly.Invoke(new Action(() =>
-                                        {
-                                            monopoly.LoadScreen(new GameConfig(monopoly));
-                                        }));
-                                    }
-                                    break;
-                                case Data.ActionType.gameInfo:
-                                    if (received.From == "PlayerCount") 
-                                    {
-                                        monopoly.Invoke(new Action(() =>
-                                        {
-                                            PlayerManager.playerCount = int.Parse(received.Msg!.ToString());
-                                            for (int i = 2; i < PlayerManager.playerCount; i++)
-                                            {
-                                                PlayerConfig.playerBoxes[i].Visible = true;
-                                                PlayerConfig.playerBoxes[i].Image = Properties.Resources.user;
-                                            }
-                                            txbCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
-                                        }));
-                                    }
-                                    else
-                                    {
-                                        monopoly.Invoke(new Action(() =>
-                                        {
-                                            txbCounter.Text = received.Msg!.ToString();
-                                        }));
-                                    }
-                                    break;
-                                case Data.ActionType.PlayerInfo:
-                                    monopoly.Invoke(new Action(() =>
-                                    {
-                                        PlayerManager.curPlayer = PlayerConfig.playerMapping[received.Msg!];
-                                        PlayerConfig.SelectedUI.Location = new Point(PlayerManager.curPlayer.Location.X - 10, PlayerManager.curPlayer.Location.Y - 10);
-                                        PlayerConfig.SelectedUI.Size = new Size(PlayerManager.curPlayer.Size.Width + 20, PlayerManager.curPlayer.Size.Height + 20);
-                                    }));
-                                    break;
-                                case Data.ActionType.ChangeAvt:
-                                    if (received.Msg == "User")
-                                    {
-                                        PictureBox pcbPlrOld = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
-                                        if (pcbPlrOld.Tag != null)
-                                        {
-                                            PictureBox oldImg = (PictureBox)pcbPlrOld.Tag!;
-                                            oldImg.Tag = null;
-                                            oldImg.BackgroundImage = null;
-                                            pcbPlrOld.Tag = null;
-                                            pcbPlrOld.Image = Properties.Resources.user;
-                                        }
-                                        break;
-                                    }
-                                    PictureBox pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
-                                    PictureBox pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg)!;
-                                    if (pcbPlr != null && pcbAvt != null)
-                                    {
-                                        if (pcbPlr.Tag != null)
-                                        {
-                                            PictureBox oldImg = (PictureBox)pcbPlr.Tag!;
-                                            oldImg.Tag = null;
-                                            oldImg.BackgroundImage = null;
-                                        }
-                                        pcbPlr.Tag = pcbAvt;
-                                        pcbPlr.Image = pcbAvt.Image;
-                                        pcbAvt.Tag = pcbPlr;
-                                        pcbAvt.BackgroundImage = Properties.Resources.Ban;
-                                    }
-                                    break;
-                                case Data.ActionType.ChatMessage:
-                                    monopoly.Invoke(new Action(() =>
-                                    {
-                                        PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}"+ Environment.NewLine);
-                                    }));
-                                    break;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        if (received == null) break;
+                        OnDataReceived?.Invoke(received);
                     }
                 }
             }
-            catch 
+            catch
             {
-                MessageBox.Show("Disconnected from server.", "Connection Lost", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                monopoly.Invoke(new Action(() =>
-                {
-                    monopoly.LoadScreen(new GameConfig(monopoly));
-                }));
+
             }
         }
     }
@@ -175,6 +210,8 @@ namespace Monopoly.Scripts.Sockets
         public static bool isListening;
         public static bool isAcceptingPlayers;
         private static SocketServerManager? _socketServer;
+        public static event Action<Socket, Data>? OnDataReceived;
+        public static event Action<Socket,string>? OnClientDisconnect;
         public static SocketServerManager SocketServer => _socketServer ??= new SocketServerManager()!;
 
         public static Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>()
@@ -233,101 +270,114 @@ namespace Monopoly.Scripts.Sockets
         {
             socketServer.Dispose();
         }
-        public static async Task SocketHandler(Socket socket, string plr, TextBox textBox)
+        public static async Task Broadcast(Socket sender, Data data)
+        {
+            foreach (var c in ClientSockets.Values)
+            {
+                if (c == SocketServerManager.ClientSockets["Player1"]) continue;
+                if (c == null || c == sender) continue;
+
+                try
+                {
+                    await SocketServerManager.SocketServer.Send(c, data);
+                }
+                catch
+                {
+                    string? plr = ClientSockets.FirstOrDefault(x => x.Value == c).Key;
+                    if (plr != null)
+                        ClientSockets[plr] = null!;
+                }
+            }
+        }
+        //public static async Task SocketHandler(Socket socket, string plr, TextBox textBox)
+        //{
+        //    try
+        //    {
+        //        while (true)
+        //        {
+        //            var received = await SocketServerManager.SocketServer.Receive(socket);
+        //            if (received != null)
+        //            {
+        //                switch (received.Action)
+        //                {
+        //                    case Data.ActionType.ChangeAvt:
+        //                        var pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From);
+        //                        var pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg);
+        //                        if (pcbPlr != null && pcbAvt != null)
+        //                        {
+        //                            if (pcbPlr.Tag != null)
+        //                            {
+        //                                PictureBox oldImg = (PictureBox)pcbPlr.Tag!;
+        //                                oldImg.Tag = null;
+        //                                oldImg.BackgroundImage = null;
+        //                            }
+        //                            pcbPlr.Tag = pcbAvt;
+        //                            pcbPlr.Image = pcbAvt.Image;
+        //                            pcbAvt.Tag = pcbPlr;
+        //                            pcbAvt.BackgroundImage = Properties.Resources.Ban;
+        //                        }
+        //                        var data2 = new Data(Data.ActionType.ChangeAvt, pcbAvt!.Name, pcbPlr!.Name);
+        //                        foreach (var client in SocketServerManager.ClientSockets.Values)
+        //                        {
+        //                            if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+        //                            if (client != socket && client != null)
+        //                            {
+        //                                await SocketServerManager.SocketServer.Send(client, data2);
+        //                            }
+        //                        }
+        //                        break;
+        //                    //case Data.ActionType.ChatMessage:
+        //                    //    var data = new Data(Data.ActionType.ChatMessage, received.Msg, received.From);
+        //                    //    foreach (var client in SocketServerManager.ClientSockets.Values)
+        //                    //    {
+        //                    //        if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+        //                    //        if (client != socket && client != null)
+        //                    //        {
+        //                    //            await SocketServerManager.SocketServer.Send(client, data);
+        //                    //        }
+        //                    //    }
+        //                    //    PlayerConfig.TxbChatHistory.Invoke(new Action(() =>
+        //                    //    {
+        //                    //        PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}" + Environment.NewLine);
+        //                    //    }));
+        //                    //    break;
+
+        //                }
+        //            }
+        //            if (received == null) break;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        SocketServerManager.ClientSockets[plr] = null!;
+
+        //        socket.Dispose();
+        //    }
+        //}
+        public static async Task HandleClient(Socket client, string plr)
         {
             try
             {
                 while (true)
                 {
-                    var received = await SocketServerManager.SocketServer.Receive(socket);
-                    if (received != null)
-                    {
-                        switch (received.Action)
-                        {
-                            case Data.ActionType.ChangeAvt:
-                                var pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From);
-                                var pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg);
-                                if (pcbPlr != null && pcbAvt != null)
-                                {
-                                    if (pcbPlr.Tag != null)
-                                    {
-                                        PictureBox oldImg = (PictureBox)pcbPlr.Tag!;
-                                        oldImg.Tag = null;
-                                        oldImg.BackgroundImage = null;
-                                    }
-                                    pcbPlr.Tag = pcbAvt;
-                                    pcbPlr.Image = pcbAvt.Image;
-                                    pcbAvt.Tag = pcbPlr;
-                                    pcbAvt.BackgroundImage = Properties.Resources.Ban;
-                                }
-                                var data2 = new Data(Data.ActionType.ChangeAvt, pcbAvt!.Name, pcbPlr!.Name);
-                                foreach (var client in SocketServerManager.ClientSockets.Values)
-                                {
-                                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
-                                    if (client != socket && client != null)
-                                    {
-                                        await SocketServerManager.SocketServer.Send(client, data2);
-                                    }
-                                }
-                                break;
-                                case Data.ActionType.ChatMessage:
-                                    var data = new Data(Data.ActionType.ChatMessage, received.Msg, received.From);
-                                    foreach (var client in SocketServerManager.ClientSockets.Values)
-                                    {
-                                        if (client == SocketServerManager.ClientSockets["Player1"]) continue;
-                                        if (client != socket && client != null)
-                                        {
-                                            await SocketServerManager.SocketServer.Send(client, data);
-                                        }
-                                    }
-                                    PlayerConfig.TxbChatHistory.Invoke(new Action(() =>
-                                    {
-                                        PlayerConfig.TxbChatHistory.AppendText($"{received.From}: {received.Msg}"+ Environment.NewLine);
-                                    }));
-                                break;
+                    var received = await SocketServerManager.SocketServer.Receive(client);
+                    if (received == null)
+                        break;
 
-                        }
-                    }
-                    if (received == null) break;
+                    OnDataReceived?.Invoke(client, received);
                 }
             }
-            catch
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Client {plr} disconnected with error: {ex.Message}");
+            }
+            finally
             {
                 SocketServerManager.ClientSockets[plr] = null!;
-                PictureBox pB = PlayerConfig.playerMapping[plr];
-                if (pB.Tag != null)
-                {
-                    PictureBox oldImg = (PictureBox)pB.Tag!;
-                    oldImg.Tag = null;
-                    oldImg.BackgroundImage = null;
-                    pB.Tag = null;
-                    pB.Image = Properties.Resources.user;
-                }
-                foreach (var client in SocketServerManager.ClientSockets.Values)
-                {
-                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
-                    if (client != socket && client != null)
-                    {
-                        var data = new Data(Data.ActionType.ChangeAvt, "User", pB.Name);
-                        await SocketServerManager.SocketServer.Send(client, data);
-                    }
-                }
-                PlayerManager.curPlayerIndex--;
-                textBox.Invoke(new Action(() =>
-                {
-                    textBox.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
-                }));
-                foreach (var client in SocketServerManager.ClientSockets.Values)
-                {
-                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
-                    if (client != socket && client != null)
-                    {
-                        var data = new Data(Data.ActionType.gameInfo, textBox.Text.ToString());
-                        await SocketServerManager.SocketServer.Send(client, data);
-                    }
-                }
-                socket.Dispose();
+                OnClientDisconnect?.Invoke(client, plr);
+                client.Dispose();
             }
         }
+
     }
 }

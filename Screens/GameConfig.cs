@@ -1,4 +1,5 @@
 ﻿using Monopoly.Scripts;
+using Monopoly.Scripts.Sockets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,7 @@ namespace Monopoly.Screens
             if (PlayerManager.isOnline)
             {
                 PlayerManager.isAdmin = false;
+                SocketClientManager.SocketClient.Connect("", 9999);
             }
             monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
