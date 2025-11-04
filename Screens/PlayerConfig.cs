@@ -133,10 +133,10 @@ namespace Monopoly.Screens
             }
             else
             {
-                btnPlay.Enabled = false;
-                btnPlus.Enabled = false;
-                btnMinus.Enabled = false;
-                txbPlrCounter.Enabled = false;
+                btnPlay.Visible = false;
+                btnPlus.Visible = false;
+                btnMinus.Visible = false;
+                txbPlrCounter.ReadOnly = true;
                 SocketClientManager.OnDataReceived += HandleNetworkMessage!;
 
                 //Task.Run(async () =>
@@ -285,7 +285,7 @@ namespace Monopoly.Screens
                         this.Invoke(new Action(() =>
                         {
                             MessageBox.Show("Game is starting!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            btnPlay.PerformClick();
+                            btnPlay_Click(null!, EventArgs.Empty);
                             SocketClientManager.OnDataReceived -= HandleNetworkMessage!;
                         }));
                         break;
