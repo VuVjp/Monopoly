@@ -35,10 +35,10 @@ namespace Monopoly.Screens
         {
             playerMapping = new Dictionary<string, PictureBox>()
             {
-                { "Player1", pcbPlr1 },
-                { "Player2", pcbPlr2 },
-                { "Player3", pcbPlr3 },
-                { "Player4", pcbPlr4 },
+                { "Player 1", pcbPlr1 },
+                { "Player 2", pcbPlr2 },
+                { "Player 3", pcbPlr3 },
+                { "Player 4", pcbPlr4 },
             };
             plrImgs = new List<PictureBox>() { pcbAvt1, pcbAvt2, pcbAvt3, pcbAvt4, pcbAvt5, pcbAvt6, pcbAvt7, pcbAvt8 };
             playerBoxes = new List<PictureBox> { pcbPlr1, pcbPlr2, pcbPlr3, pcbPlr4 };
@@ -91,10 +91,10 @@ namespace Monopoly.Screens
                         var clientSocket = await SocketServerManager.SocketServer.Accept();
                         for (int i = 1; i < SocketServerManager.ClientSockets.Count; i++)
                         {
-                            if (SocketServerManager.ClientSockets["Player" + (i + 1)] == null)
+                            if (SocketServerManager.ClientSockets["Player " + (i + 1)] == null)
                             {
-                                PlayerName = "Player" + (i + 1);
-                                SocketServerManager.ClientSockets["Player" + (i + 1)] = clientSocket;
+                                PlayerName = "Player " + (i + 1);
+                                SocketServerManager.ClientSockets["Player " + (i + 1)] = clientSocket;
                                 break;
                             }
                         };
@@ -121,7 +121,7 @@ namespace Monopoly.Screens
                         }));
                         foreach (var client in SocketServerManager.ClientSockets.Values)
                         {
-                            if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                            if (client == SocketServerManager.ClientSockets["Player 1"]) continue;
                             if (client != null)
                             {
                                 await SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.gameInfo, txbPlrCounter.Text.ToString()));
@@ -159,7 +159,7 @@ namespace Monopoly.Screens
             }
             foreach (var c in SocketServerManager.ClientSockets.Values)
             {
-                if (c == SocketServerManager.ClientSockets["Player1"]) continue;
+                if (c == SocketServerManager.ClientSockets["Player 1"]) continue;
                 if (c != client && c != null)
                 {
                     var data = new Data(Data.ActionType.ChangeAvt, "User", pB.Name);
@@ -173,7 +173,7 @@ namespace Monopoly.Screens
             }));
             foreach (var c in SocketServerManager.ClientSockets.Values)
             {
-                if (c == SocketServerManager.ClientSockets["Player1"]) continue;
+                if (c == SocketServerManager.ClientSockets["Player 1"]) continue;
                 if (c != client && c != null)
                 {
                     var data = new Data(Data.ActionType.gameInfo, txbPlrCounter.Text.ToString());
@@ -271,6 +271,7 @@ namespace Monopoly.Screens
                                 PictureBox oldImg = (PictureBox)pcbPlr.Tag!;
                                 oldImg.Tag = null;
                                 oldImg.BackgroundImage = null;
+                                pcbPlr.Tag = null;
                             }
                             pcbPlr.Tag = pcbAvt;
                             pcbPlr.Image = pcbAvt.Image;
@@ -313,7 +314,7 @@ namespace Monopoly.Screens
                 {
                     foreach (var client in SocketServerManager.ClientSockets.Values)
                     {
-                        if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                        if (client == SocketServerManager.ClientSockets["Player 1"]) continue;
                         if (client != null)
                         {
                             await SocketServerManager.SocketServer.Send(client, data1);
@@ -429,6 +430,14 @@ namespace Monopoly.Screens
         private void btnPlay_Click(object sender, EventArgs e)
         {
             PlayerManager.Players = new List<PlayerInfo>();
+            if(PlayerManager.isOnline)
+            {
+                if(PlayerManager.curPlayerIndex < PlayerManager.playerCount)
+                {
+                    MessageBox.Show("Not all players have joined!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
             for (int i = 0; i < int.Parse(txbPlrCounter.Text.First().ToString()); i++)
             {
                 var pcb = playerBoxes[i];
@@ -452,7 +461,7 @@ namespace Monopoly.Screens
                 SocketServerManager.isAcceptingPlayers = false;
                 foreach (var client in SocketServerManager.ClientSockets.Values)
                 {
-                    if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                    if (client == SocketServerManager.ClientSockets["Player 1"]) continue;
                     if (client != null)
                     {
                         _ = SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.StartGame));
@@ -534,8 +543,8 @@ namespace Monopoly.Screens
                         {
                             foreach (var client in SocketServerManager.ClientSockets.Values)
                             {
-                                data.From = "Player1";
-                                if (client == SocketServerManager.ClientSockets["Player1"]) continue;
+                                data.From = "Player 1";
+                                if (client == SocketServerManager.ClientSockets["Player 1"]) continue;
                                 if (client != null)
                                 {
                                     await SocketServerManager.SocketServer.Send(client, data);

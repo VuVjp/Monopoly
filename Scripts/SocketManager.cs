@@ -24,6 +24,7 @@ namespace Monopoly.Scripts.Sockets
         {
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socketClient.Connect(ip, port);
+            _receiverTask = null;
             _receiverTask = Task.Run(SocketClientManager.ClientReceiver);
         }
 
@@ -216,17 +217,17 @@ namespace Monopoly.Scripts.Sockets
 
         public static Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>()
         {
-            {"Player1", null!},
-            {"Player2", null!},
-            {"Player3", null!},
-            {"Player4", null!}
+            {"Player 1", null!},
+            {"Player 2", null!},
+            {"Player 3", null!},
+            {"Player 4", null!}
         };
         private Socket socketServer = null!;
         public SocketServerManager() { }
         public void Start(string ip, int port)
         {
             socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            ClientSockets["Player1"] = socketServer;
+            ClientSockets["Player 1"] = socketServer;
             socketServer.Bind(new System.Net.IPEndPoint(System.Net.IPAddress.Parse(ip), port));
             socketServer.Listen(4);
         }
@@ -268,21 +269,13 @@ namespace Monopoly.Scripts.Sockets
         }
         public void Stop()
         {
-            foreach (var item in ClientSockets)
-            {
-                if (item.Value != null)
-                {
-                    item.Value.Dispose();
-                    ClientSockets[item.Key] = null!;
-                }
-            }
             socketServer.Dispose();
         }
         public static async Task Broadcast(Socket sender, Data data)
         {
             foreach (var c in ClientSockets.Values)
             {
-                if (c == SocketServerManager.ClientSockets["Player1"]) continue;
+                if (c == SocketServerManager.ClientSockets["Player 1"]) continue;
                 if (c == null || c == sender) continue;
 
                 try
@@ -381,6 +374,7 @@ namespace Monopoly.Scripts.Sockets
             }
             finally
             {
+                MessageBox.Show($"{plr} has disconnected.", "Player Disconnected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 SocketServerManager.ClientSockets[plr] = null!;
                 OnClientDisconnect?.Invoke(client, plr);
                 client.Dispose();

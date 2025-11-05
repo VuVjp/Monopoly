@@ -15,7 +15,7 @@ namespace Monopoly.Screens
 {
     public partial class Game : UserControl
     {
-        #region Offline Properties
+        private Monopoly monopoly;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -23,24 +23,24 @@ namespace Monopoly.Screens
         Properties.Resources.Dice4,
         Properties.Resources.Dice5,
         Properties.Resources.Dice6};
-
         List<Label> labels;
-        public int X1;
+
+        #region Offline Properties
+        int X1;
         int rollTime = 0;
         int endTime;
         bool Rolling = false;
         bool extraTurn = false;
-        private Monopoly monopoly;
         int currPlayer = 0;
         Dictionary<int, int> playerPos = new Dictionary<int, int>();
         Dictionary<int, int> Doubles = new Dictionary<int, int>(); 
         Dictionary<int, bool> inJail = new Dictionary<int, bool>();
         Dictionary<int, int> jailTurns = new Dictionary<int, int>();
-        private Dictionary<int, (PictureBox Pcb, int CurrPos, int TargetPos)> moveLogic = new Dictionary<int, (PictureBox, int, int)>();
+        Dictionary<int, (PictureBox Pcb, int CurrPos, int TargetPos)> moveLogic = new Dictionary<int, (PictureBox, int, int)>();
         #endregion
 
         #region Online Properties
-
+        List<int> turnOrder;
         #endregion
         public Game(Monopoly monopoly)
         {
@@ -74,10 +74,13 @@ namespace Monopoly.Screens
             }
             else
             {
-                if(PlayerManager.isAdmin)
+                turnOrder = new List<int>();
+                if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
                     SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
+                    RandomizeTurnOrder();
+                    Task.Run(()=>GameLoop());
                 }
                 else
                 {
@@ -467,6 +470,38 @@ namespace Monopoly.Screens
             playerPos[player] = targetPos;
         }
         #endregion
+        #region Online Methods
+        private void RandomizeTurnOrder()
+        {
+            for (int i = 0; i < PlayerManager.playerCount; i++)
+            {
+                turnOrder.Add(i);
+            }
+            Random rnd = new Random();
+
+            for (int i = turnOrder.Count - 1; i > 0; i--)
+            {
+                int j = rnd.Next(i + 1);
+                (turnOrder[i], turnOrder[j]) = (turnOrder[j], turnOrder[i]);
+            }
+        }
+        private async Task GameLoop()
+        {
+            while (true)
+            {
+                foreach (int playerIndex in turnOrder)
+                {
+                    //if (playerIndex == PlayerConfig.playerMapping)
+                    //{
+
+                    //}
+                    //else
+                    //{
+                    //    // Notify other players to wait
+                    //}
+                }
+            }
+        }
 
         private void SocketServerManager_OnDataReceived(object sender, Data data)
         {
@@ -482,7 +517,7 @@ namespace Monopoly.Screens
         {
 
         }
-
+        #endregion
 
         private void pcbReturn_Click(object sender, EventArgs e)
         {
@@ -491,10 +526,13 @@ namespace Monopoly.Screens
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.SocketServer.Stop();
+                    SocketServerManager.OnDataReceived -= SocketServerManager_OnDataReceived;
+                    SocketServerManager.OnClientDisconnect -= SocketServerManager_OnClientDisconnect;
                 }
                 else
                 {
                     SocketClientManager.SocketClient.Disconnect();
+                    SocketClientManager.OnDataReceived -= SocketClientManager_OnDataReceived;
                 }
             }
             monopoly.LoadScreen(new MainMenu(monopoly));
