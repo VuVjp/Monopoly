@@ -15,6 +15,7 @@ namespace Monopoly.Scripts.Sockets
     {
         private static Task? _receiverTask;
         public static event Action<Data>? OnDataReceived;
+        public static event Action<Data>? OnServerShutdown;
         private static SocketClientManager? _socketClient;
         public static SocketClientManager SocketClient => _socketClient ??= new SocketClientManager()!;
         private Socket socketClient = null!;
@@ -71,6 +72,7 @@ namespace Monopoly.Scripts.Sockets
             }
             catch { }
         }
+
         //public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
         //{
         //    try
@@ -196,11 +198,17 @@ namespace Monopoly.Scripts.Sockets
                     {
                         OnDataReceived?.Invoke(received);
                     }
+                    if (received == null) break;
                 }
             }
             catch
             {
 
+            }
+            finally
+            {
+                OnServerShutdown?.Invoke(null!);
+                SocketClient.Disconnect();
             }
         }
     }
@@ -269,6 +277,14 @@ namespace Monopoly.Scripts.Sockets
         }
         public void Stop()
         {
+            foreach (var socket in ClientSockets.Values)
+            {
+                if (socket != null)
+                {
+                    socket.Dispose();
+                    ClientSockets[ClientSockets.FirstOrDefault(x => x.Value == socket).Key] = null!;
+                }
+            }
             socketServer.Dispose();
         }
         public static async Task Broadcast(Socket sender, Data data)
@@ -374,9 +390,9 @@ namespace Monopoly.Scripts.Sockets
             }
             finally
             {
-                MessageBox.Show($"{plr} has disconnected.", "Player Disconnected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 SocketServerManager.ClientSockets[plr] = null!;
                 OnClientDisconnect?.Invoke(client, plr);
+                client.Shutdown(SocketShutdown.Both);
                 client.Dispose();
             }
         }

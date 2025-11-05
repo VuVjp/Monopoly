@@ -138,12 +138,24 @@ namespace Monopoly.Screens
                 btnMinus.Visible = false;
                 txbPlrCounter.ReadOnly = true;
                 SocketClientManager.OnDataReceived += HandleNetworkMessage!;
+                SocketClientManager.OnServerShutdown += SocketClientManager_OnServerShutdown;
 
                 //Task.Run(async () =>
                 //{
                 //    _ = SocketClientManager.ClientReciever(monopoly, txbPlrCounter);
                 //});
             }
+        }
+
+        private void SocketClientManager_OnServerShutdown(Data obj)
+        {
+            this.Invoke(new Action(() =>
+            {
+                MessageBox.Show("Server has been shut down.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SocketClientManager.OnDataReceived -= HandleNetworkMessage!;
+                SocketClientManager.OnServerShutdown -= SocketClientManager_OnServerShutdown;
+                monopoly.LoadScreen(new GameConfig(monopoly));
+            }));
         }
 
         private async void SocketServerManager_OnClientDisconnect(Socket client, string plr)
@@ -237,10 +249,12 @@ namespace Monopoly.Screens
                                 playerBoxes[i].Image = Properties.Resources.user;
                             }
                             txbPlrCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
+                            PlayerManager.curPlayerIndex = int.Parse(received.Msg!.ToString().Split('/')[0]);
                         }
                         else
                         {
                             txbPlrCounter.Text = received.Msg!.ToString();
+                            PlayerManager.curPlayerIndex = int.Parse(received.Msg!.ToString().Split('/')[0]);
                         }
                         break;
                     case Data.ActionType.PlayerInfo:
@@ -262,8 +276,8 @@ namespace Monopoly.Screens
                             }
                             break;
                         }
-                        PictureBox pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
-                        PictureBox pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg)!;
+                        PictureBox pcbPlr = playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From)!;
+                        PictureBox pcbAvt = plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg)!;
                         if (pcbPlr != null && pcbAvt != null)
                         {
                             if (pcbPlr.Tag != null)

@@ -27,6 +27,7 @@ namespace Monopoly.Scripts
             ChatMessage,
             PlayerJoin,
             ChangeAvt,
+            Dice,
             GetAvtList
         }
         public string? Msg = null!;
