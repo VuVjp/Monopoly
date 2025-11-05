@@ -34,7 +34,7 @@ namespace Monopoly.Scripts
         public PictureBox Avt = null!;
         public Color Color;
         public double PlayerMoney = 10000;
-        public int Position = 0;
+        public int Position = 1;
         public bool IsBankrupt = false;
         public bool IsInJail = false;
         public int JailTurn = 0;

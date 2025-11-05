@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -41,6 +42,7 @@ namespace Monopoly.Screens
 
         #region Online Properties
         List<int> turnOrder;
+        List<Panel> panels;
         private TaskCompletionSource _rollWaiter;
         private TaskCompletionSource<int> _pickCardWaiter;
         private TaskCompletionSource<bool> _decideWaiter;
@@ -87,6 +89,15 @@ namespace Monopoly.Screens
                 turnOrder = new List<int>();
                 Dice1.Click += DiceClick!;
                 Dice2.Click += DiceClick!;
+                panels = new List<Panel>();
+                for (int i = 1; i <= 36; i++)
+                {
+                    Panel panel = (Panel)this.Controls.Find("pnl" + i, true).FirstOrDefault()!;
+                    if (panel != null)
+                    {
+                        panels.Add(panel);
+                    }
+                }
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
@@ -529,21 +540,21 @@ namespace Monopoly.Screens
                 await _rollWaiter.Task;
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
-                Dice1.Image = listImage[Dices[0] - 1];;
+                Dice1.Image = listImage[Dices[0] - 1];
                 Dice2.Image = listImage[Dices[1] - 1];
-                BroadcastDice(Dices[0], Dices[1]);
-                PlayerMoving(steps);
+                BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
+                await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
-        private async void BroadcastDice(int dice1, int dice2)
+        private async void BroadcastDice(string plr, int dice1, int dice2)
         {
             foreach (var client in SocketServerManager.ClientSockets)
             {
                 if (client.Key == "Player 1") continue;
                 if (client.Value != null)
                 {
-                    await SocketServerManager.SocketServer.Send(client.Value, new Data(Data.ActionType.Dice, $"{dice1}/{dice2}", "Player 1"));
+                    await SocketServerManager.SocketServer.Send(client.Value, new Data(Data.ActionType.Dice, $"{dice1}/{dice2}", plr));
                 }
             }
         }
@@ -552,10 +563,50 @@ namespace Monopoly.Screens
             await SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.RollDice));
         }
 
-        private void PlayerMoving(int steps)
+        private async Task PlayerMoving(string plr, int steps)
         {
+            var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name.Equals(plr));
+            if (plrInfo == null) return;
 
+            var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
+            if (pcb == null) return;
+
+            int oldPos = plrInfo.Position;
+            bool passedStart = (plrInfo.Position + steps) >= labels.Count;
+            plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
+
+            for (int i = 0; i < steps; i++)
+            {
+                int pos = (oldPos + i) % labels.Count;
+                this.Invoke(new Action(() =>
+                {
+                    pcb.Location = new Point(labels[pos].Location.X, labels[pos].Location.Y - 15);
+                    panels[pos].Controls.Add(pcb);
+                    pcb.BringToFront();
+                }));
+                await Task.Delay(150);
+            }
+
+            if (passedStart)
+            {
+                plrInfo.PlayerMoney += 2000;
+                if (PlayerManager.isAdmin)
+                {
+                    foreach (var client in SocketServerManager.ClientSockets)
+                    {
+                        if (client.Key == "Player 1") continue;
+                        if (client.Value != null)
+                        {
+                            await SocketServerManager.SocketServer.Send(
+                                client.Value,
+                                new Data(Data.ActionType.Recieve, "2000", plr)
+                            );
+                        }
+                    }
+                }
+            }
         }
+
 
         private void SocketServerManager_OnDataReceived(object sender, Data data)
         {
@@ -563,9 +614,6 @@ namespace Monopoly.Screens
             {
                 case Data.ActionType.RollDice:
                     _rollWaiter?.SetResult();
-                    break;
-                case Data.ActionType.Dice:
-
                     break;
             }
         }
@@ -584,17 +632,22 @@ namespace Monopoly.Screens
                     Dice2.Enabled = true;
                     break;
                 case Data.ActionType.Dice:
-                    this.Invoke(() =>
+                    this.Invoke(async() =>
                     {
                         string[] Dices = data.Msg!.Split("/");
                         Dice1.Image = listImage[int.Parse(Dices[0]) - 1];
                         Dice2.Image = listImage[int.Parse(Dices[1]) - 1];
+                        await PlayerMoving(data.From!, (int.Parse(Dices[0]) + int.Parse(Dices[1])));
                     });
+                    break;
+                case Data.ActionType.Recieve:
+                    var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                    plrInfo!.PlayerMoney += int.Parse(data.Msg!);
                     break;
             }
         }
 
-        private void DiceClick(object sender, EventArgs e) 
+        private void DiceClick(object sender, EventArgs e)
         {
             Dice1.Enabled = false;
             Dice2.Enabled = false;
