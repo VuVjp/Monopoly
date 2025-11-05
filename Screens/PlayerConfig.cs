@@ -133,7 +133,7 @@ namespace Monopoly.Screens
             }
             else
             {
-                btnPlay.Visible = false;
+                btnPlay.Enabled = false;
                 btnPlus.Visible = false;
                 btnMinus.Visible = false;
                 txbPlrCounter.ReadOnly = true;
@@ -187,8 +187,8 @@ namespace Monopoly.Screens
             switch (received.Action)
             {
                 case Data.ActionType.ChangeAvt:
-                    var pcbPlr = PlayerConfig.playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From);
-                    var pcbAvt = PlayerConfig.plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg);
+                    var pcbPlr = playerBoxes.FirstOrDefault(pcb => pcb.Name == received.From);
+                    var pcbAvt = plrImgs.FirstOrDefault(pcb => pcb.Name == received.Msg);
                     if (pcbPlr != null && pcbAvt != null)
                     {
                         if (pcbPlr.Tag != null)
@@ -233,8 +233,8 @@ namespace Monopoly.Screens
                             PlayerManager.playerCount = int.Parse(received.Msg!.ToString());
                             for (int i = 2; i < PlayerManager.playerCount; i++)
                             {
-                                PlayerConfig.playerBoxes[i].Visible = true;
-                                PlayerConfig.playerBoxes[i].Image = Properties.Resources.user;
+                                playerBoxes[i].Visible = true;
+                                playerBoxes[i].Image = Properties.Resources.user;
                             }
                             txbPlrCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
                         }
@@ -284,7 +284,6 @@ namespace Monopoly.Screens
                     case Data.ActionType.StartGame:
                         this.Invoke(new Action(() =>
                         {
-                            MessageBox.Show("Game is starting!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             btnPlay_Click(null!, EventArgs.Empty);
                             SocketClientManager.OnDataReceived -= HandleNetworkMessage!;
                         }));

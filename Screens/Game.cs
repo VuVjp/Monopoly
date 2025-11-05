@@ -13,6 +13,7 @@ namespace Monopoly.Screens
 {
     public partial class Game : UserControl
     {
+        #region Offline Properties
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -34,33 +35,43 @@ namespace Monopoly.Screens
         Dictionary<int, bool> inJail = new Dictionary<int, bool>();
         Dictionary<int, int> jailTurns = new Dictionary<int, int>();
         private Dictionary<int, (PictureBox Pcb, int CurrPos, int TargetPos)> moveLogic = new Dictionary<int, (PictureBox, int, int)>();
+        #endregion
+        #region Online Properties
+        #endregion
         public Game(Monopoly monopoly)
         {
 
             InitializeComponent();
+            this.monopoly = monopoly;
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36}
-          ;
-            this.monopoly = monopoly;
+            ;
             LoadPlayerInfo();
             LoadPlayerInBoard();
-            for (int i = 0; i < PlayerManager.playerCount; i++)
+            if (!PlayerManager.isOnline)
             {
-                Doubles[i] = 0;
-                inJail[i] = false;
-                jailTurns[i] = 0;
+                for (int i = 0; i < PlayerManager.playerCount; i++)
+                {
+                    Doubles[i] = 0;
+                    inJail[i] = false;
+                    jailTurns[i] = 0;
+                }
+
+                Dice1.Click += RollDice!;
+                Dice2.Click += RollDice!;
+                RollTimer.Tick += RollTimer_Tick!;
+                RollTimer.Interval = 300;
+                endTime = 2000;
+                X1 = Dice1.Location.X;
+
+                label1.Text = PlayerManager.Players[currPlayer].Name;
+                label1.ForeColor = PlayerManager.Players[currPlayer].Color;
             }
+            else
+            {
 
-            Dice1.Click += RollDice!;
-            Dice2.Click += RollDice!;
-            RollTimer.Tick += RollTimer_Tick!;
-            RollTimer.Interval = 300;
-            endTime = 2000;
-            X1 = Dice1.Location.X;
-
-            label1.Text = PlayerManager.Players[currPlayer].Name;
-            label1.ForeColor = PlayerManager.Players[currPlayer].Color;
+            }
 
         }
         private void LoadPlayerInfo()
