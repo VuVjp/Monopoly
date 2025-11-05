@@ -654,6 +654,7 @@ namespace Monopoly.Screens
             Dice2.Location = new Point(516, 340);
             Dice2.Name = "Dice2";
             Dice2.Size = new Size(60, 60);
+            Dice2.SizeMode = PictureBoxSizeMode.StretchImage;
             Dice2.TabIndex = 44;
             Dice2.TabStop = false;
             // 
@@ -665,6 +666,7 @@ namespace Monopoly.Screens
             Dice1.Location = new Point(440, 340);
             Dice1.Name = "Dice1";
             Dice1.Size = new Size(60, 60);
+            Dice1.SizeMode = PictureBoxSizeMode.StretchImage;
             Dice1.TabIndex = 43;
             Dice1.TabStop = false;
             // 
@@ -770,6 +772,7 @@ namespace Monopoly.Screens
             // 
             // pnl34
             // 
+            pnl34.BackColor = SystemColors.Control;
             pnl34.BackgroundImage = Resources.Tax;
             pnl34.BackgroundImageLayout = ImageLayout.Stretch;
             pnl34.BorderStyle = BorderStyle.FixedSingle;

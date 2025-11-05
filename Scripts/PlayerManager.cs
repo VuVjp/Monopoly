@@ -14,6 +14,7 @@ namespace Monopoly.Scripts
         public static bool isOnline;
         public static bool isAdmin;
         public static int playerCount;
+        public static int curPlayerIndex;
         public static Dictionary<string, Color> colorMapping = new Dictionary<string, Color>()
         {
             { "pcbAvt1", Color.Red },
@@ -33,5 +34,11 @@ namespace Monopoly.Scripts
         public PictureBox Avt = null!;
         public Color Color;
         public double PlayerMoney = 10000;
+        public int Position = 1;
+        public bool IsBankrupt = false;
+        public bool IsInJail = false;
+        public int JailTurn = 0;
+        public int doubleRollCount = 0;
+        public List<int> OwnedProperties = new List<int>();
     }
 }

@@ -10,6 +10,8 @@ namespace Monopoly.Scripts
     {
         public enum ActionType
         {
+            gameInfo,
+            message,
             StartGame,
             EndGame,
             RollDice,
@@ -25,6 +27,7 @@ namespace Monopoly.Scripts
             ChatMessage,
             PlayerJoin,
             ChangeAvt,
+            Dice,
             GetAvtList
         }
         public string? Msg = null!;

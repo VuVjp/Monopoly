@@ -1,4 +1,5 @@
 ﻿using Monopoly.Scripts;
+using Monopoly.Scripts.Sockets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,15 +19,22 @@ namespace Monopoly.Screens
         {
             InitializeComponent();
             this.monopoly = monopoly;
+            if(PlayerManager.isOnline)
+            {
+                btnCreate.Text = "Create Room";
+                btnJoin.Text = "Join Room";
+                btnDelete.Visible = false;
+            }
         }
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
+            monopoly.LoadScreen(new PlayerConfig(monopoly));
             if (PlayerManager.isOnline)
             {
                 PlayerManager.isAdmin = false;
+                SocketClientManager.SocketClient.Connect("", 9999);
             }
-            monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
@@ -39,6 +47,8 @@ namespace Monopoly.Screens
             if (PlayerManager.isOnline)
             {
                 PlayerManager.isAdmin = true;
+                monopoly.LoadScreen(new OnlineConfig(monopoly));
+                return;
             }
             monopoly.LoadScreen(new PlayerConfig(monopoly));
         }
