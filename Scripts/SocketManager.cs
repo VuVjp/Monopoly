@@ -268,6 +268,14 @@ namespace Monopoly.Scripts.Sockets
         }
         public void Stop()
         {
+            foreach (var item in ClientSockets)
+            {
+                if (item.Value != null)
+                {
+                    item.Value.Dispose();
+                    ClientSockets[item.Key] = null!;
+                }
+            }
             socketServer.Dispose();
         }
         public static async Task Broadcast(Socket sender, Data data)

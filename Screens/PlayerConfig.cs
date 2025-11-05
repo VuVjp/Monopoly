@@ -471,14 +471,6 @@ namespace Monopoly.Screens
                 SocketServerManager.isListening = false;
                 SocketServerManager.isAcceptingPlayers = false;
                 SocketServerManager.SocketServer.Stop();
-                foreach (var item in SocketServerManager.ClientSockets)
-                {
-                    if (item.Value != null)
-                    {
-                        item.Value.Dispose();
-                        SocketServerManager.ClientSockets[item.Key] = null!;
-                    }
-                }
             }
             if (PlayerManager.isOnline && !PlayerManager.isAdmin)
             {

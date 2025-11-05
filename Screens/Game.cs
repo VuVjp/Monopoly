@@ -486,6 +486,17 @@ namespace Monopoly.Screens
 
         private void pcbReturn_Click(object sender, EventArgs e)
         {
+            if(PlayerManager.isOnline)
+            {
+                if (PlayerManager.isAdmin)
+                {
+                    SocketServerManager.SocketServer.Stop();
+                }
+                else
+                {
+                    SocketClientManager.SocketClient.Disconnect();
+                }
+            }
             monopoly.LoadScreen(new MainMenu(monopoly));
         }
         private void pcb_MouseEnter(object sender, EventArgs e)
