@@ -1,10 +1,12 @@
 ﻿using Monopoly.Scripts;
+using Monopoly.Scripts.Sockets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,7 +38,9 @@ namespace Monopoly.Screens
         Dictionary<int, int> jailTurns = new Dictionary<int, int>();
         private Dictionary<int, (PictureBox Pcb, int CurrPos, int TargetPos)> moveLogic = new Dictionary<int, (PictureBox, int, int)>();
         #endregion
+
         #region Online Properties
+
         #endregion
         public Game(Monopoly monopoly)
         {
@@ -70,10 +74,18 @@ namespace Monopoly.Screens
             }
             else
             {
-
+                if(PlayerManager.isAdmin)
+                {
+                    SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
+                    SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
+                }
+                else
+                {
+                    SocketClientManager.OnDataReceived += SocketClientManager_OnDataReceived;
+                }
             }
-
         }
+        #region Offline Methods
         private void LoadPlayerInfo()
         {
             for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -107,7 +119,6 @@ namespace Monopoly.Screens
                 }
             }
         }
-
 
         private void RollDice(object sender, EventArgs e)
         {
@@ -455,6 +466,23 @@ namespace Monopoly.Screens
             }
             playerPos[player] = targetPos;
         }
+        #endregion
+
+        private void SocketServerManager_OnDataReceived(object sender, Data data)
+        {
+
+        }
+        private void SocketServerManager_OnClientDisconnect(Socket socket, string arg2)
+        {
+
+        }
+
+
+        private void SocketClientManager_OnDataReceived(Data data)
+        {
+
+        }
+
 
         private void pcbReturn_Click(object sender, EventArgs e)
         {
@@ -471,9 +499,5 @@ namespace Monopoly.Screens
             pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
         }
 
-        public static async Task ClientReciever(Monopoly monopoly, TextBox txbCounter)
-        {
-
-        }
     }
 }
