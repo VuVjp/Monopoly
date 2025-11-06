@@ -1,5 +1,6 @@
 ﻿using Monopoly.Scripts;
 using Monopoly.Scripts.Sockets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ namespace Monopoly.Screens
 {
     public partial class Game : UserControl
     {
+        Board board;
         private Monopoly monopoly;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
@@ -49,15 +51,12 @@ namespace Monopoly.Screens
         #endregion
         public Game(Monopoly monopoly)
         {
-
             InitializeComponent();
             this.monopoly = monopoly;
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
-            pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36}
-            ;
-            LoadPlayerInfo();
-            LoadPlayerInBoard();
+            pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
+            GameLoader();
             if (!PlayerManager.isOnline)
             {
                 for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -89,15 +88,6 @@ namespace Monopoly.Screens
                 turnOrder = new List<int>();
                 Dice1.Click += DiceClick!;
                 Dice2.Click += DiceClick!;
-                panels = new List<Panel>();
-                for (int i = 1; i <= 36; i++)
-                {
-                    Panel panel = (Panel)this.Controls.Find("pnl" + i, true).FirstOrDefault()!;
-                    if (panel != null)
-                    {
-                        panels.Add(panel);
-                    }
-                }
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
@@ -111,6 +101,31 @@ namespace Monopoly.Screens
                 }
             }
         }
+
+        private void GameLoader()
+        {
+            ReadJson();
+            LoadPlayerInfo();
+            LoadPlayerInBoard();
+            panels = new List<Panel>();
+            for (int i = 1; i <= 36; i++)
+            {
+                Panel panel = (Panel)this.Controls.Find("pnl" + i, true).FirstOrDefault()!;
+                if (panel != null)
+                {
+                    panels.Add(panel);
+                    panel.Click += PanelClick!;
+                }
+            }
+        }
+
+        private void ReadJson()
+        {
+            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data","Board.json");
+            string json = File.ReadAllText(boardPath);
+            board = JsonConvert.DeserializeObject<Board>(json)!;
+        }
+
         #region Offline Methods
         private void LoadPlayerInfo()
         {
@@ -263,6 +278,7 @@ namespace Monopoly.Screens
                 if (i == 0)
                 {
                     PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
                     pictureBox.Name = "Player " + (i + 1).ToString();
                     pictureBox.Size = new Size(40, 40);
                     pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y - 15);
@@ -276,6 +292,7 @@ namespace Monopoly.Screens
                 else if (i == 1)
                 {
                     PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
                     pictureBox.Name = "Player " + (i + 1).ToString();
                     pictureBox.Size = new Size(40, 40);
                     pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y - 15);
@@ -289,6 +306,7 @@ namespace Monopoly.Screens
                 else if (i == 2)
                 {
                     PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
                     pictureBox.Name = "Player " + (i + 1).ToString();
                     pictureBox.Size = new Size(40, 40);
                     pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36 - 16);
@@ -302,6 +320,7 @@ namespace Monopoly.Screens
                 else
                 {
                     PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
                     pictureBox.Name = "Player " + (i + 1).ToString();
                     pictureBox.Size = new Size(40, 40);
                     pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y + 36 - 16);
@@ -661,6 +680,14 @@ namespace Monopoly.Screens
             }
         }
         #endregion
+
+        private void PanelClick(object sender, EventArgs e)
+        {
+            var panel = (Panel)sender;
+            var name = panel.Name;
+            int num = int.Parse(name.Replace("pnl", ""));
+            MessageBox.Show(board.properties[num - 1].name);
+        }
 
         private void pcbReturn_Click(object sender, EventArgs e)
         {
