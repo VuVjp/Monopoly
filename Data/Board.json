@@ -1,0 +1,361 @@
+{
+  "properties": [
+    {
+      "name": "Go",
+      "type": "corner",
+      "description": "Collect 2000 each time you pass Go."
+    },
+    {
+      "name": "Ho Chi Minh City",
+      "type": "property",
+      "price": 3100,
+      "sell_price": 2300,
+      "description": "The economic heart of Vietnam, always bustling with life.",
+      "levels": {
+        "0": { "rent": 300 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1300 },
+        "3": { "rent": 2000 },
+        "4": { "rent": 3000 },
+        "5": { "rent": 4500 }
+      }
+    },
+    {
+      "name": "Chance",
+      "type": "chance",
+      "description": "Draw a Chance card and see what fate brings."
+    },
+    {
+      "name": "Income Tax",
+      "type": "tax",
+      "description": "Pay 10% of your total money to the bank."
+    },
+    {
+      "name": "Lyon Railroad",
+      "type": "railroad",
+      "price": 2000,
+      "sell_price": 1500,
+      "description": "A major French rail line connecting key cities.",
+      "levels": {
+        "0": { "rent": 250 },
+        "1": { "rent": 500 },
+        "2": { "rent": 1000 },
+        "3": { "rent": 2000 }
+      }
+    },
+    {
+      "name": "Marseille",
+      "type": "property",
+      "price": 1500,
+      "sell_price": 1100,
+      "description": "A coastal city in southern France, vibrant and sunny.",
+      "levels": {
+        "0": { "rent": 120 },
+        "1": { "rent": 400 },
+        "2": { "rent": 800 },
+        "3": { "rent": 1200 },
+        "4": { "rent": 1800 },
+        "5": { "rent": 2500 }
+      }
+    },
+    {
+      "name": "Paris",
+      "type": "property",
+      "price": 1700,
+      "sell_price": 1300,
+      "description": "The city of lights and fashion — a valuable property.",
+      "levels": {
+        "0": { "rent": 180 },
+        "1": { "rent": 500 },
+        "2": { "rent": 900 },
+        "3": { "rent": 1400 },
+        "4": { "rent": 2000 },
+        "5": { "rent": 2800 }
+      }
+    },
+    {
+      "name": "Community Chest",
+      "type": "community_chest",
+      "description": "Draw a Community Chest card for surprise events."
+    },
+    {
+      "name": "Jeju",
+      "type": "property",
+      "price": 1000,
+      "sell_price": 750,
+      "description": "A peaceful island in South Korea famous for tourism.",
+      "levels": {
+        "0": { "rent": 100 },
+        "1": { "rent": 300 },
+        "2": { "rent": 600 },
+        "3": { "rent": 1000 },
+        "4": { "rent": 1500 },
+        "5": { "rent": 2100 }
+      }
+    },
+    {
+      "name": "Jail / Just Visiting",
+      "type": "corner",
+      "description": "Either rest here or serve your sentence if sent to jail."
+    },
+    {
+      "name": "Busan",
+      "type": "property",
+      "price": 1600,
+      "sell_price": 1200,
+      "description": "A major port city in South Korea, full of trade and energy.",
+      "levels": {
+        "0": { "rent": 150 },
+        "1": { "rent": 400 },
+        "2": { "rent": 800 },
+        "3": { "rent": 1300 },
+        "4": { "rent": 1900 },
+        "5": { "rent": 2600 }
+      }
+    },
+    {
+      "name": "Seoul",
+      "type": "property",
+      "price": 2300,
+      "sell_price": 1700,
+      "description": "Capital of South Korea, modern and full of opportunities.",
+      "levels": {
+        "0": { "rent": 250 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1200 },
+        "3": { "rent": 2000 },
+        "4": { "rent": 3000 },
+        "5": { "rent": 4200 }
+      }
+    },
+    {
+      "name": "Chance",
+      "type": "chance",
+      "description": "Take a risk! Draw a Chance card."
+    },
+    {
+      "name": "Moscow",
+      "type": "property",
+      "price": 2200,
+      "sell_price": 1650,
+      "description": "Historic Russian capital, rich in culture and politics.",
+      "levels": {
+        "0": { "rent": 240 },
+        "1": { "rent": 650 },
+        "2": { "rent": 1200 },
+        "3": { "rent": 1800 },
+        "4": { "rent": 2500 },
+        "5": { "rent": 3500 }
+      }
+    },
+    {
+      "name": "St. Petersburg",
+      "type": "property",
+      "price": 1200,
+      "sell_price": 900,
+      "description": "Cultural capital of Russia, famous for its architecture.",
+      "levels": {
+        "0": { "rent": 110 },
+        "1": { "rent": 300 },
+        "2": { "rent": 600 },
+        "3": { "rent": 900 },
+        "4": { "rent": 1400 },
+        "5": { "rent": 2000 }
+      }
+    },
+    {
+      "name": "Electric Company",
+      "type": "utility",
+      "price": 1500,
+      "sell_price": 1000,
+      "description": "Utility company — rent depends on dice roll."
+    },
+    {
+      "name": "Kazan",
+      "type": "property",
+      "price": 1300,
+      "sell_price": 950,
+      "description": "A cultural and industrial hub on the Volga River.",
+      "levels": {
+        "0": { "rent": 130 },
+        "1": { "rent": 350 },
+        "2": { "rent": 700 },
+        "3": { "rent": 1100 },
+        "4": { "rent": 1600 },
+        "5": { "rent": 2300 }
+      }
+    },
+    {
+      "name": "Free Parking",
+      "type": "corner",
+      "description": "Take a break and relax — free parking for everyone."
+    },
+    {
+      "name": "Guangzhou",
+      "type": "property",
+      "price": 1700,
+      "sell_price": 1300,
+      "description": "A commercial powerhouse in southern China.",
+      "levels": {
+        "0": { "rent": 200 },
+        "1": { "rent": 500 },
+        "2": { "rent": 1000 },
+        "3": { "rent": 1600 },
+        "4": { "rent": 2400 },
+        "5": { "rent": 3400 }
+      }
+    },
+    {
+      "name": "Beijing",
+      "type": "property",
+      "price": 2400,
+      "sell_price": 1800,
+      "description": "The historic and political center of China.",
+      "levels": {
+        "0": { "rent": 280 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1300 },
+        "3": { "rent": 2000 },
+        "4": { "rent": 2800 },
+        "5": { "rent": 4000 }
+      }
+    },
+    {
+      "name": "Shanghai",
+      "type": "property",
+      "price": 1800,
+      "sell_price": 1400,
+      "description": "China’s global financial center, full of skyscrapers.",
+      "levels": {
+        "0": { "rent": 220 },
+        "1": { "rent": 500 },
+        "2": { "rent": 900 },
+        "3": { "rent": 1500 },
+        "4": { "rent": 2300 },
+        "5": { "rent": 3200 }
+      }
+    },
+    {
+      "name": "Tokyo Railroad",
+      "type": "railroad",
+      "price": 2000,
+      "sell_price": 1500,
+      "description": "High-speed train line connecting Japan’s major cities."
+    },
+    {
+      "name": "Tokyo",
+      "type": "property",
+      "price": 2200,
+      "sell_price": 1650,
+      "description": "The vibrant capital of Japan — a prime location.",
+      "levels": {
+        "0": { "rent": 250 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1200 },
+        "3": { "rent": 1900 },
+        "4": { "rent": 2700 },
+        "5": { "rent": 3800 }
+      }
+    },
+    {
+      "name": "Kyoto",
+      "type": "property",
+      "price": 1600,
+      "sell_price": 1200,
+      "description": "Historic capital of Japan, rich in temples and tradition.",
+      "levels": {
+        "0": { "rent": 150 },
+        "1": { "rent": 400 },
+        "2": { "rent": 800 },
+        "3": { "rent": 1300 },
+        "4": { "rent": 1900 },
+        "5": { "rent": 2600 }
+      }
+    },
+    {
+      "name": "Go To Jail",
+      "type": "corner",
+      "description": "Go directly to Jail. Do not pass Go, do not collect 2000."
+    },
+    {
+      "name": "New York",
+      "type": "property",
+      "price": 2200,
+      "sell_price": 1650,
+      "description": "The city that never sleeps — business and chaos all around.",
+      "levels": {
+        "0": { "rent": 250 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1200 },
+        "3": { "rent": 1800 },
+        "4": { "rent": 2700 },
+        "5": { "rent": 3800 }
+      }
+    },
+    {
+      "name": "Washington",
+      "type": "property",
+      "price": 2300,
+      "sell_price": 1700,
+      "description": "Capital of the USA, center of power and politics.",
+      "levels": {
+        "0": { "rent": 260 },
+        "1": { "rent": 700 },
+        "2": { "rent": 1200 },
+        "3": { "rent": 2000 },
+        "4": { "rent": 2900 },
+        "5": { "rent": 4100 }
+      }
+    },
+    {
+      "name": "Hawaii",
+      "type": "property",
+      "price": 1400,
+      "sell_price": 1000,
+      "description": "Tropical paradise and a favorite vacation spot.",
+      "levels": {
+        "0": { "rent": 120 },
+        "1": { "rent": 350 },
+        "2": { "rent": 700 },
+        "3": { "rent": 1100 },
+        "4": { "rent": 1600 },
+        "5": { "rent": 2300 }
+      }
+    },
+    {
+      "name": "Luxury Tax",
+      "type": "tax",
+      "description": "Pay 1000 for luxury expenses."
+    },
+    {
+      "name": "Ha Noi",
+      "type": "property",
+      "price": 2900,
+      "sell_price": 2100,
+      "description": "Capital of Vietnam, rich in history and tradition.",
+      "levels": {
+        "0": { "rent": 320 },
+        "1": { "rent": 800 },
+        "2": { "rent": 1500 },
+        "3": { "rent": 2400 },
+        "4": { "rent": 3400 },
+        "5": { "rent": 4800 }
+      }
+    },
+    {
+      "name": "Thanh Hoa",
+      "type": "property",
+      "price": 3600,
+      "sell_price": 2700,
+      "description": "Growing city with strong cultural roots and potential.",
+      "levels": {
+        "0": { "rent": 400 },
+        "1": { "rent": 1000 },
+        "2": { "rent": 1800 },
+        "3": { "rent": 2700 },
+        "4": { "rent": 3800 },
+        "5": { "rent": 5200 }
+      }
+    }
+  ]
+}

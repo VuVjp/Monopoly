@@ -276,6 +276,7 @@ namespace Monopoly.Screens
             // pos16
             // 
             pos16.AutoSize = true;
+            pos16.Enabled = false;
             pos16.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos16.Location = new Point(6, 21);
             pos16.Margin = new Padding(1, 0, 1, 0);
@@ -289,6 +290,7 @@ namespace Monopoly.Screens
             // 
             pcb9.BackColor = Color.FromArgb(255, 192, 255);
             pcb9.BorderStyle = BorderStyle.FixedSingle;
+            pcb9.Enabled = false;
             pcb9.Location = new Point(104, -1);
             pcb9.Margin = new Padding(1);
             pcb9.Name = "pcb9";
@@ -715,6 +717,7 @@ namespace Monopoly.Screens
             // 
             // pos36
             // 
+            pos36.Enabled = false;
             pos36.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos36.Location = new Point(42, 18);
             pos36.Margin = new Padding(1, 0, 1, 0);
@@ -728,6 +731,7 @@ namespace Monopoly.Screens
             // 
             pcb21.BackColor = Color.FromArgb(255, 224, 192);
             pcb21.BorderStyle = BorderStyle.FixedSingle;
+            pcb21.Enabled = false;
             pcb21.Location = new Point(-1, -1);
             pcb21.Margin = new Padding(1);
             pcb21.Name = "pcb21";
@@ -750,6 +754,7 @@ namespace Monopoly.Screens
             // 
             // pos35
             // 
+            pos35.Enabled = false;
             pos35.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos35.Location = new Point(48, 23);
             pos35.Margin = new Padding(1, 0, 1, 0);
@@ -763,6 +768,7 @@ namespace Monopoly.Screens
             // 
             pcb20.BackColor = Color.FromArgb(255, 224, 192);
             pcb20.BorderStyle = BorderStyle.FixedSingle;
+            pcb20.Enabled = false;
             pcb20.Location = new Point(-1, -1);
             pcb20.Margin = new Padding(1);
             pcb20.Name = "pcb20";
@@ -773,7 +779,7 @@ namespace Monopoly.Screens
             // pnl34
             // 
             pnl34.BackColor = SystemColors.Control;
-            pnl34.BackgroundImage = Resources.Tax;
+            pnl34.BackgroundImage = Resources.Train;
             pnl34.BackgroundImageLayout = ImageLayout.Stretch;
             pnl34.BorderStyle = BorderStyle.FixedSingle;
             pnl34.Controls.Add(pos34);
@@ -813,6 +819,7 @@ namespace Monopoly.Screens
             // pos33
             // 
             pos33.AutoSize = true;
+            pos33.Enabled = false;
             pos33.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos33.Location = new Point(48, 20);
             pos33.Margin = new Padding(1, 0, 1, 0);
@@ -826,6 +833,7 @@ namespace Monopoly.Screens
             // 
             pcb19.BackColor = Color.FromArgb(192, 192, 255);
             pcb19.BorderStyle = BorderStyle.FixedSingle;
+            pcb19.Enabled = false;
             pcb19.Location = new Point(-1, -1);
             pcb19.Margin = new Padding(1);
             pcb19.Name = "pcb19";
@@ -875,6 +883,7 @@ namespace Monopoly.Screens
             // pos31
             // 
             pos31.AutoSize = true;
+            pos31.Enabled = false;
             pos31.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos31.Location = new Point(34, 21);
             pos31.Margin = new Padding(1, 0, 1, 0);
@@ -888,6 +897,7 @@ namespace Monopoly.Screens
             // 
             pcb18.BackColor = Color.FromArgb(192, 192, 255);
             pcb18.BorderStyle = BorderStyle.FixedSingle;
+            pcb18.Enabled = false;
             pcb18.Location = new Point(-1, -1);
             pcb18.Margin = new Padding(1);
             pcb18.Name = "pcb18";
@@ -911,6 +921,7 @@ namespace Monopoly.Screens
             // pos30
             // 
             pos30.AutoSize = true;
+            pos30.Enabled = false;
             pos30.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos30.Location = new Point(39, 21);
             pos30.Margin = new Padding(1, 0, 1, 0);
@@ -924,6 +935,7 @@ namespace Monopoly.Screens
             // 
             pcb17.BackColor = Color.FromArgb(192, 192, 255);
             pcb17.BorderStyle = BorderStyle.FixedSingle;
+            pcb17.Enabled = false;
             pcb17.Location = new Point(-1, -1);
             pcb17.Margin = new Padding(1);
             pcb17.Name = "pcb17";
@@ -973,6 +985,7 @@ namespace Monopoly.Screens
             // pos28
             // 
             pos28.AutoSize = true;
+            pos28.Enabled = false;
             pos28.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos28.Location = new Point(15, 32);
             pos28.Margin = new Padding(1, 0, 1, 0);
@@ -986,6 +999,7 @@ namespace Monopoly.Screens
             // 
             pcb16.BackColor = Color.FromArgb(192, 255, 192);
             pcb16.BorderStyle = BorderStyle.FixedSingle;
+            pcb16.Enabled = false;
             pcb16.Location = new Point(-1, 89);
             pcb16.Margin = new Padding(1);
             pcb16.Name = "pcb16";
@@ -995,7 +1009,7 @@ namespace Monopoly.Screens
             // 
             // pnl27
             // 
-            pnl27.BackgroundImage = Resources.ChanceCard;
+            pnl27.BackgroundImage = Resources.Tax;
             pnl27.BackgroundImageLayout = ImageLayout.Stretch;
             pnl27.BorderStyle = BorderStyle.FixedSingle;
             pnl27.Controls.Add(pos27);
@@ -1035,6 +1049,7 @@ namespace Monopoly.Screens
             // pos26
             // 
             pos26.AutoSize = true;
+            pos26.Enabled = false;
             pos26.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos26.Location = new Point(15, 32);
             pos26.Margin = new Padding(1, 0, 1, 0);
@@ -1048,6 +1063,7 @@ namespace Monopoly.Screens
             // 
             pcb15.BackColor = Color.FromArgb(192, 255, 192);
             pcb15.BorderStyle = BorderStyle.FixedSingle;
+            pcb15.Enabled = false;
             pcb15.Location = new Point(-1, 89);
             pcb15.Margin = new Padding(1);
             pcb15.Name = "pcb15";
@@ -1071,6 +1087,7 @@ namespace Monopoly.Screens
             // pos25
             // 
             pos25.AutoSize = true;
+            pos25.Enabled = false;
             pos25.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos25.Location = new Point(17, 32);
             pos25.Margin = new Padding(1, 0, 1, 0);
@@ -1084,6 +1101,7 @@ namespace Monopoly.Screens
             // 
             pcb14.BackColor = Color.FromArgb(192, 255, 192);
             pcb14.BorderStyle = BorderStyle.FixedSingle;
+            pcb14.Enabled = false;
             pcb14.Location = new Point(-1, 89);
             pcb14.Margin = new Padding(1);
             pcb14.Name = "pcb14";
@@ -1133,6 +1151,7 @@ namespace Monopoly.Screens
             // pos23
             // 
             pos23.AutoSize = true;
+            pos23.Enabled = false;
             pos23.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos23.Location = new Point(6, 32);
             pos23.Margin = new Padding(1, 0, 1, 0);
@@ -1146,6 +1165,7 @@ namespace Monopoly.Screens
             // 
             pcb13.BackColor = Color.FromArgb(255, 192, 192);
             pcb13.BorderStyle = BorderStyle.FixedSingle;
+            pcb13.Enabled = false;
             pcb13.Location = new Point(-1, 90);
             pcb13.Margin = new Padding(1);
             pcb13.Name = "pcb13";
@@ -1169,6 +1189,7 @@ namespace Monopoly.Screens
             // pos22
             // 
             pos22.AutoSize = true;
+            pos22.Enabled = false;
             pos22.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos22.Location = new Point(18, 32);
             pos22.Margin = new Padding(1, 0, 1, 0);
@@ -1182,6 +1203,7 @@ namespace Monopoly.Screens
             // 
             pcb12.BackColor = Color.FromArgb(255, 192, 192);
             pcb12.BorderStyle = BorderStyle.FixedSingle;
+            pcb12.Enabled = false;
             pcb12.Location = new Point(-1, 89);
             pcb12.Margin = new Padding(1);
             pcb12.Name = "pcb12";
@@ -1231,6 +1253,7 @@ namespace Monopoly.Screens
             // pos20
             // 
             pos20.AutoSize = true;
+            pos20.Enabled = false;
             pos20.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos20.Location = new Point(-1, 32);
             pos20.Margin = new Padding(1, 0, 1, 0);
@@ -1244,6 +1267,7 @@ namespace Monopoly.Screens
             // 
             pcb11.BackColor = Color.FromArgb(255, 192, 192);
             pcb11.BorderStyle = BorderStyle.FixedSingle;
+            pcb11.Enabled = false;
             pcb11.Location = new Point(-1, 89);
             pcb11.Margin = new Padding(1);
             pcb11.Name = "pcb11";
@@ -1293,6 +1317,7 @@ namespace Monopoly.Screens
             // pos18
             // 
             pos18.AutoSize = true;
+            pos18.Enabled = false;
             pos18.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos18.Location = new Point(27, 21);
             pos18.Margin = new Padding(1, 0, 1, 0);
@@ -1306,6 +1331,7 @@ namespace Monopoly.Screens
             // 
             pcb10.BackColor = Color.FromArgb(255, 192, 255);
             pcb10.BorderStyle = BorderStyle.FixedSingle;
+            pcb10.Enabled = false;
             pcb10.Location = new Point(104, -1);
             pcb10.Margin = new Padding(1);
             pcb10.Name = "pcb10";
@@ -1329,6 +1355,7 @@ namespace Monopoly.Screens
             // pos15
             // 
             pos15.AutoSize = true;
+            pos15.Enabled = false;
             pos15.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos15.Location = new Point(21, 21);
             pos15.Margin = new Padding(1, 0, 1, 0);
@@ -1342,6 +1369,7 @@ namespace Monopoly.Screens
             // 
             pcb8.BackColor = Color.FromArgb(255, 192, 255);
             pcb8.BorderStyle = BorderStyle.FixedSingle;
+            pcb8.Enabled = false;
             pcb8.Location = new Point(104, -1);
             pcb8.Margin = new Padding(1);
             pcb8.Name = "pcb8";
@@ -1364,6 +1392,7 @@ namespace Monopoly.Screens
             // pos13
             // 
             pos13.AutoSize = true;
+            pos13.Enabled = false;
             pos13.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos13.Location = new Point(21, 24);
             pos13.Margin = new Padding(1, 0, 1, 0);
@@ -1377,6 +1406,7 @@ namespace Monopoly.Screens
             // 
             pcb7.BackColor = Color.Silver;
             pcb7.BorderStyle = BorderStyle.FixedSingle;
+            pcb7.Enabled = false;
             pcb7.Location = new Point(104, -1);
             pcb7.Margin = new Padding(1);
             pcb7.Name = "pcb7";
@@ -1400,6 +1430,7 @@ namespace Monopoly.Screens
             // pos12
             // 
             pos12.AutoSize = true;
+            pos12.Enabled = false;
             pos12.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos12.Location = new Point(21, 19);
             pos12.Margin = new Padding(1, 0, 1, 0);
@@ -1413,6 +1444,7 @@ namespace Monopoly.Screens
             // 
             pcb6.BackColor = Color.Silver;
             pcb6.BorderStyle = BorderStyle.FixedSingle;
+            pcb6.Enabled = false;
             pcb6.Location = new Point(104, -1);
             pcb6.Margin = new Padding(1);
             pcb6.Name = "pcb6";
@@ -1462,6 +1494,7 @@ namespace Monopoly.Screens
             // pos10
             // 
             pos10.AutoSize = true;
+            pos10.Enabled = false;
             pos10.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos10.Location = new Point(15, 53);
             pos10.Margin = new Padding(1, 0, 1, 0);
@@ -1475,6 +1508,7 @@ namespace Monopoly.Screens
             // 
             pcb5.BackColor = Color.Silver;
             pcb5.BorderStyle = BorderStyle.FixedSingle;
+            pcb5.Enabled = false;
             pcb5.Location = new Point(-1, -1);
             pcb5.Margin = new Padding(1);
             pcb5.Name = "pcb5";
@@ -1485,7 +1519,7 @@ namespace Monopoly.Screens
             // pnl9
             // 
             pnl9.BackColor = Color.Transparent;
-            pnl9.BackgroundImage = (Image)resources.GetObject("pnl9.BackgroundImage");
+            pnl9.BackgroundImage = Resources.Train;
             pnl9.BackgroundImageLayout = ImageLayout.Stretch;
             pnl9.BorderStyle = BorderStyle.FixedSingle;
             pnl9.Controls.Add(pos9);
@@ -1525,6 +1559,7 @@ namespace Monopoly.Screens
             // pos8
             // 
             pos8.AutoSize = true;
+            pos8.Enabled = false;
             pos8.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos8.Location = new Point(18, 53);
             pos8.Margin = new Padding(1, 0, 1, 0);
@@ -1538,6 +1573,7 @@ namespace Monopoly.Screens
             // 
             pcb4.BackColor = Color.Chocolate;
             pcb4.BorderStyle = BorderStyle.FixedSingle;
+            pcb4.Enabled = false;
             pcb4.Location = new Point(-1, -1);
             pcb4.Margin = new Padding(1);
             pcb4.Name = "pcb4";
@@ -1561,6 +1597,7 @@ namespace Monopoly.Screens
             // pos7
             // 
             pos7.AutoSize = true;
+            pos7.Enabled = false;
             pos7.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos7.Location = new Point(10, 53);
             pos7.Margin = new Padding(1, 0, 1, 0);
@@ -1574,6 +1611,7 @@ namespace Monopoly.Screens
             // 
             pcb3.BackColor = Color.Chocolate;
             pcb3.BorderStyle = BorderStyle.FixedSingle;
+            pcb3.Enabled = false;
             pcb3.Location = new Point(-1, -1);
             pcb3.Margin = new Padding(1);
             pcb3.Name = "pcb3";
@@ -1596,6 +1634,7 @@ namespace Monopoly.Screens
             // pos6
             // 
             pos6.AutoSize = true;
+            pos6.Enabled = false;
             pos6.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos6.Location = new Point(17, 53);
             pos6.Margin = new Padding(1, 0, 1, 0);
@@ -1609,6 +1648,7 @@ namespace Monopoly.Screens
             // 
             pcb2.BackColor = Color.Chocolate;
             pcb2.BorderStyle = BorderStyle.FixedSingle;
+            pcb2.Enabled = false;
             pcb2.Location = new Point(-1, -1);
             pcb2.Margin = new Padding(1);
             pcb2.Name = "pcb2";
@@ -1618,7 +1658,7 @@ namespace Monopoly.Screens
             // 
             // pnl5
             // 
-            pnl5.BackgroundImage = Resources.Train;
+            pnl5.BackgroundImage = Resources.VuVjp;
             pnl5.BackgroundImageLayout = ImageLayout.Stretch;
             pnl5.BorderStyle = BorderStyle.FixedSingle;
             pnl5.Controls.Add(pos5);
@@ -1711,6 +1751,7 @@ namespace Monopoly.Screens
             // pos2
             // 
             pos2.AutoSize = true;
+            pos2.Enabled = false;
             pos2.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pos2.Location = new Point(8, 53);
             pos2.Margin = new Padding(1, 0, 1, 0);
@@ -1724,6 +1765,7 @@ namespace Monopoly.Screens
             // 
             pcb1.BackColor = Color.FromArgb(255, 224, 192);
             pcb1.BorderStyle = BorderStyle.FixedSingle;
+            pcb1.Enabled = false;
             pcb1.Location = new Point(-1, -1);
             pcb1.Margin = new Padding(1);
             pcb1.Name = "pcb1";
