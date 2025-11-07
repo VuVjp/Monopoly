@@ -237,7 +237,7 @@ namespace Monopoly.Screens
             // pnl17
             // 
             pnl17.BackColor = Color.Transparent;
-            pnl17.BackgroundImage = Resources.Electric;
+            pnl17.BackgroundImage = (Image)resources.GetObject("pnl17.BackgroundImage");
             pnl17.BackgroundImageLayout = ImageLayout.Stretch;
             pnl17.BorderStyle = BorderStyle.FixedSingle;
             pnl17.Controls.Add(pos17);
@@ -245,7 +245,7 @@ namespace Monopoly.Screens
             pnl17.Location = new Point(1, 184);
             pnl17.Margin = new Padding(1);
             pnl17.Name = "pnl17";
-            pnl17.Size = new Size(131, 73);
+            pnl17.Size = new Size(112, 73);
             pnl17.TabIndex = 25;
             // 
             // pos17
@@ -260,9 +260,12 @@ namespace Monopoly.Screens
             pos17.TabIndex = 54;
             pos17.Text = " ";
             pos17.TextAlign = ContentAlignment.MiddleCenter;
+            pos17.Visible = false;
             // 
             // pnl16
             // 
+            pnl16.BackgroundImage = Resources.Petersburg;
+            pnl16.BackgroundImageLayout = ImageLayout.Stretch;
             pnl16.BorderStyle = BorderStyle.FixedSingle;
             pnl16.Controls.Add(pos16);
             pnl16.Controls.Add(pcb9);
@@ -270,7 +273,7 @@ namespace Monopoly.Screens
             pnl16.Location = new Point(1, 256);
             pnl16.Margin = new Padding(1);
             pnl16.Name = "pnl16";
-            pnl16.Size = new Size(131, 73);
+            pnl16.Size = new Size(112, 73);
             pnl16.TabIndex = 26;
             // 
             // pos16
@@ -285,13 +288,14 @@ namespace Monopoly.Screens
             pos16.TabIndex = 45;
             pos16.Text = "St. Petersburg\r\n1200 $";
             pos16.TextAlign = ContentAlignment.MiddleCenter;
+            pos16.Visible = false;
             // 
             // pcb9
             // 
             pcb9.BackColor = Color.FromArgb(255, 192, 255);
             pcb9.BorderStyle = BorderStyle.FixedSingle;
             pcb9.Enabled = false;
-            pcb9.Location = new Point(104, -1);
+            pcb9.Location = new Point(85, -1);
             pcb9.Margin = new Padding(1);
             pcb9.Name = "pcb9";
             pcb9.Size = new Size(26, 73);
@@ -313,7 +317,7 @@ namespace Monopoly.Screens
             pnlSide.Controls.Add(pnlPlr3);
             pnlSide.Controls.Add(pnlPlr2);
             pnlSide.Controls.Add(pnlPlr1);
-            pnlSide.Location = new Point(1018, 1);
+            pnlSide.Location = new Point(982, 0);
             pnlSide.Margin = new Padding(1);
             pnlSide.Name = "pnlSide";
             pnlSide.Size = new Size(237, 727);
@@ -645,7 +649,7 @@ namespace Monopoly.Screens
             pnlGame.Location = new Point(1, 0);
             pnlGame.Margin = new Padding(1);
             pnlGame.Name = "pnlGame";
-            pnlGame.Size = new Size(1017, 729);
+            pnlGame.Size = new Size(979, 729);
             pnlGame.TabIndex = 23;
             // 
             // Dice2
@@ -653,7 +657,7 @@ namespace Monopoly.Screens
             Dice2.BackColor = Color.Transparent;
             Dice2.BackgroundImage = Resources.Dice1;
             Dice2.BackgroundImageLayout = ImageLayout.Stretch;
-            Dice2.Location = new Point(516, 340);
+            Dice2.Location = new Point(496, 338);
             Dice2.Name = "Dice2";
             Dice2.Size = new Size(60, 60);
             Dice2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -665,7 +669,7 @@ namespace Monopoly.Screens
             Dice1.BackColor = Color.Transparent;
             Dice1.BackgroundImage = Resources.Dice1;
             Dice1.BackgroundImageLayout = ImageLayout.Stretch;
-            Dice1.Location = new Point(440, 340);
+            Dice1.Location = new Point(420, 338);
             Dice1.Name = "Dice1";
             Dice1.Size = new Size(60, 60);
             Dice1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -678,7 +682,7 @@ namespace Monopoly.Screens
             pcbChance.BackgroundImage = Resources.ChanceCards;
             pcbChance.BackgroundImageLayout = ImageLayout.Stretch;
             pcbChance.Cursor = Cursors.Hand;
-            pcbChance.Location = new Point(685, 405);
+            pcbChance.Location = new Point(665, 403);
             pcbChance.Margin = new Padding(1);
             pcbChance.Name = "pcbChance";
             pcbChance.Size = new Size(118, 139);
@@ -693,7 +697,7 @@ namespace Monopoly.Screens
             pcbFortune.BackgroundImage = Resources.FortuneCards;
             pcbFortune.BackgroundImageLayout = ImageLayout.Stretch;
             pcbFortune.Cursor = Cursors.Hand;
-            pcbFortune.Location = new Point(214, 184);
+            pcbFortune.Location = new Point(194, 182);
             pcbFortune.Margin = new Padding(1);
             pcbFortune.Name = "pcbFortune";
             pcbFortune.Size = new Size(118, 139);
@@ -705,14 +709,16 @@ namespace Monopoly.Screens
             // pnl36
             // 
             pnl36.BackColor = Color.Transparent;
+            pnl36.BackgroundImage = Resources.ThanhHoa;
+            pnl36.BackgroundImageLayout = ImageLayout.Stretch;
             pnl36.BorderStyle = BorderStyle.FixedSingle;
             pnl36.Controls.Add(pos36);
             pnl36.Controls.Add(pcb21);
             pnl36.Cursor = Cursors.Hand;
-            pnl36.Location = new Point(885, 544);
+            pnl36.Location = new Point(866, 544);
             pnl36.Margin = new Padding(1);
             pnl36.Name = "pnl36";
-            pnl36.Size = new Size(131, 73);
+            pnl36.Size = new Size(112, 73);
             pnl36.TabIndex = 37;
             // 
             // pos36
@@ -726,6 +732,7 @@ namespace Monopoly.Screens
             pos36.TabIndex = 46;
             pos36.Text = "Thanh Hoa\r\n3600 $";
             pos36.TextAlign = ContentAlignment.MiddleCenter;
+            pos36.Visible = false;
             // 
             // pcb21
             // 
@@ -742,14 +749,16 @@ namespace Monopoly.Screens
             // pnl35
             // 
             pnl35.BackColor = Color.Transparent;
+            pnl35.BackgroundImage = Resources.HaNoi;
+            pnl35.BackgroundImageLayout = ImageLayout.Stretch;
             pnl35.BorderStyle = BorderStyle.FixedSingle;
             pnl35.Controls.Add(pos35);
             pnl35.Controls.Add(pcb20);
             pnl35.Cursor = Cursors.Hand;
-            pnl35.Location = new Point(885, 472);
+            pnl35.Location = new Point(866, 472);
             pnl35.Margin = new Padding(1);
             pnl35.Name = "pnl35";
-            pnl35.Size = new Size(131, 73);
+            pnl35.Size = new Size(112, 73);
             pnl35.TabIndex = 35;
             // 
             // pos35
@@ -763,6 +772,7 @@ namespace Monopoly.Screens
             pos35.TabIndex = 45;
             pos35.Text = "Ha Noi\r\n2900 $";
             pos35.TextAlign = ContentAlignment.MiddleCenter;
+            pos35.Visible = false;
             // 
             // pcb20
             // 
@@ -779,15 +789,15 @@ namespace Monopoly.Screens
             // pnl34
             // 
             pnl34.BackColor = SystemColors.Control;
-            pnl34.BackgroundImage = Resources.Train;
+            pnl34.BackgroundImage = Resources.OsloSStation;
             pnl34.BackgroundImageLayout = ImageLayout.Stretch;
             pnl34.BorderStyle = BorderStyle.FixedSingle;
             pnl34.Controls.Add(pos34);
             pnl34.Cursor = Cursors.Hand;
-            pnl34.Location = new Point(885, 400);
+            pnl34.Location = new Point(866, 400);
             pnl34.Margin = new Padding(1);
             pnl34.Name = "pnl34";
-            pnl34.Size = new Size(131, 73);
+            pnl34.Size = new Size(112, 73);
             pnl34.TabIndex = 34;
             // 
             // pos34
@@ -802,18 +812,21 @@ namespace Monopoly.Screens
             pos34.TabIndex = 60;
             pos34.Text = " ";
             pos34.TextAlign = ContentAlignment.MiddleCenter;
+            pos34.Visible = false;
             // 
             // pnl33
             // 
             pnl33.BackColor = Color.Transparent;
+            pnl33.BackgroundImage = (Image)resources.GetObject("pnl33.BackgroundImage");
+            pnl33.BackgroundImageLayout = ImageLayout.Stretch;
             pnl33.BorderStyle = BorderStyle.FixedSingle;
             pnl33.Controls.Add(pos33);
             pnl33.Controls.Add(pcb19);
             pnl33.Cursor = Cursors.Hand;
-            pnl33.Location = new Point(885, 328);
+            pnl33.Location = new Point(866, 328);
             pnl33.Margin = new Padding(1);
             pnl33.Name = "pnl33";
-            pnl33.Size = new Size(131, 73);
+            pnl33.Size = new Size(112, 73);
             pnl33.TabIndex = 32;
             // 
             // pos33
@@ -828,6 +841,7 @@ namespace Monopoly.Screens
             pos33.TabIndex = 44;
             pos33.Text = "Hawaii\r\n1400 $";
             pos33.TextAlign = ContentAlignment.MiddleCenter;
+            pos33.Visible = false;
             // 
             // pcb19
             // 
@@ -843,15 +857,15 @@ namespace Monopoly.Screens
             // 
             // pnl32
             // 
-            pnl32.BackgroundImage = Resources.Fortune90;
+            pnl32.BackgroundImage = Resources.Fortune90Fix;
             pnl32.BackgroundImageLayout = ImageLayout.Stretch;
             pnl32.BorderStyle = BorderStyle.FixedSingle;
             pnl32.Controls.Add(pos32);
             pnl32.Cursor = Cursors.Hand;
-            pnl32.Location = new Point(885, 256);
+            pnl32.Location = new Point(866, 256);
             pnl32.Margin = new Padding(1);
             pnl32.Name = "pnl32";
-            pnl32.Size = new Size(131, 73);
+            pnl32.Size = new Size(112, 73);
             pnl32.TabIndex = 33;
             // 
             // pos32
@@ -866,18 +880,21 @@ namespace Monopoly.Screens
             pos32.TabIndex = 59;
             pos32.Text = " ";
             pos32.TextAlign = ContentAlignment.MiddleCenter;
+            pos32.Visible = false;
             // 
             // pnl31
             // 
             pnl31.BackColor = Color.Transparent;
+            pnl31.BackgroundImage = Resources.WashingtonDC;
+            pnl31.BackgroundImageLayout = ImageLayout.Stretch;
             pnl31.BorderStyle = BorderStyle.FixedSingle;
             pnl31.Controls.Add(pos31);
             pnl31.Controls.Add(pcb18);
             pnl31.Cursor = Cursors.Hand;
-            pnl31.Location = new Point(885, 184);
+            pnl31.Location = new Point(866, 184);
             pnl31.Margin = new Padding(1);
             pnl31.Name = "pnl31";
-            pnl31.Size = new Size(131, 73);
+            pnl31.Size = new Size(112, 73);
             pnl31.TabIndex = 30;
             // 
             // pos31
@@ -892,6 +909,7 @@ namespace Monopoly.Screens
             pos31.TabIndex = 43;
             pos31.Text = "Washington\r\n2300 $";
             pos31.TextAlign = ContentAlignment.MiddleCenter;
+            pos31.Visible = false;
             // 
             // pcb18
             // 
@@ -908,14 +926,16 @@ namespace Monopoly.Screens
             // pnl30
             // 
             pnl30.BackColor = Color.Transparent;
+            pnl30.BackgroundImage = Resources.NewYork;
+            pnl30.BackgroundImageLayout = ImageLayout.Stretch;
             pnl30.BorderStyle = BorderStyle.FixedSingle;
             pnl30.Controls.Add(pos30);
             pnl30.Controls.Add(pcb17);
             pnl30.Cursor = Cursors.Hand;
-            pnl30.Location = new Point(885, 112);
+            pnl30.Location = new Point(866, 112);
             pnl30.Margin = new Padding(1);
             pnl30.Name = "pnl30";
-            pnl30.Size = new Size(131, 73);
+            pnl30.Size = new Size(112, 73);
             pnl30.TabIndex = 29;
             // 
             // pos30
@@ -930,6 +950,7 @@ namespace Monopoly.Screens
             pos30.TabIndex = 45;
             pos30.Text = "New York\r\n2200 $";
             pos30.TextAlign = ContentAlignment.MiddleCenter;
+            pos30.Visible = false;
             // 
             // pcb17
             // 
@@ -945,15 +966,15 @@ namespace Monopoly.Screens
             // 
             // pnl29
             // 
-            pnl29.BackgroundImage = Resources.GoToJail;
+            pnl29.BackgroundImage = Resources.GoToJailFix;
             pnl29.BackgroundImageLayout = ImageLayout.Stretch;
             pnl29.BorderStyle = BorderStyle.FixedSingle;
             pnl29.Controls.Add(pos29);
             pnl29.Cursor = Cursors.Hand;
-            pnl29.Location = new Point(885, 1);
+            pnl29.Location = new Point(866, 1);
             pnl29.Margin = new Padding(1);
             pnl29.Name = "pnl29";
-            pnl29.Size = new Size(131, 112);
+            pnl29.Size = new Size(112, 112);
             pnl29.TabIndex = 9;
             // 
             // pos29
@@ -968,15 +989,18 @@ namespace Monopoly.Screens
             pos29.TabIndex = 59;
             pos29.Text = " ";
             pos29.TextAlign = ContentAlignment.MiddleCenter;
+            pos29.Visible = false;
             // 
             // pnl28
             // 
             pnl28.BackColor = Color.Transparent;
+            pnl28.BackgroundImage = Resources.Kyoto;
+            pnl28.BackgroundImageLayout = ImageLayout.Stretch;
             pnl28.BorderStyle = BorderStyle.FixedSingle;
             pnl28.Controls.Add(pos28);
             pnl28.Controls.Add(pcb16);
             pnl28.Cursor = Cursors.Hand;
-            pnl28.Location = new Point(801, 1);
+            pnl28.Location = new Point(782, 1);
             pnl28.Margin = new Padding(1);
             pnl28.Name = "pnl28";
             pnl28.Size = new Size(85, 112);
@@ -994,6 +1018,7 @@ namespace Monopoly.Screens
             pos28.TabIndex = 42;
             pos28.Text = "Kyoto\r\n1600 $";
             pos28.TextAlign = ContentAlignment.MiddleCenter;
+            pos28.Visible = false;
             // 
             // pcb16
             // 
@@ -1009,12 +1034,12 @@ namespace Monopoly.Screens
             // 
             // pnl27
             // 
-            pnl27.BackgroundImage = Resources.Tax;
+            pnl27.BackgroundImage = Resources.LuxuryTax;
             pnl27.BackgroundImageLayout = ImageLayout.Stretch;
             pnl27.BorderStyle = BorderStyle.FixedSingle;
             pnl27.Controls.Add(pos27);
             pnl27.Cursor = Cursors.Hand;
-            pnl27.Location = new Point(715, 1);
+            pnl27.Location = new Point(696, 1);
             pnl27.Margin = new Padding(1);
             pnl27.Name = "pnl27";
             pnl27.Size = new Size(87, 112);
@@ -1032,15 +1057,18 @@ namespace Monopoly.Screens
             pos27.TabIndex = 58;
             pos27.Text = " ";
             pos27.TextAlign = ContentAlignment.MiddleCenter;
+            pos27.Visible = false;
             // 
             // pnl26
             // 
             pnl26.BackColor = Color.Transparent;
+            pnl26.BackgroundImage = (Image)resources.GetObject("pnl26.BackgroundImage");
+            pnl26.BackgroundImageLayout = ImageLayout.Stretch;
             pnl26.BorderStyle = BorderStyle.FixedSingle;
             pnl26.Controls.Add(pos26);
             pnl26.Controls.Add(pcb15);
             pnl26.Cursor = Cursors.Hand;
-            pnl26.Location = new Point(633, 1);
+            pnl26.Location = new Point(614, 1);
             pnl26.Margin = new Padding(1);
             pnl26.Name = "pnl26";
             pnl26.Size = new Size(85, 112);
@@ -1058,6 +1086,7 @@ namespace Monopoly.Screens
             pos26.TabIndex = 41;
             pos26.Text = "Osaka\r\n2100 $";
             pos26.TextAlign = ContentAlignment.MiddleCenter;
+            pos26.Visible = false;
             // 
             // pcb15
             // 
@@ -1074,11 +1103,13 @@ namespace Monopoly.Screens
             // pnl25
             // 
             pnl25.BackColor = Color.Transparent;
+            pnl25.BackgroundImage = Resources.Tokyo;
+            pnl25.BackgroundImageLayout = ImageLayout.Stretch;
             pnl25.BorderStyle = BorderStyle.FixedSingle;
             pnl25.Controls.Add(pos25);
             pnl25.Controls.Add(pcb14);
             pnl25.Cursor = Cursors.Hand;
-            pnl25.Location = new Point(549, 1);
+            pnl25.Location = new Point(530, 1);
             pnl25.Margin = new Padding(1);
             pnl25.Name = "pnl25";
             pnl25.Size = new Size(85, 112);
@@ -1096,6 +1127,7 @@ namespace Monopoly.Screens
             pos25.TabIndex = 40;
             pos25.Text = "Tokyo\r\n2200 $";
             pos25.TextAlign = ContentAlignment.MiddleCenter;
+            pos25.Visible = false;
             // 
             // pcb14
             // 
@@ -1111,12 +1143,12 @@ namespace Monopoly.Screens
             // 
             // pnl24
             // 
-            pnl24.BackgroundImage = Resources.Train;
+            pnl24.BackgroundImage = Resources.ShinjukuStation;
             pnl24.BackgroundImageLayout = ImageLayout.Stretch;
             pnl24.BorderStyle = BorderStyle.FixedSingle;
             pnl24.Controls.Add(pos24);
             pnl24.Cursor = Cursors.Hand;
-            pnl24.Location = new Point(465, 1);
+            pnl24.Location = new Point(446, 1);
             pnl24.Margin = new Padding(1);
             pnl24.Name = "pnl24";
             pnl24.Size = new Size(85, 112);
@@ -1134,15 +1166,18 @@ namespace Monopoly.Screens
             pos24.TabIndex = 57;
             pos24.Text = " ";
             pos24.TextAlign = ContentAlignment.MiddleCenter;
+            pos24.Visible = false;
             // 
             // pnl23
             // 
             pnl23.BackColor = Color.Transparent;
+            pnl23.BackgroundImage = Resources.Shanghai;
+            pnl23.BackgroundImageLayout = ImageLayout.Stretch;
             pnl23.BorderStyle = BorderStyle.FixedSingle;
             pnl23.Controls.Add(pos23);
             pnl23.Controls.Add(pcb13);
             pnl23.Cursor = Cursors.Hand;
-            pnl23.Location = new Point(381, 1);
+            pnl23.Location = new Point(362, 1);
             pnl23.Margin = new Padding(1);
             pnl23.Name = "pnl23";
             pnl23.Size = new Size(85, 112);
@@ -1160,6 +1195,7 @@ namespace Monopoly.Screens
             pos23.TabIndex = 43;
             pos23.Text = "Shanghai\r\n1800 $";
             pos23.TextAlign = ContentAlignment.MiddleCenter;
+            pos23.Visible = false;
             // 
             // pcb13
             // 
@@ -1176,11 +1212,13 @@ namespace Monopoly.Screens
             // pnl22
             // 
             pnl22.BackColor = Color.Transparent;
+            pnl22.BackgroundImage = Resources.Beijing;
+            pnl22.BackgroundImageLayout = ImageLayout.Stretch;
             pnl22.BorderStyle = BorderStyle.FixedSingle;
             pnl22.Controls.Add(pos22);
             pnl22.Controls.Add(pcb12);
             pnl22.Cursor = Cursors.Hand;
-            pnl22.Location = new Point(297, 1);
+            pnl22.Location = new Point(278, 1);
             pnl22.Margin = new Padding(1);
             pnl22.Name = "pnl22";
             pnl22.Size = new Size(85, 112);
@@ -1198,6 +1236,7 @@ namespace Monopoly.Screens
             pos22.TabIndex = 42;
             pos22.Text = "Beijing\r\n2400 $";
             pos22.TextAlign = ContentAlignment.MiddleCenter;
+            pos22.Visible = false;
             // 
             // pcb12
             // 
@@ -1218,7 +1257,7 @@ namespace Monopoly.Screens
             pnl21.BorderStyle = BorderStyle.FixedSingle;
             pnl21.Controls.Add(pos21);
             pnl21.Cursor = Cursors.Hand;
-            pnl21.Location = new Point(214, 1);
+            pnl21.Location = new Point(194, 1);
             pnl21.Margin = new Padding(1);
             pnl21.Name = "pnl21";
             pnl21.Size = new Size(85, 112);
@@ -1236,15 +1275,18 @@ namespace Monopoly.Screens
             pos21.TabIndex = 56;
             pos21.Text = " ";
             pos21.TextAlign = ContentAlignment.MiddleCenter;
+            pos21.Visible = false;
             // 
             // pnl20
             // 
             pnl20.BackColor = Color.Transparent;
+            pnl20.BackgroundImage = Resources.Guangzhou;
+            pnl20.BackgroundImageLayout = ImageLayout.Stretch;
             pnl20.BorderStyle = BorderStyle.FixedSingle;
             pnl20.Controls.Add(pos20);
             pnl20.Controls.Add(pcb11);
             pnl20.Cursor = Cursors.Hand;
-            pnl20.Location = new Point(129, 1);
+            pnl20.Location = new Point(110, 1);
             pnl20.Margin = new Padding(1);
             pnl20.Name = "pnl20";
             pnl20.Size = new Size(85, 112);
@@ -1262,6 +1304,7 @@ namespace Monopoly.Screens
             pos20.TabIndex = 43;
             pos20.Text = "Guangzhou\r\n1700 $";
             pos20.TextAlign = ContentAlignment.MiddleCenter;
+            pos20.Visible = false;
             // 
             // pcb11
             // 
@@ -1277,7 +1320,7 @@ namespace Monopoly.Screens
             // 
             // pnl19
             // 
-            pnl19.BackgroundImage = Resources.FreeParking;
+            pnl19.BackgroundImage = Resources.FreeParkingFix;
             pnl19.BackgroundImageLayout = ImageLayout.Stretch;
             pnl19.BorderStyle = BorderStyle.FixedSingle;
             pnl19.Controls.Add(pos19);
@@ -1285,7 +1328,7 @@ namespace Monopoly.Screens
             pnl19.Location = new Point(-1, 1);
             pnl19.Margin = new Padding(1);
             pnl19.Name = "pnl19";
-            pnl19.Size = new Size(131, 112);
+            pnl19.Size = new Size(112, 112);
             pnl19.TabIndex = 17;
             // 
             // pos19
@@ -1300,10 +1343,13 @@ namespace Monopoly.Screens
             pos19.TabIndex = 55;
             pos19.Text = " ";
             pos19.TextAlign = ContentAlignment.MiddleCenter;
+            pos19.Visible = false;
             // 
             // pnl18
             // 
             pnl18.BackColor = Color.Transparent;
+            pnl18.BackgroundImage = Resources.Kazan;
+            pnl18.BackgroundImageLayout = ImageLayout.Stretch;
             pnl18.BorderStyle = BorderStyle.FixedSingle;
             pnl18.Controls.Add(pos18);
             pnl18.Controls.Add(pcb10);
@@ -1311,7 +1357,7 @@ namespace Monopoly.Screens
             pnl18.Location = new Point(-1, 112);
             pnl18.Margin = new Padding(1);
             pnl18.Name = "pnl18";
-            pnl18.Size = new Size(131, 73);
+            pnl18.Size = new Size(112, 73);
             pnl18.TabIndex = 20;
             // 
             // pos18
@@ -1326,13 +1372,14 @@ namespace Monopoly.Screens
             pos18.TabIndex = 46;
             pos18.Text = "Kazan\r\n1300 $";
             pos18.TextAlign = ContentAlignment.MiddleCenter;
+            pos18.Visible = false;
             // 
             // pcb10
             // 
             pcb10.BackColor = Color.FromArgb(255, 192, 255);
             pcb10.BorderStyle = BorderStyle.FixedSingle;
             pcb10.Enabled = false;
-            pcb10.Location = new Point(104, -1);
+            pcb10.Location = new Point(85, -1);
             pcb10.Margin = new Padding(1);
             pcb10.Name = "pcb10";
             pcb10.Size = new Size(26, 73);
@@ -1342,6 +1389,8 @@ namespace Monopoly.Screens
             // pnl15
             // 
             pnl15.BackColor = Color.Transparent;
+            pnl15.BackgroundImage = Resources.Moscow;
+            pnl15.BackgroundImageLayout = ImageLayout.Stretch;
             pnl15.BorderStyle = BorderStyle.FixedSingle;
             pnl15.Controls.Add(pos15);
             pnl15.Controls.Add(pcb8);
@@ -1349,7 +1398,7 @@ namespace Monopoly.Screens
             pnl15.Location = new Point(-1, 327);
             pnl15.Margin = new Padding(1);
             pnl15.Name = "pnl15";
-            pnl15.Size = new Size(131, 73);
+            pnl15.Size = new Size(112, 73);
             pnl15.TabIndex = 26;
             // 
             // pos15
@@ -1364,13 +1413,14 @@ namespace Monopoly.Screens
             pos15.TabIndex = 46;
             pos15.Text = "Moscow\r\n2200 $";
             pos15.TextAlign = ContentAlignment.MiddleCenter;
+            pos15.Visible = false;
             // 
             // pcb8
             // 
             pcb8.BackColor = Color.FromArgb(255, 192, 255);
             pcb8.BorderStyle = BorderStyle.FixedSingle;
             pcb8.Enabled = false;
-            pcb8.Location = new Point(104, -1);
+            pcb8.Location = new Point(85, -1);
             pcb8.Margin = new Padding(1);
             pcb8.Name = "pcb8";
             pcb8.Size = new Size(26, 73);
@@ -1379,6 +1429,8 @@ namespace Monopoly.Screens
             // 
             // pnl13
             // 
+            pnl13.BackgroundImage = Resources.Seoul;
+            pnl13.BackgroundImageLayout = ImageLayout.Stretch;
             pnl13.BorderStyle = BorderStyle.FixedSingle;
             pnl13.Controls.Add(pos13);
             pnl13.Controls.Add(pcb7);
@@ -1386,7 +1438,7 @@ namespace Monopoly.Screens
             pnl13.Location = new Point(-1, 471);
             pnl13.Margin = new Padding(1);
             pnl13.Name = "pnl13";
-            pnl13.Size = new Size(131, 73);
+            pnl13.Size = new Size(112, 73);
             pnl13.TabIndex = 27;
             // 
             // pos13
@@ -1401,13 +1453,14 @@ namespace Monopoly.Screens
             pos13.TabIndex = 45;
             pos13.Text = "Seoul\r\n2300 $";
             pos13.TextAlign = ContentAlignment.MiddleCenter;
+            pos13.Visible = false;
             // 
             // pcb7
             // 
             pcb7.BackColor = Color.Silver;
             pcb7.BorderStyle = BorderStyle.FixedSingle;
             pcb7.Enabled = false;
-            pcb7.Location = new Point(104, -1);
+            pcb7.Location = new Point(85, -1);
             pcb7.Margin = new Padding(1);
             pcb7.Name = "pcb7";
             pcb7.Size = new Size(26, 73);
@@ -1417,6 +1470,8 @@ namespace Monopoly.Screens
             // pnl12
             // 
             pnl12.BackColor = Color.Transparent;
+            pnl12.BackgroundImage = Resources.Busan;
+            pnl12.BackgroundImageLayout = ImageLayout.Stretch;
             pnl12.BorderStyle = BorderStyle.FixedSingle;
             pnl12.Controls.Add(pos12);
             pnl12.Controls.Add(pcb6);
@@ -1424,7 +1479,7 @@ namespace Monopoly.Screens
             pnl12.Location = new Point(-1, 543);
             pnl12.Margin = new Padding(1);
             pnl12.Name = "pnl12";
-            pnl12.Size = new Size(131, 73);
+            pnl12.Size = new Size(112, 73);
             pnl12.TabIndex = 28;
             // 
             // pos12
@@ -1439,13 +1494,14 @@ namespace Monopoly.Screens
             pos12.TabIndex = 46;
             pos12.Text = "Busan\r\n1600 $";
             pos12.TextAlign = ContentAlignment.MiddleCenter;
+            pos12.Visible = false;
             // 
             // pcb6
             // 
             pcb6.BackColor = Color.Silver;
             pcb6.BorderStyle = BorderStyle.FixedSingle;
             pcb6.Enabled = false;
-            pcb6.Location = new Point(104, -1);
+            pcb6.Location = new Point(85, -1);
             pcb6.Margin = new Padding(1);
             pcb6.Name = "pcb6";
             pcb6.Size = new Size(26, 73);
@@ -1462,7 +1518,7 @@ namespace Monopoly.Screens
             pnl11.Location = new Point(-1, 615);
             pnl11.Margin = new Padding(1);
             pnl11.Name = "pnl11";
-            pnl11.Size = new Size(131, 112);
+            pnl11.Size = new Size(112, 112);
             pnl11.TabIndex = 42;
             // 
             // pos11
@@ -1477,15 +1533,18 @@ namespace Monopoly.Screens
             pos11.TabIndex = 52;
             pos11.Text = " ";
             pos11.TextAlign = ContentAlignment.MiddleCenter;
+            pos11.Visible = false;
             // 
             // pnl10
             // 
             pnl10.BackColor = Color.Transparent;
+            pnl10.BackgroundImage = Resources.Jeju;
+            pnl10.BackgroundImageLayout = ImageLayout.Stretch;
             pnl10.BorderStyle = BorderStyle.FixedSingle;
             pnl10.Controls.Add(pos10);
             pnl10.Controls.Add(pcb5);
             pnl10.Cursor = Cursors.Hand;
-            pnl10.Location = new Point(129, 616);
+            pnl10.Location = new Point(110, 616);
             pnl10.Margin = new Padding(1);
             pnl10.Name = "pnl10";
             pnl10.Size = new Size(85, 112);
@@ -1503,6 +1562,7 @@ namespace Monopoly.Screens
             pos10.TabIndex = 47;
             pos10.Text = "Jeju\r\n1000 $";
             pos10.TextAlign = ContentAlignment.MiddleCenter;
+            pos10.Visible = false;
             // 
             // pcb5
             // 
@@ -1519,12 +1579,12 @@ namespace Monopoly.Screens
             // pnl9
             // 
             pnl9.BackColor = Color.Transparent;
-            pnl9.BackgroundImage = Resources.Train;
+            pnl9.BackgroundImage = Resources.PancrasStation;
             pnl9.BackgroundImageLayout = ImageLayout.Stretch;
             pnl9.BorderStyle = BorderStyle.FixedSingle;
             pnl9.Controls.Add(pos9);
             pnl9.Cursor = Cursors.Hand;
-            pnl9.Location = new Point(213, 616);
+            pnl9.Location = new Point(194, 616);
             pnl9.Margin = new Padding(1);
             pnl9.Name = "pnl9";
             pnl9.Size = new Size(85, 112);
@@ -1542,15 +1602,17 @@ namespace Monopoly.Screens
             pos9.TabIndex = 51;
             pos9.Text = " ";
             pos9.TextAlign = ContentAlignment.MiddleCenter;
+            pos9.Visible = false;
             // 
             // pnl8
             // 
+            pnl8.BackgroundImage = Resources.Paris;
             pnl8.BackgroundImageLayout = ImageLayout.Stretch;
             pnl8.BorderStyle = BorderStyle.FixedSingle;
             pnl8.Controls.Add(pos8);
             pnl8.Controls.Add(pcb4);
             pnl8.Cursor = Cursors.Hand;
-            pnl8.Location = new Point(297, 616);
+            pnl8.Location = new Point(278, 616);
             pnl8.Margin = new Padding(1);
             pnl8.Name = "pnl8";
             pnl8.Size = new Size(85, 112);
@@ -1568,6 +1630,7 @@ namespace Monopoly.Screens
             pos8.TabIndex = 41;
             pos8.Text = "Paris\r\n1700 $";
             pos8.TextAlign = ContentAlignment.MiddleCenter;
+            pos8.Visible = false;
             // 
             // pcb4
             // 
@@ -1584,11 +1647,13 @@ namespace Monopoly.Screens
             // pnl7
             // 
             pnl7.BackColor = Color.Transparent;
+            pnl7.BackgroundImage = Resources.Marseille;
+            pnl7.BackgroundImageLayout = ImageLayout.Stretch;
             pnl7.BorderStyle = BorderStyle.FixedSingle;
             pnl7.Controls.Add(pos7);
             pnl7.Controls.Add(pcb3);
             pnl7.Cursor = Cursors.Hand;
-            pnl7.Location = new Point(381, 616);
+            pnl7.Location = new Point(362, 616);
             pnl7.Margin = new Padding(1);
             pnl7.Name = "pnl7";
             pnl7.Size = new Size(85, 112);
@@ -1606,6 +1671,7 @@ namespace Monopoly.Screens
             pos7.TabIndex = 42;
             pos7.Text = "Marseille\r\n1500 $";
             pos7.TextAlign = ContentAlignment.MiddleCenter;
+            pos7.Visible = false;
             // 
             // pcb3
             // 
@@ -1621,11 +1687,13 @@ namespace Monopoly.Screens
             // 
             // pnl6
             // 
+            pnl6.BackgroundImage = Resources.Lyon;
+            pnl6.BackgroundImageLayout = ImageLayout.Stretch;
             pnl6.BorderStyle = BorderStyle.FixedSingle;
             pnl6.Controls.Add(pos6);
             pnl6.Controls.Add(pcb2);
             pnl6.Cursor = Cursors.Hand;
-            pnl6.Location = new Point(465, 616);
+            pnl6.Location = new Point(446, 616);
             pnl6.Margin = new Padding(1);
             pnl6.Name = "pnl6";
             pnl6.Size = new Size(85, 112);
@@ -1643,6 +1711,7 @@ namespace Monopoly.Screens
             pos6.TabIndex = 43;
             pos6.Text = "Lyon\r\n1100 $";
             pos6.TextAlign = ContentAlignment.MiddleCenter;
+            pos6.Visible = false;
             // 
             // pcb2
             // 
@@ -1658,12 +1727,12 @@ namespace Monopoly.Screens
             // 
             // pnl5
             // 
-            pnl5.BackgroundImage = Resources.VuVjp;
+            pnl5.BackgroundImage = Resources.WaterWorks;
             pnl5.BackgroundImageLayout = ImageLayout.Stretch;
             pnl5.BorderStyle = BorderStyle.FixedSingle;
             pnl5.Controls.Add(pos5);
             pnl5.Cursor = Cursors.Hand;
-            pnl5.Location = new Point(549, 616);
+            pnl5.Location = new Point(530, 616);
             pnl5.Margin = new Padding(1);
             pnl5.Name = "pnl5";
             pnl5.Size = new Size(85, 112);
@@ -1681,16 +1750,17 @@ namespace Monopoly.Screens
             pos5.TabIndex = 50;
             pos5.Text = " ";
             pos5.TextAlign = ContentAlignment.MiddleCenter;
+            pos5.Visible = false;
             // 
             // pnl4
             // 
             pnl4.BackColor = Color.Transparent;
-            pnl4.BackgroundImage = Resources.SmallTax;
+            pnl4.BackgroundImage = Resources.IncomeTax;
             pnl4.BackgroundImageLayout = ImageLayout.Stretch;
             pnl4.BorderStyle = BorderStyle.FixedSingle;
             pnl4.Controls.Add(pos4);
             pnl4.Cursor = Cursors.Hand;
-            pnl4.Location = new Point(633, 616);
+            pnl4.Location = new Point(614, 616);
             pnl4.Margin = new Padding(1);
             pnl4.Name = "pnl4";
             pnl4.Size = new Size(85, 112);
@@ -1708,6 +1778,7 @@ namespace Monopoly.Screens
             pos4.TabIndex = 49;
             pos4.Text = " ";
             pos4.TextAlign = ContentAlignment.MiddleCenter;
+            pos4.Visible = false;
             // 
             // pnl3
             // 
@@ -1716,7 +1787,7 @@ namespace Monopoly.Screens
             pnl3.BorderStyle = BorderStyle.FixedSingle;
             pnl3.Controls.Add(pos3);
             pnl3.Cursor = Cursors.Hand;
-            pnl3.Location = new Point(717, 616);
+            pnl3.Location = new Point(698, 616);
             pnl3.Margin = new Padding(1);
             pnl3.Name = "pnl3";
             pnl3.Size = new Size(85, 112);
@@ -1734,15 +1805,18 @@ namespace Monopoly.Screens
             pos3.TabIndex = 48;
             pos3.Text = " ";
             pos3.TextAlign = ContentAlignment.MiddleCenter;
+            pos3.Visible = false;
             // 
             // pnl2
             // 
             pnl2.BackColor = Color.Transparent;
+            pnl2.BackgroundImage = Resources.HCM;
+            pnl2.BackgroundImageLayout = ImageLayout.Stretch;
             pnl2.BorderStyle = BorderStyle.FixedSingle;
             pnl2.Controls.Add(pos2);
             pnl2.Controls.Add(pcb1);
             pnl2.Cursor = Cursors.Hand;
-            pnl2.Location = new Point(801, 616);
+            pnl2.Location = new Point(782, 616);
             pnl2.Margin = new Padding(1);
             pnl2.Name = "pnl2";
             pnl2.Size = new Size(85, 112);
@@ -1760,6 +1834,7 @@ namespace Monopoly.Screens
             pos2.TabIndex = 46;
             pos2.Text = "TP. HCM\r\n3100 $";
             pos2.TextAlign = ContentAlignment.MiddleCenter;
+            pos2.Visible = false;
             // 
             // pcb1
             // 
@@ -1775,15 +1850,15 @@ namespace Monopoly.Screens
             // 
             // pnl1
             // 
-            pnl1.BackgroundImage = Resources.Start;
+            pnl1.BackgroundImage = Resources.StartFix;
             pnl1.BackgroundImageLayout = ImageLayout.Stretch;
             pnl1.BorderStyle = BorderStyle.FixedSingle;
             pnl1.Controls.Add(pos1);
             pnl1.Cursor = Cursors.Hand;
-            pnl1.Location = new Point(885, 616);
+            pnl1.Location = new Point(866, 616);
             pnl1.Margin = new Padding(1);
             pnl1.Name = "pnl1";
-            pnl1.Size = new Size(131, 112);
+            pnl1.Size = new Size(112, 112);
             pnl1.TabIndex = 0;
             // 
             // pos1
@@ -1798,6 +1873,7 @@ namespace Monopoly.Screens
             pos1.TabIndex = 47;
             pos1.Text = " ";
             pos1.TextAlign = ContentAlignment.MiddleCenter;
+            pos1.Visible = false;
             // 
             // pnl14
             // 
@@ -1810,7 +1886,7 @@ namespace Monopoly.Screens
             pnl14.Location = new Point(1, 400);
             pnl14.Margin = new Padding(1);
             pnl14.Name = "pnl14";
-            pnl14.Size = new Size(131, 73);
+            pnl14.Size = new Size(112, 73);
             pnl14.TabIndex = 42;
             // 
             // pos14
@@ -1825,6 +1901,7 @@ namespace Monopoly.Screens
             pos14.TabIndex = 53;
             pos14.Text = " ";
             pos14.TextAlign = ContentAlignment.MiddleCenter;
+            pos14.Visible = false;
             // 
             // Game
             // 
@@ -1837,7 +1914,7 @@ namespace Monopoly.Screens
             Controls.Add(pnlGame);
             Margin = new Padding(2);
             Name = "Game";
-            Size = new Size(1255, 728);
+            Size = new Size(1220, 728);
             pnl17.ResumeLayout(false);
             pnl17.PerformLayout();
             pnl16.ResumeLayout(false);

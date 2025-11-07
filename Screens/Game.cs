@@ -121,7 +121,7 @@ namespace Monopoly.Screens
 
         private void ReadJson()
         {
-            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data","Board.json");
+            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Board.json");
             string json = File.ReadAllText(boardPath);
             board = JsonConvert.DeserializeObject<Board>(json)!;
         }
@@ -363,6 +363,9 @@ namespace Monopoly.Screens
             {
                 PlayerManager.Players[currPlayer].PlayerMoney += 2000;
                 UpdatePlayerMoneyLabel(currPlayer);
+                Task.Run(() => this.Invoke(() => MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} pass GO +2000$")));
+
+
             }
             curr = next;
             foreach (Panel pnl in this.Controls.OfType<Panel>())
@@ -405,6 +408,18 @@ namespace Monopoly.Screens
                         PlayerManager.Players[currPlayer].PlayerMoney -= 200;
                         UpdatePlayerMoneyLabel(currPlayer);
                     }
+                }
+                if (curr == 4)
+                {
+                    PlayerManager.Players[currPlayer].PlayerMoney -= PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
+                    UpdatePlayerMoneyLabel(currPlayer);
+                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Income Tax -10% Property Value");
+                }
+                if (curr == 26)
+                {
+                    PlayerManager.Players[currPlayer].PlayerMoney -= 2000;
+                    UpdatePlayerMoneyLabel(currPlayer);
+                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Luxury Tax -2000$");
                 }
                 if (extraTurn)
                 {
@@ -651,7 +666,7 @@ namespace Monopoly.Screens
                     Dice2.Enabled = true;
                     break;
                 case Data.ActionType.Dice:
-                    this.Invoke(async() =>
+                    this.Invoke(async () =>
                     {
                         string[] Dices = data.Msg!.Split("/");
                         Dice1.Image = listImage[int.Parse(Dices[0]) - 1];
@@ -717,6 +732,5 @@ namespace Monopoly.Screens
             PictureBox pcb = (PictureBox)sender;
             pcb.Size = new Size(pcb.Size.Width - 10, pcb.Size.Height - 10);
         }
-
     }
 }
