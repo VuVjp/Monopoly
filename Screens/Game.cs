@@ -122,8 +122,13 @@ namespace Monopoly.Screens
         private void ReadJson()
         {
             string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data","Board.json");
+            var settings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
             string json = File.ReadAllText(boardPath);
-            board = JsonConvert.DeserializeObject<Board>(json)!;
+            board = JsonConvert.DeserializeObject<Board>(json,settings)!;
         }
 
         #region Offline Methods
@@ -686,7 +691,31 @@ namespace Monopoly.Screens
             var panel = (Panel)sender;
             var name = panel.Name;
             int num = int.Parse(name.Replace("pnl", ""));
-            MessageBox.Show(board.properties[num - 1].name);
+            var prop = board.properties[num-1];
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{prop.name}\n");
+            sb.Append($"{prop.description}\n");
+            if(prop.type == "property" || prop.type == "utility")
+            {
+                if(prop.type == "property")
+                {
+                    sb.Append($"======================\n");
+                    foreach (var i in prop.levels!)
+                    {
+                        string msg = $"Level {i.Key}: {i.Value}\n";
+                        sb.Append(msg);
+                    }
+                    sb.Append($"======================\n");
+                }
+                if (prop.owner != null)
+                {
+                    sb.Append($"Owner: {prop.owner}\t");
+                    sb.Append($"Current Level: {prop.level}\n");
+                }
+                sb.Append($"Price: {prop.price}\t");
+                sb.Append($"Sell Price: {prop.sell_price}\n");
+            }
+            MessageBox.Show(sb.ToString(),"Info");
         }
 
         private void pcbReturn_Click(object sender, EventArgs e)
