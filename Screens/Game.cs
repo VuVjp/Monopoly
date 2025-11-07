@@ -46,8 +46,7 @@ namespace Monopoly.Screens
         List<int> turnOrder;
         List<Panel> panels;
         private TaskCompletionSource _rollWaiter;
-        private TaskCompletionSource<int> _pickCardWaiter;
-        private TaskCompletionSource<bool> _decideWaiter;
+        private TaskCompletionSource _waiter;
         #endregion
         public Game(Monopoly monopoly)
         {
@@ -85,6 +84,8 @@ namespace Monopoly.Screens
                 pcbChat.Location = pcbSave.Location;
                 Dice1.Enabled = false;
                 Dice2.Enabled = false;
+                pcbFortune.Enabled = false;
+                pcbChance.Enabled = false;
                 turnOrder = new List<int>();
                 Dice1.Click += DiceClick!;
                 Dice2.Click += DiceClick!;
@@ -121,9 +122,14 @@ namespace Monopoly.Screens
 
         private void ReadJson()
         {
-            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Board.json");
+            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data","Board.json");
+            var settings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
             string json = File.ReadAllText(boardPath);
-            board = JsonConvert.DeserializeObject<Board>(json)!;
+            board = JsonConvert.DeserializeObject<Board>(json,settings)!;
         }
 
         #region Offline Methods
@@ -578,8 +584,52 @@ namespace Monopoly.Screens
                 Dice2.Image = listImage[Dices[1] - 1];
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
+                _waiter = new TaskCompletionSource();
+                CheckPlrPos(playerIndex);
+                await _waiter.Task;
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
+        }
+        private void CheckPlrPos(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            var propType = board.properties[plr.Position - 1].type;
+
+            if (propType == "community_chest")
+            {
+
+            }
+            else if (propType == "chance")
+            {
+
+            }
+            else if (propType == "Jail")
+            {
+                GoToJailOnl(plrIndex);
+                _waiter?.SetResult();
+            }
+            else
+            {
+                BuyProp(plr.Position - 1);
+            }
+        }
+        private void GoToJailOnl(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            var pcb = (PictureBox)this.Controls.Find(plr.Name, true).FirstOrDefault()!;
+            this.Invoke(new Action(() =>
+            {
+                pcb.Location = new Point(labels[10].Location.X, labels[10].Location.Y - 15);
+                panels[10].Controls.Add(pcb);
+                pcb.BringToFront();
+            }));
+            plr.IsInJail = true;
+        }
+
+        private void BuyProp(int num)
+        {
+
+            _waiter?.SetResult();
         }
         private async void BroadcastDice(string plr, int dice1, int dice2)
         {
@@ -701,7 +751,32 @@ namespace Monopoly.Screens
             var panel = (Panel)sender;
             var name = panel.Name;
             int num = int.Parse(name.Replace("pnl", ""));
-            MessageBox.Show(board.properties[num - 1].name);
+            var prop = board.properties[num-1];
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{prop.name}\n");
+            sb.Append($"{prop.description}\n");
+            if(prop.type == "property" || prop.type == "utility")
+            {
+                if(prop.type == "property")
+                {
+                    sb.Append($"======================\n");
+                    foreach (var i in prop.levels!)
+                    {
+                        string msg = $"Level {i.Key}: {i.Value}\n";
+                        sb.Append(msg);
+                    }
+                    sb.Append($"======================\n");
+                }
+                if (prop.owner != null)
+                {
+                    sb.Append($"Owner: {prop.owner}\t");
+                    sb.Append($"Current Level: {prop.level}\n");
+                }
+                sb.Append($"Price: {prop.price}\t");
+                sb.Append($"Sell Price: {prop.sell_price}\n");
+                sb.Append($"Upgrade Price: {prop.upgrade_price + (prop.level * prop.upgrade_price * 0.25)}");
+            }
+            MessageBox.Show(sb.ToString(),"Info");
         }
 
         private void pcbReturn_Click(object sender, EventArgs e)
