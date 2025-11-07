@@ -714,6 +714,7 @@ namespace Monopoly.Screens
                 }
                 sb.Append($"Price: {prop.price}\t");
                 sb.Append($"Sell Price: {prop.sell_price}\n");
+                sb.Append($"Upgrade Price: {prop.upgrade_price + (prop.level * prop.upgrade_price * 0.25)}");
             }
             MessageBox.Show(sb.ToString(),"Info");
         }
