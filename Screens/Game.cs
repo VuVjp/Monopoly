@@ -46,8 +46,7 @@ namespace Monopoly.Screens
         List<int> turnOrder;
         List<Panel> panels;
         private TaskCompletionSource _rollWaiter;
-        private TaskCompletionSource<int> _pickCardWaiter;
-        private TaskCompletionSource<bool> _decideWaiter;
+        private TaskCompletionSource _waiter;
         #endregion
         public Game(Monopoly monopoly)
         {
@@ -85,6 +84,8 @@ namespace Monopoly.Screens
                 pcbChat.Location = pcbSave.Location;
                 Dice1.Enabled = false;
                 Dice2.Enabled = false;
+                pcbFortune.Enabled = false;
+                pcbChance.Enabled = false;
                 turnOrder = new List<int>();
                 Dice1.Click += DiceClick!;
                 Dice2.Click += DiceClick!;
@@ -568,8 +569,52 @@ namespace Monopoly.Screens
                 Dice2.Image = listImage[Dices[1] - 1];
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
+                _waiter = new TaskCompletionSource();
+                CheckPlrPos(playerIndex);
+                await _waiter.Task;
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
+        }
+        private void CheckPlrPos(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            var propType = board.properties[plr.Position - 1].type;
+
+            if (propType == "community_chest")
+            {
+
+            }
+            else if (propType == "chance")
+            {
+
+            }
+            else if (propType == "Jail")
+            {
+                GoToJailOnl(plrIndex);
+                _waiter?.SetResult();
+            }
+            else
+            {
+                BuyProp(plr.Position - 1);
+            }
+        }
+        private void GoToJailOnl(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            var pcb = (PictureBox)this.Controls.Find(plr.Name, true).FirstOrDefault()!;
+            this.Invoke(new Action(() =>
+            {
+                pcb.Location = new Point(labels[10].Location.X, labels[10].Location.Y - 15);
+                panels[10].Controls.Add(pcb);
+                pcb.BringToFront();
+            }));
+            plr.IsInJail = true;
+        }
+
+        private void BuyProp(int num)
+        {
+
+            _waiter?.SetResult();
         }
         private async void BroadcastDice(string plr, int dice1, int dice2)
         {

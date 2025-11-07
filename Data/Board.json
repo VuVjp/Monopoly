@@ -386,7 +386,7 @@
 
     {
       "name": "Go To Jail",
-      "type": "corner",
+      "type": "Jail",
       "description": "Go directly to jail.",
       "owner": null,
       "level": 0
