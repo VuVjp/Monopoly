@@ -347,8 +347,8 @@
     {
       "name": "Luxury Tax",
       "type": "tax",
-      "amount": 1000,
-      "description": "Pay 1000 luxury tax."
+      "amount": 2000,
+      "description": "Pay 2000 luxury tax."
     },
 
     {
