@@ -628,7 +628,6 @@ namespace Monopoly.Screens
 
         private void BuyProp(int num)
         {
-
             _waiter?.SetResult();
         }
         private async void BroadcastDice(string plr, int dice1, int dice2)
