@@ -30,15 +30,29 @@ namespace Monopoly.Scripts
     }
     public class PlayerInfo
     {
-        public string Name = null!; 
+        public event Action<double>? OnMoneyChanged;
+        private double _money = 20000;
+        public string Name = null!;
         public PictureBox Avt = null!;
         public Color Color;
-        public double PlayerMoney = 20000;
+        public double PlayerMoney
+        {
+            get => _money;
+            set
+            {
+                if (_money != value)
+                {
+                    _money = value;
+                    OnMoneyChanged?.Invoke(_money); 
+                }
+            }
+        }
         public int Position = 1;
         public bool IsBankrupt = false;
         public bool IsInJail = false;
         public int JailTurn = 0;
         public int doubleRollCount = 0;
+        public int GetOutOfJailFree = 0;
         public List<int> OwnedProperties = new List<int>();
     }
 }

@@ -35,7 +35,6 @@ namespace Monopoly.Scripts
         Receive,
         Jail,
         GetOutOfJailFree,
-        Move,
         PayEachPlayer,
         ReceiveFromEachPlayer
     }

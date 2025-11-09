@@ -19,6 +19,7 @@ namespace Monopoly.Screens
     public partial class Game : UserControl
     {
         Board board;
+        private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
@@ -55,8 +56,12 @@ namespace Monopoly.Screens
         #region Online Properties
         List<int> turnOrder;
         List<Panel> panels;
+        int activePlr = PlayerManager.playerCount;
         private TaskCompletionSource _rollWaiter;
         private TaskCompletionSource _waiter;
+        private TaskCompletionSource<bool> _upgradeWaiter;
+        private TaskCompletionSource _pickCardWaiter;
+        private TaskCompletionSource<int> _sellWaiter;
         #endregion
         public Game(Monopoly monopoly)
         {
@@ -104,6 +109,8 @@ namespace Monopoly.Screens
                 turnOrder = new List<int>();
                 Dice1.Click += DiceClick!;
                 Dice2.Click += DiceClick!;
+                pcbChance.Click += CardClick!;
+                pcbFortune.Click += CardClick!;
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
@@ -137,14 +144,14 @@ namespace Monopoly.Screens
 
         private void ReadJson()
         {
-            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data","Board.json");
+            string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Board.json");
             var settings = new JsonSerializerSettings
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore
             };
             string json = File.ReadAllText(boardPath);
-            board = JsonConvert.DeserializeObject<Board>(json,settings)!;
+            board = JsonConvert.DeserializeObject<Board>(json, settings)!;
         }
 
         #region Offline Methods
@@ -152,35 +159,67 @@ namespace Monopoly.Screens
         {
             for (int i = 0; i < PlayerManager.playerCount; i++)
             {
+                var player = PlayerManager.Players[i];
+
+                if (_moneyChangedHandlers[i] != null)
+                    player.OnMoneyChanged -= _moneyChangedHandlers[i];
+
                 switch (i)
                 {
                     case 0:
-                        pcbPlrAvt1.Image = PlayerManager.Players[i].Avt.Image;
-                        lblPlayerName1.Text = PlayerManager.Players[i].Name;
-                        lblPlayerMoney1.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
-                        lblPlayerName1.ForeColor = PlayerManager.Players[i].Color;
+                        pcbPlrAvt1.Image = player.Avt.Image;
+                        lblPlayerName1.Text = player.Name;
+                        lblPlayerMoney1.Text = $"${player.PlayerMoney}";
+                        lblPlayerName1.ForeColor = player.Color;
                         pnlPlr1.Visible = true;
+
+                        _moneyChangedHandlers[i] = (newMoney) =>
+                        {
+                            lblPlayerMoney1.Text = $"${newMoney}";
+                        };
+                        player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
+
                     case 1:
-                        pcbPlrAvt2.Image = PlayerManager.Players[i].Avt.Image;
-                        lblPlayerName2.Text = PlayerManager.Players[i].Name;
-                        lblPlayerMoney2.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
-                        lblPlayerName2.ForeColor = PlayerManager.Players[i].Color;
+                        pcbPlrAvt2.Image = player.Avt.Image;
+                        lblPlayerName2.Text = player.Name;
+                        lblPlayerMoney2.Text = $"${player.PlayerMoney}";
+                        lblPlayerName2.ForeColor = player.Color;
                         pnlPlr2.Visible = true;
+
+                        _moneyChangedHandlers[i] = (newMoney) =>
+                        {
+                            lblPlayerMoney2.Text = $"${newMoney}";
+                        };
+                        player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
+
                     case 2:
-                        pcbPlrAvt3.Image = PlayerManager.Players[i].Avt.Image;
-                        lblPlayerName3.Text = PlayerManager.Players[i].Name;
-                        lblPlayerMoney3.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
-                        lblPlayerName3.ForeColor = PlayerManager.Players[i].Color;
+                        pcbPlrAvt3.Image = player.Avt.Image;
+                        lblPlayerName3.Text = player.Name;
+                        lblPlayerMoney3.Text = $"${player.PlayerMoney}";
+                        lblPlayerName3.ForeColor = player.Color;
                         pnlPlr3.Visible = true;
+
+                        _moneyChangedHandlers[i] = (newMoney) =>
+                        {
+                            lblPlayerMoney3.Text = $"${newMoney}";
+                        };
+                        player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
+
                     case 3:
-                        pcbPlrAvt4.Image = PlayerManager.Players[i].Avt.Image;
-                        lblPlayerName4.Text = PlayerManager.Players[i].Name;
-                        lblPlayerMoney4.Text = "$" + PlayerManager.Players[i].PlayerMoney.ToString();
-                        lblPlayerName4.ForeColor = PlayerManager.Players[i].Color;
+                        pcbPlrAvt4.Image = player.Avt.Image;
+                        lblPlayerName4.Text = player.Name;
+                        lblPlayerMoney4.Text = $"${player.PlayerMoney}";
+                        lblPlayerName4.ForeColor = player.Color;
                         pnlPlr4.Visible = true;
+
+                        _moneyChangedHandlers[i] = (newMoney) =>
+                        {
+                            lblPlayerMoney4.Text = $"${newMoney}";
+                        };
+                        player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
                 }
             }
@@ -656,8 +695,9 @@ namespace Monopoly.Screens
                 }
                 else
                 {
-                    BroadcastTurn(SocketServerManager.ClientSockets[PlayerManager.Players[playerIndex].Name]);
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
                 }
+
                 await _rollWaiter.Task;
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
@@ -671,28 +711,120 @@ namespace Monopoly.Screens
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
-        private void CheckPlrPos(int plrIndex)
+        private async void CheckPlrPos(int plrIndex)
         {
             var plr = PlayerManager.Players[plrIndex];
             var propType = board.properties[plr.Position - 1].type;
 
             if (propType == "community_chest")
             {
-
+                await DrawCard(plrIndex, "community_chest");
+                _waiter?.SetResult();
             }
             else if (propType == "chance")
             {
-
+                await DrawCard(plrIndex, "chance");
+                _waiter?.SetResult();
             }
             else if (propType == "Jail")
             {
                 GoToJailOnl(plrIndex);
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
                 _waiter?.SetResult();
+            }
+            else if (propType == "tax")
+            {
+                TaxHandler(plrIndex, board.properties[plr.Position - 1].name);
             }
             else
             {
-                BuyProp(plr.Position - 1);
+                PropHandler(plrIndex);
             }
+        }
+        private void TaxHandler(int plrIndex, string name)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            if (name == "Income Tax")
+            {
+                plr.PlayerMoney *= 0.1;
+            }
+            else
+            {
+                plr.PlayerMoney -= 2000;
+            }
+        }
+        private async Task DrawCard(int plrIndex, string propType)
+        {
+            Card card;
+            var plr = PlayerManager.Players[plrIndex];
+            _pickCardWaiter = new TaskCompletionSource();
+            if (propType == "community_chest")
+            {
+                if (plr.Name == "Player 1")
+                {
+                    pcbFortune.Enabled = true;
+                }
+                else
+                {
+                    await SocketServerManager.SocketServer.Send(SocketServerManager.ClientSockets[plr.Name], new Data(Data.ActionType.PickCard, "community_chest"));
+                }
+                card = board.fortune![new Random().Next(board.chance.Count)];
+            }
+            else
+            {
+                if (plr.Name == "Player 1")
+                {
+                    pcbChance.Enabled = true;
+                }
+                else
+                {
+                    await SocketServerManager.SocketServer.Send(SocketServerManager.ClientSockets[plr.Name], new Data(Data.ActionType.PickCard, "chance"));
+                }
+                card = board.chance![new Random().Next(board.chance.Count)];
+            }
+            await _pickCardWaiter.Task;
+            switch (card.action)
+            {
+                case CardAction.Receive:
+                    plr.PlayerMoney += card.value;
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Recieve, $"{card.description}/{plr.PlayerMoney}", plr.Name));
+                    _ = Task.Run(() => MessageBox.Show(card.description, plr.Name));
+                    break;
+                case CardAction.Pay:
+                    plr.PlayerMoney -= card.value;
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Pay, $"{card.description}/{plr.PlayerMoney}", plr.Name));
+                    _ = Task.Run(() => MessageBox.Show(card.description));
+                    break;
+                case CardAction.PayEachPlayer:
+                    plr.PlayerMoney -= card.value * activePlr;
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    foreach (var p in PlayerManager.Players)
+                    {
+                        if (p == plr || p.IsBankrupt == true) continue;
+                        p.PlayerMoney += card.value;
+                    }
+                    _ = Task.Run(() => MessageBox.Show(card.description));
+                    break;
+                case CardAction.ReceiveFromEachPlayer:
+                    plr.PlayerMoney += card.value * activePlr;
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    foreach (var p in PlayerManager.Players)
+                    {
+                        if (p == plr || p.IsBankrupt == true) continue;
+                        p.PlayerMoney -= card.value;
+                    }
+                    _ = Task.Run(() => MessageBox.Show(card.description));
+                    break;
+                case CardAction.GetOutOfJailFree:
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.GetOutOfJailFree, card.description, plr.Name));
+                    plr.GetOutOfJailFree++;
+                    break;
+                case CardAction.Jail:
+                    GoToJailOnl(plrIndex);
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
+                    break;
+            }
+
         }
         private void GoToJailOnl(int plrIndex)
         {
@@ -707,11 +839,68 @@ namespace Monopoly.Screens
             plr.IsInJail = true;
         }
 
-        private void BuyProp(int num)
+        private void PropHandler(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            if (board.properties[plr.Position - 1].owner == null)
+            {
+                BuyProp(plrIndex);
+            }
+            else
+            {
+                if (board.properties[plr.Position - 1].owner == plr.Name)
+                {
+                    if (board.properties[plr.Position - 1].type == "utility")
+                        return;
+                    UpdgradeProp(plrIndex);
+                }
+                else
+                {
+                    PayRent(plrIndex);
+                }
+            }
+        }
+        private void UpdgradeProp(int plrIndex)
         {
 
+        }
+        private void BuyProp(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            var prop = board.properties[plr.Position - 1];
+            var result = MessageBox.Show(
+                $"Do you want to buy {prop.name} for ${prop.price}?",
+                "Purchase Property",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+            if (result == DialogResult.Yes)
+            {
+                if (plr.PlayerMoney > prop.price)
+                {
+
+                }
+            }
+            else
+            {
+
+            }
+            panels[plrIndex].BackColor = plr.Color;
             _waiter?.SetResult();
         }
+        private bool SellProp(int plrIndex)
+        {
+            var plr = PlayerManager.Players[plrIndex];
+            if (plr.OwnedProperties.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        private void PayRent(int plrIndex)
+        {
+        }
+
         private async void BroadcastDice(string plr, int dice1, int dice2)
         {
             foreach (var client in SocketServerManager.ClientSockets)
@@ -723,10 +912,6 @@ namespace Monopoly.Screens
                 }
             }
         }
-        private async void BroadcastTurn(Socket client)
-        {
-            await SocketServerManager.SocketServer.Send(client, new Data(Data.ActionType.RollDice));
-        }
 
         private async Task PlayerMoving(string plr, int steps)
         {
@@ -736,6 +921,7 @@ namespace Monopoly.Screens
             var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
             if (pcb == null) return;
 
+            plrInfo.PlayerMoney += 2000;
             int oldPos = plrInfo.Position;
             bool passedStart = (plrInfo.Position + steps) >= labels.Count;
             plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
@@ -754,9 +940,11 @@ namespace Monopoly.Screens
 
             if (passedStart)
             {
-                plrInfo.PlayerMoney += 2000;
+                _ = Task.Run(() => MessageBox.Show($"{plrInfo.Name} passed GO! Collect $2000"));
                 if (PlayerManager.isAdmin)
                 {
+                    plrInfo.PlayerMoney += 2000;
+
                     foreach (var client in SocketServerManager.ClientSockets)
                     {
                         if (client.Key == "Player 1") continue;
@@ -764,14 +952,13 @@ namespace Monopoly.Screens
                         {
                             await SocketServerManager.SocketServer.Send(
                                 client.Value,
-                                new Data(Data.ActionType.Recieve, "2000", plr)
+                                new Data(Data.ActionType.Recieve, $"2000/{plrInfo.PlayerMoney}", plr)
                             );
                         }
                     }
                 }
             }
         }
-
 
         private void SocketServerManager_OnDataReceived(object sender, Data data)
         {
@@ -780,21 +967,29 @@ namespace Monopoly.Screens
                 case Data.ActionType.RollDice:
                     _rollWaiter?.SetResult();
                     break;
+                case Data.ActionType.PickCard:
+                    _pickCardWaiter?.SetResult();
+                    break;
             }
         }
+
         private void SocketServerManager_OnClientDisconnect(Socket socket, string arg2)
         {
 
         }
-
 
         private void SocketClientManager_OnDataReceived(Data data)
         {
             switch (data.Action)
             {
                 case Data.ActionType.RollDice:
-                    Dice1.Enabled = true;
-                    Dice2.Enabled = true;
+                    label1.Text = data.Msg;
+                    label1.ForeColor = PlayerManager.Players.FirstOrDefault(x => x.Name == data.Msg)!.Color;
+                    if (PlayerManager.curPlayer.Name == data.Msg)
+                    {
+                        Dice1.Enabled = true;
+                        Dice2.Enabled = true;
+                    }
                     break;
                 case Data.ActionType.Dice:
                     this.Invoke(async () =>
@@ -806,9 +1001,63 @@ namespace Monopoly.Screens
                     });
                     break;
                 case Data.ActionType.Recieve:
-                    var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
-                    plrInfo!.PlayerMoney += int.Parse(data.Msg!);
+                    {
+                        var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        string[] values = data.Msg!.Split("/");
+                        Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
+                        plrInfo!.PlayerMoney = int.Parse(values[1]);
+                        break;
+                    }
+                case Data.ActionType.GoToJail:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        int plrIndex = PlayerManager.Players.IndexOf(plr!);
+                        GoToJailOnl(plrIndex);
+                        if (data.Msg != null) Task.Run(() => MessageBox.Show(data.Msg, plr!.Name));
+                        break;
+                    }
+                case Data.ActionType.GetOutOfJailFree:
+                    Task.Run(() => MessageBox.Show(data.Msg, data.From!));
                     break;
+                case Data.ActionType.PickCard:
+                    this.Invoke(() =>
+                    {
+                        if (data.Msg == "community_chest")
+                        {
+                            pcbFortune.Enabled = true;
+                        }
+                        else
+                        {
+                            pcbChance.Enabled = true;
+                        }
+                    });
+                    break;
+                case Data.ActionType.ReceiveFromEachPlayer:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        string[] values = data.Msg!.Split("/");
+                        Task.Run(() => MessageBox.Show(values[0], plr!.Name));
+                        foreach (var p in PlayerManager.Players)
+                        {
+                            if (p == plr || p.IsBankrupt == true) continue;
+                            p.PlayerMoney -= int.Parse(values[1]);
+                        }
+                        plr!.PlayerMoney += int.Parse(values[2]);
+                        break;
+                    }
+                case Data.ActionType.PayEachPlayer:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        string[] values = data.Msg!.Split("/");
+                        Task.Run(() => MessageBox.Show(values[0], plr!.Name));
+                        foreach (var p in PlayerManager.Players)
+                        {
+                            if (p == plr || p.IsBankrupt == true) continue;
+                            p.PlayerMoney += int.Parse(values[1]);
+                        }
+                        plr!.PlayerMoney -= int.Parse(values[2]);
+                        break;
+                    }
             }
         }
 
@@ -832,13 +1081,13 @@ namespace Monopoly.Screens
             var panel = (Panel)sender;
             var name = panel.Name;
             int num = int.Parse(name.Replace("pnl", ""));
-            var prop = board.properties[num-1];
+            var prop = board.properties[num - 1];
             StringBuilder sb = new StringBuilder();
             sb.Append($"{prop.name}\n");
             sb.Append($"{prop.description}\n");
-            if(prop.type == "property" || prop.type == "utility")
+            if (prop.type == "property" || prop.type == "utility")
             {
-                if(prop.type == "property")
+                if (prop.type == "property")
                 {
                     sb.Append($"======================\n");
                     foreach (var i in prop.levels!)
@@ -857,7 +1106,7 @@ namespace Monopoly.Screens
                 sb.Append($"Sell Price: {prop.sell_price}\n");
                 sb.Append($"Upgrade Price: {prop.upgrade_price + (prop.level * prop.upgrade_price * 0.25)}");
             }
-            MessageBox.Show(sb.ToString(),"Info");
+            MessageBox.Show(sb.ToString(), "Info");
         }
 
         private void pcbReturn_Click(object sender, EventArgs e)
@@ -877,6 +1126,19 @@ namespace Monopoly.Screens
                 }
             }
             monopoly.LoadScreen(new MainMenu(monopoly));
+        }
+        private void CardClick(object sender, EventArgs e)
+        {
+            pcbChance.Enabled = false;
+            pcbFortune.Enabled = false;
+            if (!PlayerManager.isAdmin)
+            {
+                Task.Run(async () => await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.PickCard)));
+            }
+            else
+            {
+                _pickCardWaiter?.SetResult();
+            }
         }
         private void pcb_MouseEnter(object sender, EventArgs e)
         {

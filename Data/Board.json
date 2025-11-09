@@ -500,12 +500,6 @@
   ],
   "chance": [
     {
-      "id": 1,
-      "action": "Move",
-      "value": "0",
-      "description": "Advance to GO. Collect $2000."
-    },
-    {
       "id": 2,
       "action": "Pay",
       "value": "600",
@@ -594,12 +588,6 @@
       "action": "Receive",
       "value": "900",
       "description": "You sold rare artwork. Collect $900."
-    },
-    {
-      "id": 17,
-      "action": "Move",
-      "value": "10",
-      "description": "Advance 10 spaces forward."
     },
     {
       "id": 18,
@@ -692,18 +680,6 @@
       "action": "ReceiveFromEachPlayer",
       "value": "500",
       "description": "You sold valuable collectibles. Collect $500 from each player."
-    },
-    {
-      "id": 13,
-      "action": "Move",
-      "value": "5",
-      "description": "Advance 5 spaces forward."
-    },
-    {
-      "id": 14,
-      "action": "Move",
-      "value": "-3",
-      "description": "Go back 3 spaces."
     },
     {
       "id": 15,
