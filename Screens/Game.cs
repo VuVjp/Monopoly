@@ -931,6 +931,14 @@ namespace Monopoly.Screens
                         plrInfo!.PlayerMoney = int.Parse(values[1]);
                         break;
                     }
+                case Data.ActionType.Pay:
+                    {
+                        var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        string[] values = data.Msg!.Split("/");
+                        Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
+                        plrInfo!.PlayerMoney = int.Parse(values[1]);
+                        break;
+                    }
                 case Data.ActionType.GoToJail:
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
