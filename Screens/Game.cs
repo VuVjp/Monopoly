@@ -145,13 +145,8 @@ namespace Monopoly.Screens
         private void ReadJson()
         {
             string boardPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Board.json");
-            var settings = new JsonSerializerSettings
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore
-            };
             string json = File.ReadAllText(boardPath);
-            board = JsonConvert.DeserializeObject<Board>(json, settings)!;
+            board = JsonConvert.DeserializeObject<Board>(json)!;
         }
 
         #region Offline Methods
