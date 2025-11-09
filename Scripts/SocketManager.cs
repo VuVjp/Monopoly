@@ -220,7 +220,7 @@ namespace Monopoly.Scripts.Sockets
         public static bool isAcceptingPlayers;
         private static SocketServerManager? _socketServer;
         public static event Action<Socket, Data>? OnDataReceived;
-        public static event Action<Socket,string>? OnClientDisconnect;
+        public static event Action<Socket, string>? OnClientDisconnect;
         public static SocketServerManager SocketServer => _socketServer ??= new SocketServerManager()!;
 
         public static Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>()
@@ -293,6 +293,27 @@ namespace Monopoly.Scripts.Sockets
             {
                 if (c == SocketServerManager.ClientSockets["Player 1"]) continue;
                 if (c == null || c == sender) continue;
+
+                try
+                {
+                    await SocketServerManager.SocketServer.Send(c, data);
+                }
+                catch
+                {
+                    string? plr = ClientSockets.FirstOrDefault(x => x.Value == c).Key;
+                    if (plr != null)
+                        ClientSockets[plr] = null!;
+                }
+            }
+        }
+
+
+        public static async Task Broadcast(Data data)
+        {
+            foreach (var c in ClientSockets.Values)
+            {
+                if (c == SocketServerManager.ClientSockets["Player 1"]) continue;
+                if (c == null) continue;
 
                 try
                 {

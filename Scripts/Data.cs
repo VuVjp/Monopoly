@@ -28,7 +28,11 @@ namespace Monopoly.Scripts
             PlayerJoin,
             ChangeAvt,
             Dice,
-            GetAvtList
+            GetAvtList, 
+            PayEachPlayer,
+            GoToJail,
+            ReceiveFromEachPlayer,
+            GetOutOfJailFree
         }
         public string? Msg = null!;
         public string? From = null!; 
