@@ -96,11 +96,14 @@ namespace Monopoly.Screens
                 Dice2.Click += DiceClick!;
                 pcbChance.Click += CardClick!;
                 pcbFortune.Click += CardClick!;
+
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
                     SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
                     RandomizeTurnOrder();
+                    label1.Text = PlayerManager.Players[turnOrder[0]].Name;
+                    label1.ForeColor = PlayerManager.Players[turnOrder[0]].Color;
                     Task.Run(() => GameLoop());
                 }
                 else
@@ -607,10 +610,7 @@ namespace Monopoly.Screens
                     Dice1.Enabled = true;
                     Dice2.Enabled = true;
                 }
-                else
-                {
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
-                }
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
 
                 await _rollWaiter.Task;
                 int[] Dices = RollDiceOnline();
@@ -711,7 +711,7 @@ namespace Monopoly.Screens
                     break;
                 case CardAction.PayEachPlayer:
                     plr.PlayerMoney -= card.value * activePlr;
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
                         if (p == plr || p.IsBankrupt == true) continue;
@@ -721,7 +721,7 @@ namespace Monopoly.Screens
                     break;
                 case CardAction.ReceiveFromEachPlayer:
                     plr.PlayerMoney += card.value * activePlr;
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
                         if (p == plr || p.IsBankrupt == true) continue;
@@ -835,7 +835,6 @@ namespace Monopoly.Screens
             var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
             if (pcb == null) return;
 
-            plrInfo.PlayerMoney += 2000;
             int oldPos = plrInfo.Position;
             bool passedStart = (plrInfo.Position + steps) >= labels.Count;
             plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
@@ -897,13 +896,18 @@ namespace Monopoly.Screens
             switch (data.Action)
             {
                 case Data.ActionType.RollDice:
-                    label1.Text = data.Msg;
-                    label1.ForeColor = PlayerManager.Players.FirstOrDefault(x => x.Name == data.Msg)!.Color;
-                    if (PlayerManager.curPlayer.Name == data.Msg)
+                    this.Invoke(() =>
                     {
-                        Dice1.Enabled = true;
-                        Dice2.Enabled = true;
-                    }
+                        label1.Text = data.Msg;
+                        label1.ForeColor = PlayerManager.Players.FirstOrDefault(x => x.Name == data.Msg)!.Color;
+
+                        var plr = PlayerManager.Players.FirstOrDefault(y => y.Name == data.Msg);
+                        if (plr != null)
+                        {
+                            Dice1.Enabled = true;
+                            Dice2.Enabled = true;
+                        }
+                    });
                     break;
                 case Data.ActionType.Dice:
                     this.Invoke(async () =>
