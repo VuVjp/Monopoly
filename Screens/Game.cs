@@ -137,7 +137,6 @@ namespace Monopoly.Screens
             board = JsonConvert.DeserializeObject<Board>(json)!;
         }
 
-        #region Offline Methods
         private void LoadPlayerInfo()
         {
             for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -187,6 +186,10 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney3.Text = $"${newMoney}";
+                            if (PlayerManager.isOnline)
+                            {
+
+                            }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -208,6 +211,70 @@ namespace Monopoly.Screens
             }
         }
 
+        private void LoadPlayerInBoard()
+        {
+            for (int i = 0; i < PlayerManager.playerCount; i++)
+            {
+                if (i == 0)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y - 15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else if (i == 1)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y - 15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else if (i == 2)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36 - 16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y + 36 - 16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+            }
+        }
+
+        #region Offline Methods
         private void RollDice(object sender, EventArgs e)
         {
             if (inJail[currPlayer])
@@ -311,68 +378,6 @@ namespace Monopoly.Screens
                 {
                     Dice1.Location = new Point(Dice1.Location.X - 3, Dice1.Location.Y);
                     Dice2.Location = new Point(Dice2.Location.X - 3, Dice2.Location.Y);
-                }
-            }
-        }
-        private void LoadPlayerInBoard()
-        {
-            for (int i = 0; i < PlayerManager.playerCount; i++)
-            {
-                if (i == 0)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y - 15);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else if (i == 1)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y - 15);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else if (i == 2)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36 - 16);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y + 36 - 16);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
                 }
             }
         }
