@@ -36,14 +36,14 @@
             pnlMain.Location = new Point(0, 1);
             pnlMain.Margin = new Padding(2);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(1255, 728);
+            pnlMain.Size = new Size(1220, 728);
             pnlMain.TabIndex = 0;
             // 
             // Monopoly
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1256, 729);
+            ClientSize = new Size(1220, 729);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(2);

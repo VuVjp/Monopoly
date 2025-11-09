@@ -111,11 +111,14 @@ namespace Monopoly.Screens
                 Dice2.Click += DiceClick!;
                 pcbChance.Click += CardClick!;
                 pcbFortune.Click += CardClick!;
+
                 if (PlayerManager.isAdmin)
                 {
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
                     SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
                     RandomizeTurnOrder();
+                    label1.Text = PlayerManager.Players[turnOrder[0]].Name;
+                    label1.ForeColor = PlayerManager.Players[turnOrder[0]].Color;
                     Task.Run(() => GameLoop());
                 }
                 else
@@ -149,7 +152,6 @@ namespace Monopoly.Screens
             board = JsonConvert.DeserializeObject<Board>(json)!;
         }
 
-        #region Offline Methods
         private void LoadPlayerInfo()
         {
             for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -199,6 +201,10 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney3.Text = $"${newMoney}";
+                            if (PlayerManager.isOnline)
+                            {
+
+                            }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -220,6 +226,70 @@ namespace Monopoly.Screens
             }
         }
 
+        private void LoadPlayerInBoard()
+        {
+            for (int i = 0; i < PlayerManager.playerCount; i++)
+            {
+                if (i == 0)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y - 15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else if (i == 1)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y - 15);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else if (i == 2)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36 - 16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+                else
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Enabled = false;
+                    pictureBox.Name = "Player " + (i + 1).ToString();
+                    pictureBox.Size = new Size(40, 40);
+                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y + 36 - 16);
+                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pnl1.Controls.Add(pictureBox);
+                    pictureBox.BringToFront();
+                    playerPos[i] = 0;
+                }
+            }
+        }
+
+        #region Offline Methods
         private void RollDice(object sender, EventArgs e)
         {
             if (movementInProgress) return;
@@ -327,68 +397,6 @@ namespace Monopoly.Screens
 
                 Dice1.Location = new Point(X1 + offsetX, Y1 + offsetY);
                 Dice2.Location = new Point(X2 + offsetX, Y2 + offsetY);
-            }
-        }
-        private void LoadPlayerInBoard()
-        {
-            for (int i = 0; i < PlayerManager.playerCount; i++)
-            {
-                if (i == 0)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y - 15);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else if (i == 1)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y - 15);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else if (i == 2)
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X, labels[0].Location.Y + 36 - 16);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
-                else
-                {
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Enabled = false;
-                    pictureBox.Name = "Player " + (i + 1).ToString();
-                    pictureBox.Size = new Size(40, 40);
-                    pictureBox.Location = new Point(labels[0].Location.X + 36 - 1, labels[0].Location.Y + 36 - 16);
-                    pictureBox.Image = PlayerManager.Players[i].Avt.Image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.BackColor = Color.Transparent;
-                    pnl1.Controls.Add(pictureBox);
-                    pictureBox.BringToFront();
-                    playerPos[i] = 0;
-                }
             }
         }
 
@@ -688,10 +696,7 @@ namespace Monopoly.Screens
                     Dice1.Enabled = true;
                     Dice2.Enabled = true;
                 }
-                else
-                {
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
-                }
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
 
                 await _rollWaiter.Task;
                 int[] Dices = RollDiceOnline();
@@ -792,7 +797,7 @@ namespace Monopoly.Screens
                     break;
                 case CardAction.PayEachPlayer:
                     plr.PlayerMoney -= card.value * activePlr;
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
                         if (p == plr || p.IsBankrupt == true) continue;
@@ -802,7 +807,7 @@ namespace Monopoly.Screens
                     break;
                 case CardAction.ReceiveFromEachPlayer:
                     plr.PlayerMoney += card.value * activePlr;
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value*activePlr}", plr.Name));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
                         if (p == plr || p.IsBankrupt == true) continue;
@@ -916,7 +921,6 @@ namespace Monopoly.Screens
             var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
             if (pcb == null) return;
 
-            plrInfo.PlayerMoney += 2000;
             int oldPos = plrInfo.Position;
             bool passedStart = (plrInfo.Position + steps) >= labels.Count;
             plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
@@ -978,13 +982,18 @@ namespace Monopoly.Screens
             switch (data.Action)
             {
                 case Data.ActionType.RollDice:
-                    label1.Text = data.Msg;
-                    label1.ForeColor = PlayerManager.Players.FirstOrDefault(x => x.Name == data.Msg)!.Color;
-                    if (PlayerManager.curPlayer.Name == data.Msg)
+                    this.Invoke(() =>
                     {
-                        Dice1.Enabled = true;
-                        Dice2.Enabled = true;
-                    }
+                        label1.Text = data.Msg;
+                        label1.ForeColor = PlayerManager.Players.FirstOrDefault(x => x.Name == data.Msg)!.Color;
+
+                        var plr = PlayerManager.Players.FirstOrDefault(y => y.Name == data.Msg);
+                        if (plr != null)
+                        {
+                            Dice1.Enabled = true;
+                            Dice2.Enabled = true;
+                        }
+                    });
                     break;
                 case Data.ActionType.Dice:
                     this.Invoke(async () =>

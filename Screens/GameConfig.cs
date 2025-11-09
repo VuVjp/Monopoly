@@ -29,10 +29,10 @@ namespace Monopoly.Screens
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
+            PlayerManager.isAdmin = false;
             monopoly.LoadScreen(new PlayerConfig(monopoly));
             if (PlayerManager.isOnline)
             {
-                PlayerManager.isAdmin = false;
                 SocketClientManager.SocketClient.Connect("", 9999);
             }
         }
