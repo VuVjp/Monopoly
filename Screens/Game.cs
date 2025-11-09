@@ -665,7 +665,7 @@ namespace Monopoly.Screens
             var plr = PlayerManager.Players[plrIndex];
             if (name == "Income Tax")
             {
-                plr.PlayerMoney *= 0.1;
+                plr.PlayerMoney *= 0.9;
             }
             else
             {
