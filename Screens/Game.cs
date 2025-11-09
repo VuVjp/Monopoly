@@ -1,5 +1,6 @@
 ﻿using Monopoly.Scripts;
 using Monopoly.Scripts.Sockets;
+using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Monopoly.Screens
 {
@@ -21,6 +24,8 @@ namespace Monopoly.Screens
         Board board;
         private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
+        private WaveOutEvent bgMusic;
+        private WaveFileReader bgReader;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -31,16 +36,12 @@ namespace Monopoly.Screens
         List<Label> labels;
 
         #region Offline Properties
-        private SoundPlayer diceSound;
-        private SoundPlayer popupSound;
         Dictionary<int, bool> passedGo = new Dictionary<int, bool>();
         int X1;
         int X2;
         int Y1;
         int Y2;
         int rollTime = 0;
-        int diceOriginalX1, diceOriginalY1, diceOriginalX2, diceOriginalY2;
-        Random rnd = new Random();
         int endTime;
         bool Rolling = false;
         bool extraTurn = false;
@@ -66,13 +67,12 @@ namespace Monopoly.Screens
         public Game(Monopoly monopoly)
         {
             InitializeComponent();
-            diceSound = new SoundPlayer(new MemoryStream(Properties.Resources.DiceSound));
-            popupSound = new SoundPlayer(new MemoryStream(Properties.Resources.DiceSound));
             this.monopoly = monopoly;
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
             GameLoader();
+            InitAudio();
             if (!PlayerManager.isOnline)
             {
                 for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -126,6 +126,33 @@ namespace Monopoly.Screens
                     SocketClientManager.OnDataReceived += SocketClientManager_OnDataReceived;
                 }
             }
+        }
+        private void InitAudio()
+        {
+            bgReader = new WaveFileReader(new MemoryStream(Properties.Resources.BackGroundMusic));
+            bgMusic = new WaveOutEvent();
+            bgMusic.Init(bgReader);
+            bgMusic.Volume = 0.2f;
+            bgMusic.PlaybackStopped += (s, e) =>
+            {
+                bgReader.Position = 0;
+                bgMusic.Play();
+            };
+            bgMusic.Play();
+        }
+        private void PlaySFX(byte[] soundBytes, int durationMs)
+        {
+            Task.Run(() =>
+            {
+                using (var ms = new MemoryStream(soundBytes))
+                using (var reader = new WaveFileReader(ms))
+                using (var output = new WaveOutEvent())
+                {
+                    output.Init(reader);
+                    output.Play();
+                    Task.Delay(durationMs).Wait();
+                }
+            });
         }
 
         private void GameLoader()
@@ -307,7 +334,8 @@ namespace Monopoly.Screens
                     if (player.PlayerMoney >= 500)
                     {
                         player.PlayerMoney -= 500;
-                        UpdatePlayerMoneyLabel(currPlayer);
+                        ShowPopup(labels[10], -500);
+                        PlaySFX(Properties.Resources.Money, 500);
                         inJail[currPlayer] = false;
                         jailTurns[currPlayer] = 0;
                         MessageBox.Show($"{player.Name} paid $500 and will be free next turn");
@@ -323,11 +351,7 @@ namespace Monopoly.Screens
             if (!Rolling)
             {
                 Rolling = true;
-                diceOriginalX1 = Dice1.Left;
-                diceOriginalY1 = Dice1.Top;
-                diceOriginalX2 = Dice2.Left;
-                diceOriginalY2 = Dice2.Top;
-                diceSound.PlayLooping();
+                PlaySFX(Properties.Resources.DiceSound, 1000);
                 RollTimer.Start();
                 rollTime = 0;
             }
@@ -338,7 +362,6 @@ namespace Monopoly.Screens
             if (rollTime >= endTime)
             {
                 RollTimer.Stop();
-                diceSound.Stop();
                 Rolling = false;
                 int[] result = new int[2];
                 for (int i = 0; i < result.Length; i++)
@@ -420,56 +443,55 @@ namespace Monopoly.Screens
             MoveTimer.Interval = 400;
             MoveTimer.Start();
         }
-        private void ShowGoPopup()
+        private void ShowPopup(Label targetLabel, double amount)
         {
-            try
+            if (targetLabel == null) return;
+            bool isPositive = amount >= 0;
+            string sign = isPositive ? "+" : "-";
+            string finalText = $"{sign}{Math.Abs(amount)}$";
+            Color baseColor = isPositive ? Color.Gold : Color.Red;
+
+            Label popup = new Label
             {
-                // SoundPlayer player = new SoundPlayer("Sounds\\cash.wav");
-                // player.Play();
-            }
-            catch { }
-            var startLabel = labels[0];
-            Label popup = new Label();
-            popup.Text = "+2000$";
-            popup.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-            popup.AutoSize = true;
-            popup.BackColor = Color.Transparent;
-            Color baseColor = Color.Gold;
-            popup.ForeColor = Color.FromArgb(255, baseColor.R, baseColor.G, baseColor.B);
-            var parentPanel = startLabel.Parent ?? this;
+                Text = finalText,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                ForeColor = baseColor,
+            };
+            var parentPanel = targetLabel.Parent ?? this;
             parentPanel.Controls.Add(popup);
             popup.BringToFront();
             Size pref = popup.PreferredSize;
-            int popupX = startLabel.Left + (startLabel.Width - pref.Width) / 2;
-            int popupY = startLabel.Top - pref.Height - 4;
-            if (popupY < 0) popupY = startLabel.Top;
+
+            int popupX = targetLabel.Left + (targetLabel.Width - pref.Width) / 2;
+            int popupY = targetLabel.Top - pref.Height - 4;
+            if (popupY < 0)
+                popupY = targetLabel.Top + targetLabel.Height + 4;
             popup.Location = new Point(popupX, popupY);
             System.Windows.Forms.Timer popupTimer = new System.Windows.Forms.Timer();
             int steps = 0;
-            int maxSteps = 15;
-            popupTimer.Interval = 40;
+            int maxSteps = 18;
+            popupTimer.Interval = 35;
             popupTimer.Tick += (s, e) =>
             {
                 steps++;
                 popup.Top -= 2;
-                int alpha = (int)Math.Round(255 * (1.0 - (double)steps / maxSteps));
+                int alpha = (int)(255 * (1 - (double)steps / maxSteps));
                 alpha = Math.Max(0, Math.Min(255, alpha));
-                popup.ForeColor = Color.FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
+                popup.ForeColor = Color.FromArgb(alpha, baseColor);
 
                 if (steps >= maxSteps)
                 {
                     popupTimer.Stop();
                     popupTimer.Dispose();
-                    try
-                    {
-                        parentPanel.Controls.Remove(popup);
-                        popup.Dispose();
-                    }
-                    catch { }
+                    parentPanel.Controls.Remove(popup);
+                    popup.Dispose();
                 }
             };
             popupTimer.Start();
         }
+
         private void MoveTimer_Tick(object sender, EventArgs e)
         {
             if (!moveLogic.ContainsKey(currPlayer)) return;
@@ -481,8 +503,8 @@ namespace Monopoly.Screens
             if (curr + 1 == labels.Count)
             {
                 PlayerManager.Players[currPlayer].PlayerMoney += 2000;
-                UpdatePlayerMoneyLabel(currPlayer);
-                ShowGoPopup();
+                ShowPopup(labels[0],2000);
+                PlaySFX(Properties.Resources.Money, 500);
             }
             curr = next;
             foreach (Panel pnl in this.Controls.OfType<Panel>())
@@ -531,19 +553,23 @@ namespace Monopoly.Screens
                     {
                         MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $200!");
                         PlayerManager.Players[currPlayer].PlayerMoney -= 200;
-                        UpdatePlayerMoneyLabel(currPlayer);
+                        ShowPopup(labels[10], -200);
+                        PlaySFX(Properties.Resources.Money, 500);
                     }
                 }
-                if (curr == 4)
+                if (curr == 3)
                 {
-                    PlayerManager.Players[currPlayer].PlayerMoney -= PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
-                    UpdatePlayerMoneyLabel(currPlayer);
+                    double tax = PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
+                    PlaySFX(Properties.Resources.Money, 500);
+                    PlayerManager.Players[currPlayer].PlayerMoney -= tax;
+                    ShowPopup(labels[3], (0-tax));
                     MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Income Tax -10% Property Value");
                 }
                 if (curr == 26)
                 {
                     PlayerManager.Players[currPlayer].PlayerMoney -= 2000;
-                    UpdatePlayerMoneyLabel(currPlayer);
+                    ShowPopup(labels[26], -2000);
+                    PlaySFX(Properties.Resources.Money, 500);
                     MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Luxury Tax -2000$");
                 }
                 if (extraTurn)
@@ -563,24 +589,6 @@ namespace Monopoly.Screens
             else
             {
                 moveLogic[currPlayer] = (pcb, curr, target);
-            }
-        }
-        private void UpdatePlayerMoneyLabel(int player)
-        {
-            switch (player)
-            {
-                case 0:
-                    lblPlayerMoney1.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 1:
-                    lblPlayerMoney2.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 2:
-                    lblPlayerMoney3.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 3:
-                    lblPlayerMoney4.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
             }
         }
         private void GoToJail(int player)
@@ -611,7 +619,7 @@ namespace Monopoly.Screens
                 if (p.PlayerMoney >= 500)
                 {
                     p.PlayerMoney -= 500;
-                    UpdatePlayerMoneyLabel(player);
+                    PlaySFX(Properties.Resources.Money, 500);
                 }
                 else
                 {

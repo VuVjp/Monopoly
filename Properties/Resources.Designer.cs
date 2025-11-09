@@ -61,6 +61,16 @@ namespace Monopoly.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] BackGroundMusic {
+            get {
+                object obj = ResourceManager.GetObject("BackGroundMusic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Ban {
@@ -407,6 +417,16 @@ namespace Monopoly.Properties {
             get {
                 object obj = ResourceManager.GetObject("Marseille", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Money {
+            get {
+                object obj = ResourceManager.GetObject("Money", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
