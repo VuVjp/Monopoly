@@ -38,6 +38,7 @@ namespace Monopoly.Screens
             pos16 = new Label();
             pcb9 = new PictureBox();
             pnlSide = new Panel();
+            lblUnread = new Label();
             pcbInfo = new PictureBox();
             pcbChat = new PictureBox();
             label1 = new Label();
@@ -62,6 +63,9 @@ namespace Monopoly.Screens
             lblPlayerName1 = new Label();
             pcbPlrAvt1 = new PictureBox();
             pnlGame = new Panel();
+            pnlChat = new Panel();
+            txbChatHistory = new TextBox();
+            txbChat = new TextBox();
             Dice2 = new PictureBox();
             Dice1 = new PictureBox();
             pcbChance = new PictureBox();
@@ -174,6 +178,7 @@ namespace Monopoly.Screens
             pnlPlr1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).BeginInit();
             pnlGame.SuspendLayout();
+            pnlChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Dice2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Dice1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbChance).BeginInit();
@@ -306,6 +311,7 @@ namespace Monopoly.Screens
             // 
             pnlSide.BackgroundImage = (Image)resources.GetObject("pnlSide.BackgroundImage");
             pnlSide.BackgroundImageLayout = ImageLayout.Stretch;
+            pnlSide.Controls.Add(lblUnread);
             pnlSide.Controls.Add(pcbInfo);
             pnlSide.Controls.Add(pcbChat);
             pnlSide.Controls.Add(label1);
@@ -322,6 +328,18 @@ namespace Monopoly.Screens
             pnlSide.Name = "pnlSide";
             pnlSide.Size = new Size(237, 727);
             pnlSide.TabIndex = 24;
+            // 
+            // lblUnread
+            // 
+            lblUnread.AutoSize = true;
+            lblUnread.BackColor = Color.FromArgb(208, 232, 255);
+            lblUnread.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblUnread.ForeColor = Color.FromArgb(13, 71, 161);
+            lblUnread.Location = new Point(138, 662);
+            lblUnread.Name = "lblUnread";
+            lblUnread.Size = new Size(23, 25);
+            lblUnread.TabIndex = 13;
+            lblUnread.Text = "0";
             // 
             // pcbInfo
             // 
@@ -350,6 +368,7 @@ namespace Monopoly.Screens
             pcbChat.Size = new Size(62, 53);
             pcbChat.TabIndex = 11;
             pcbChat.TabStop = false;
+            pcbChat.Click += pcbChat_Click;
             pcbChat.MouseEnter += pcb_MouseEnter;
             pcbChat.MouseLeave += pcb_MouseLeave;
             // 
@@ -609,6 +628,7 @@ namespace Monopoly.Screens
             // pnlGame
             // 
             pnlGame.BorderStyle = BorderStyle.FixedSingle;
+            pnlGame.Controls.Add(pnlChat);
             pnlGame.Controls.Add(Dice2);
             pnlGame.Controls.Add(Dice1);
             pnlGame.Controls.Add(pcbChance);
@@ -651,6 +671,36 @@ namespace Monopoly.Screens
             pnlGame.Name = "pnlGame";
             pnlGame.Size = new Size(979, 729);
             pnlGame.TabIndex = 23;
+            // 
+            // pnlChat
+            // 
+            pnlChat.BorderStyle = BorderStyle.FixedSingle;
+            pnlChat.Controls.Add(txbChatHistory);
+            pnlChat.Controls.Add(txbChat);
+            pnlChat.Location = new Point(630, 317);
+            pnlChat.Name = "pnlChat";
+            pnlChat.Size = new Size(347, 410);
+            pnlChat.TabIndex = 45;
+            // 
+            // txbChatHistory
+            // 
+            txbChatHistory.Font = new Font("Segoe UI", 14F);
+            txbChatHistory.Location = new Point(0, -1);
+            txbChatHistory.Multiline = true;
+            txbChatHistory.Name = "txbChatHistory";
+            txbChatHistory.ReadOnly = true;
+            txbChatHistory.ScrollBars = ScrollBars.Vertical;
+            txbChatHistory.Size = new Size(347, 379);
+            txbChatHistory.TabIndex = 3;
+            // 
+            // txbChat
+            // 
+            txbChat.Font = new Font("Segoe UI", 14F);
+            txbChat.Location = new Point(-1, 377);
+            txbChat.Name = "txbChat";
+            txbChat.Size = new Size(347, 32);
+            txbChat.TabIndex = 2;
+            txbChat.KeyPress += txbChat_KeyPress;
             // 
             // Dice2
             // 
@@ -1941,6 +1991,8 @@ namespace Monopoly.Screens
             pnlPlr1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pcbPlrAvt1).EndInit();
             pnlGame.ResumeLayout(false);
+            pnlChat.ResumeLayout(false);
+            pnlChat.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Dice2).EndInit();
             ((System.ComponentModel.ISupportInitialize)Dice1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pcbChance).EndInit();
@@ -2160,5 +2212,9 @@ namespace Monopoly.Screens
         private System.Windows.Forms.Timer MoveTimer;
         private Label pos14;
         private Label pos15;
+        private Panel pnlChat;
+        private TextBox txbChatHistory;
+        private TextBox txbChat;
+        private Label lblUnread;
     }
 }
