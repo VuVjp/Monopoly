@@ -1,5 +1,7 @@
 ﻿using Monopoly.Scripts;
 using Monopoly.Scripts.Sockets;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,11 +9,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
+using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Monopoly.Screens
 {
@@ -20,6 +25,8 @@ namespace Monopoly.Screens
         Board board;
         private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
+        private WaveOutEvent bgMusic, moveSound;
+        private WaveFileReader bgReader, moveSoundReader;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -30,11 +37,16 @@ namespace Monopoly.Screens
         List<Label> labels;
 
         #region Offline Properties
+        Dictionary<int, bool> passedGo = new Dictionary<int, bool>();
         int X1;
+        int X2;
+        int Y1;
+        int Y2;
         int rollTime = 0;
         int endTime;
         bool Rolling = false;
         bool extraTurn = false;
+        bool movementInProgress = false;
         int currPlayer = 0;
         Dictionary<int, int> playerPos = new Dictionary<int, int>();
         Dictionary<int, int> Doubles = new Dictionary<int, int>();
@@ -61,6 +73,8 @@ namespace Monopoly.Screens
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
             GameLoader();
+            InitAudio();
+            
             if (!PlayerManager.isOnline)
             {
                 for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -75,8 +89,11 @@ namespace Monopoly.Screens
                 Dice2.Click += RollDice!;
                 RollTimer.Tick += RollTimer_Tick!;
                 RollTimer.Interval = 300;
-                endTime = 2000;
+                endTime = 1000;
                 X1 = Dice1.Location.X;
+                X2 = Dice2.Location.X;
+                Y1 = Dice1.Location.Y;
+                Y2 = Dice2.Location.Y;
 
 
                 label1.Text = PlayerManager.Players[currPlayer].Name;
@@ -111,6 +128,39 @@ namespace Monopoly.Screens
                     SocketClientManager.OnDataReceived += SocketClientManager_OnDataReceived;
                 }
             }
+        }
+        private void InitAudio()
+        {
+            bgReader = new WaveFileReader(new MemoryStream(Properties.Resources.BackGroundMusic));
+            bgMusic = new WaveOutEvent();
+            bgMusic.Init(bgReader);
+            bgMusic.Volume = 0.2f;
+            bgMusic.PlaybackStopped += (s, e) =>
+            {
+                bgReader.Position = 0;
+                bgMusic.Play();
+            };
+            bgMusic.Play();
+        }
+        private void PlaySFX(byte[] soundBytes, int durationMs, float gain = 1.0f)
+        {
+            Task.Run(async () =>
+            {
+                using (var ms = new MemoryStream(soundBytes))
+                using (var reader = new WaveFileReader(ms))
+                using (var output = new WaveOutEvent())
+                {
+                    var sampleProvider = reader.ToSampleProvider();
+                    var volumeProvider = new VolumeSampleProvider(sampleProvider)
+                    {
+                        Volume = gain
+                    };
+
+                    output.Init(volumeProvider);
+                    output.Play();
+                    await Task.Delay(durationMs);
+                }
+            });
         }
 
         private void GameLoader()
@@ -277,6 +327,7 @@ namespace Monopoly.Screens
         #region Offline Methods
         private void RollDice(object sender, EventArgs e)
         {
+            if (movementInProgress) return;
             if (inJail[currPlayer])
             {
                 var player = PlayerManager.Players[currPlayer];
@@ -291,7 +342,8 @@ namespace Monopoly.Screens
                     if (player.PlayerMoney >= 500)
                     {
                         player.PlayerMoney -= 500;
-                        UpdatePlayerMoneyLabel(currPlayer);
+                        ShowPopup(labels[10], -500);
+                        PlaySFX(Properties.Resources.Money, 500);
                         inJail[currPlayer] = false;
                         jailTurns[currPlayer] = 0;
                         MessageBox.Show($"{player.Name} paid $500 and will be free next turn");
@@ -307,6 +359,7 @@ namespace Monopoly.Screens
             if (!Rolling)
             {
                 Rolling = true;
+                PlaySFX(Properties.Resources.DiceSound, 1000);
                 RollTimer.Start();
                 rollTime = 0;
             }
@@ -360,25 +413,21 @@ namespace Monopoly.Screens
             else
             {
                 rollTime += RollTimer.Interval;
-                Random x = new Random();
-                Random y = new Random();
-                Dice1.BackgroundImage = listImage[x.Next(6)];
-                Dice2.BackgroundImage = listImage[y.Next(6)];
-                if (Dice1.Location.X == X1)
-                {
-                    Dice1.Location = new Point(Dice1.Location.X + 3, Dice1.Location.Y);
-                    Dice2.Location = new Point(Dice2.Location.X + 3, Dice2.Location.Y);
-                }
-                else if (Dice1.Location.X < X1)
-                {
-                    Dice1.Location = new Point(Dice1.Location.X + 6, Dice1.Location.Y);
-                    Dice2.Location = new Point(Dice2.Location.X + 6, Dice2.Location.Y);
-                }
-                else if (Dice1.Location.X > X1)
-                {
-                    Dice1.Location = new Point(Dice1.Location.X - 3, Dice1.Location.Y);
-                    Dice2.Location = new Point(Dice2.Location.X - 3, Dice2.Location.Y);
-                }
+                if (rollTime < endTime / 3)
+                    RollTimer.Interval = 40;
+                else if (rollTime < endTime * 2 / 3)
+                    RollTimer.Interval = 70;
+                else
+                    RollTimer.Interval = 120;
+                Random rnd = new Random();
+                Dice1.BackgroundImage = listImage[rnd.Next(6)];
+                Dice2.BackgroundImage = listImage[rnd.Next(6)];
+                int shakeRange = Math.Max(1, 8 - rollTime / 250);
+                int offsetX = rnd.Next(-shakeRange, shakeRange + 1);
+                int offsetY = rnd.Next(-shakeRange, shakeRange + 1);
+
+                Dice1.Location = new Point(X1 + offsetX, Y1 + offsetY);
+                Dice2.Location = new Point(X2 + offsetX, Y2 + offsetY);
             }
         }
 
@@ -389,8 +438,12 @@ namespace Monopoly.Screens
 
             int curr = playerPos[player];
             int target = (curr + steps) % labels.Count;
-
+            bool hasPassed = (curr + steps) >= labels.Count;
+            passedGo[player] = hasPassed;
             moveLogic[player] = (pcb, curr, target);
+            movementInProgress = true;
+            Dice1.Enabled = false;
+            Dice2.Enabled = false;
 
             MoveTimer.Stop();
             MoveTimer.Tick -= MoveTimer_Tick!;
@@ -398,8 +451,56 @@ namespace Monopoly.Screens
             MoveTimer.Interval = 400;
             MoveTimer.Start();
         }
+        private void ShowPopup(Label targetLabel, double amount)
+        {
+            if (targetLabel == null) return;
+            bool isPositive = amount >= 0;
+            string sign = isPositive ? "+" : "-";
+            string finalText = $"{sign}{Math.Abs(amount)}$";
+            Color baseColor = isPositive ? Color.Gold : Color.Red;
 
-        private void MoveTimer_Tick(object sender, EventArgs e)
+            Label popup = new Label
+            {
+                Text = finalText,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                ForeColor = baseColor,
+            };
+            var parentPanel = targetLabel.Parent ?? this;
+            parentPanel.Controls.Add(popup);
+            popup.BringToFront();
+            Size pref = popup.PreferredSize;
+
+            int popupX = targetLabel.Left + (targetLabel.Width - pref.Width) / 2;
+            int popupY = targetLabel.Top - pref.Height - 4;
+            if (popupY < 0)
+                popupY = targetLabel.Top + targetLabel.Height + 4;
+            popup.Location = new Point(popupX, popupY);
+            System.Windows.Forms.Timer popupTimer = new System.Windows.Forms.Timer();
+            int steps = 0;
+            int maxSteps = 18;
+            popupTimer.Interval = 35;
+            popupTimer.Tick += (s, e) =>
+            {
+                steps++;
+                popup.Top -= 2;
+                int alpha = (int)(255 * (1 - (double)steps / maxSteps));
+                alpha = Math.Max(0, Math.Min(255, alpha));
+                popup.ForeColor = Color.FromArgb(alpha, baseColor);
+
+                if (steps >= maxSteps)
+                {
+                    popupTimer.Stop();
+                    popupTimer.Dispose();
+                    parentPanel.Controls.Remove(popup);
+                    popup.Dispose();
+                }
+            };
+            popupTimer.Start();
+        }
+
+        private async void MoveTimer_Tick(object sender, EventArgs e)
         {
             if (!moveLogic.ContainsKey(currPlayer)) return;
             var state = moveLogic[currPlayer];
@@ -410,12 +511,11 @@ namespace Monopoly.Screens
             if (curr + 1 == labels.Count)
             {
                 PlayerManager.Players[currPlayer].PlayerMoney += 2000;
-                UpdatePlayerMoneyLabel(currPlayer);
-                Task.Run(() => this.Invoke(() => MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} pass GO +2000$")));
-
-
+                ShowPopup(labels[0],2000);
+                PlaySFX(Properties.Resources.Money, 500);
             }
             curr = next;
+            PlaySFX(Properties.Resources.Move, 300, 2F);
             foreach (Panel pnl in this.Controls.OfType<Panel>())
             {
                 if (pnl.Controls.Contains(pcb))
@@ -434,15 +534,23 @@ namespace Monopoly.Screens
             if (curr == target)
             {
                 MoveTimer.Stop();
-                MoveTimer.Tick -= MoveTimer_Tick;
+                MoveTimer.Tick -= MoveTimer_Tick!;
                 playerPos[currPlayer] = curr;
                 moveLogic.Remove(currPlayer);
-                if (curr == 28)
+                movementInProgress = false;
+
+                if (/*curr == 28*/ true)
                 {
                     extraTurn = false;
                     Doubles[currPlayer] = 0;
-                    GoToJail(currPlayer);
-                    if (!extraTurn) NextPlayer();
+                    await GoToJail(currPlayer);
+                    if (!extraTurn)
+                    {
+                        NextPlayer();
+                        Dice1.Enabled = true;
+                        Dice2.Enabled = true;
+                    }
+
                     else extraTurn = false;
                     return;
                 }
@@ -454,29 +562,37 @@ namespace Monopoly.Screens
                     {
                         MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $200!");
                         PlayerManager.Players[currPlayer].PlayerMoney -= 200;
-                        UpdatePlayerMoneyLabel(currPlayer);
+                        ShowPopup(labels[10], -200);
+                        PlaySFX(Properties.Resources.Money, 500);
                     }
                 }
-                if (curr == 4)
+                if (curr == 3)
                 {
-                    PlayerManager.Players[currPlayer].PlayerMoney -= PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
-                    UpdatePlayerMoneyLabel(currPlayer);
+                    double tax = PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
+                    PlaySFX(Properties.Resources.Money, 500);
+                    PlayerManager.Players[currPlayer].PlayerMoney -= tax;
+                    ShowPopup(labels[3], (0-tax));
                     MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Income Tax -10% Property Value");
                 }
                 if (curr == 26)
                 {
                     PlayerManager.Players[currPlayer].PlayerMoney -= 2000;
-                    UpdatePlayerMoneyLabel(currPlayer);
+                    ShowPopup(labels[26], -2000);
+                    PlaySFX(Properties.Resources.Money, 500);
                     MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Luxury Tax -2000$");
                 }
                 if (extraTurn)
                 {
                     MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} rolled a double and gets extra turn");
                     extraTurn = false;
+                    Dice1.Enabled = true;
+                    Dice2.Enabled = true;
                 }
                 else
                 {
                     NextPlayer();
+                    Dice1.Enabled = true;
+                    Dice2.Enabled = true;
                 }
             }
             else
@@ -484,32 +600,15 @@ namespace Monopoly.Screens
                 moveLogic[currPlayer] = (pcb, curr, target);
             }
         }
-        private void UpdatePlayerMoneyLabel(int player)
-        {
-            switch (player)
-            {
-                case 0:
-                    lblPlayerMoney1.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 1:
-                    lblPlayerMoney2.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 2:
-                    lblPlayerMoney3.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-                case 3:
-                    lblPlayerMoney4.Text = "$" + PlayerManager.Players[player].PlayerMoney.ToString();
-                    break;
-            }
-        }
-        private void GoToJail(int player)
+        private async Task GoToJail(int player)
         {
             MessageBox.Show($"{PlayerManager.Players[player].Name} goes to jail!");
             Doubles[player] = 0;
             inJail[player] = true;
             jailTurns[player] = 0;
-            MovePlayerToPosition(player, 10);
+            await MovePlayerToPosition(player, 10);
         }
+
         private void HandleJailTurn(int d1, int d2)
         {
             var player = currPlayer;
@@ -530,7 +629,7 @@ namespace Monopoly.Screens
                 if (p.PlayerMoney >= 500)
                 {
                     p.PlayerMoney -= 500;
-                    UpdatePlayerMoneyLabel(player);
+                    PlaySFX(Properties.Resources.Money, 500);
                 }
                 else
                 {
@@ -557,27 +656,65 @@ namespace Monopoly.Screens
                 pcb.BringToFront();
         }
 
-        private void MovePlayerToPosition(int player, int targetPos)
+        private async Task MovePlayerToPosition(int player, int targetPos)
         {
-            var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
-            if (pcb == null) return;
-
-            foreach (Panel pnl in this.Controls.OfType<Panel>())
-                if (pnl.Controls.Contains(pcb))
+            await this.Invoke(async() => {
+                if (movementInProgress) return;
+                movementInProgress = true;
+                var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
+                if (pcb == null) { movementInProgress = false; return; }
+                int startPos = playerPos[player];
+                Panel startPanel = this.Controls.Find("pnl" + (startPos + 1), true).FirstOrDefault() as Panel;
+                Panel targetPanel = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
+                if (startPanel == null || targetPanel == null) { movementInProgress = false; return; }
+                var portal = new MemoryStream(Properties.Resources.Portal);
+                var portalStream = new MemoryStream(Properties.Resources.Portal);
+                portalStream.Position = 0;
+                PictureBox portalStart = new PictureBox
                 {
-                    pnl.Controls.Remove(pcb);
-                    break;
-                }
+                    Size = new Size(50, 50),
+                    BackColor = Color.Transparent,
+                    Image = Image.FromStream(portalStream),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(labels[startPos].Location.X, labels[startPos].Location.Y - 20)
+                };
 
-            Panel newPnl = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
-            if (newPnl != null)
-            {
-                newPnl.Controls.Add(pcb);
+                PictureBox portalEnd = new PictureBox
+                {
+                    Size = new Size(50, 50),
+                    BackColor = Color.Transparent,
+                    Image = Image.FromStream(portalStream),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 20)
+                };
+
+                startPanel.Controls.Add(portalStart);
+                targetPanel.Controls.Add(portalEnd);
+                portalStart.BringToFront();
+                portalEnd.BringToFront();
+                startPanel.Controls.Remove(pcb);
+                portalStart.Controls.Add(pcb);
+                pcb.Location = new Point(5, 5);
+                pcb.BringToFront();
+                PlaySFX(Properties.Resources.Teleport, 400);
+                //await Task.Run(() => Task.Delay(200));
+                portalStart.Controls.Remove(pcb);
+                portalEnd.Controls.Add(pcb);
+                pcb.Location = new Point(5, 5);
+                //await Task.Run(() =>  Task.Delay(200)); 
+                portalEnd.Controls.Remove(pcb);
+                targetPanel.Controls.Add(pcb);
                 pcb.Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 15);
                 pcb.BringToFront();
-            }
-            playerPos[player] = targetPos;
+                startPanel.Controls.Remove(portalStart);
+                targetPanel.Controls.Remove(portalEnd);
+                portalStart.Dispose();
+                portalEnd.Dispose();
+                playerPos[player] = targetPos;
+                movementInProgress = false;
+            });
         }
+
         #endregion
         #region Online Methods
         private void RandomizeTurnOrder()
