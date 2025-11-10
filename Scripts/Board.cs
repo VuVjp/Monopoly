@@ -19,11 +19,11 @@ namespace Monopoly.Scripts
     {
         public string name { get; set; } = null!;
         public string type { get; set; } = null!;
-        public int? price { get; set; }
-        public int? sell_price { get; set; }
-        public int? upgrade_price { get; set; }
+        public double? price { get; set; }
+        public double? sell_price { get; set; }
+        public double? upgrade_price { get; set; }
         public string description { get; set; } = null!;
-        public Dictionary<string, int>? levels { get; set; }
+        public Dictionary<string, double>? levels { get; set; }
         public double? amount { get; set; }
         public string? owner { get; set; }
         public int level { get; set; } = 0;

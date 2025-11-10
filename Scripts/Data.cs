@@ -32,7 +32,9 @@ namespace Monopoly.Scripts
             PayEachPlayer,
             GoToJail,
             ReceiveFromEachPlayer,
-            GetOutOfJailFree
+            GetOutOfJailFree,
+            PayRent,
+            Decide
         }
         public string? Msg = null!;
         public string? From = null!; 

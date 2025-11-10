@@ -106,7 +106,7 @@
     {
       "name": "Pancras Station",
       "type": "railroad",
-      "price": 1500,
+      "price": 10000,
       "sell_price": 1000,
       "description": "A major European railway hub.",
       "owner": null,
@@ -316,7 +316,7 @@
     {
       "name": "Shinjuku Station",
       "type": "railroad",
-      "price": 1500,
+      "price": 10000,
       "sell_price": 1000,
       "description": "Tokyo's busy transport hub.",
       "owner": null,
@@ -455,7 +455,7 @@
     {
       "name": "Oslo S Station",
       "type": "railroad",
-      "price": 1500,
+      "price": 10000,
       "sell_price": 1000,
       "description": "Main railway station in Oslo.",
       "owner": null,

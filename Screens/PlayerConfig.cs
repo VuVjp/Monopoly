@@ -542,7 +542,6 @@ namespace Monopoly.Screens
         }
 
         private void txbChat_KeyPress(object sender, KeyPressEventArgs e)
-
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
