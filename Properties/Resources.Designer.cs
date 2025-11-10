@@ -441,6 +441,16 @@ namespace Monopoly.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Move {
+            get {
+                object obj = ResourceManager.GetObject("Move", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap NewYork {
@@ -581,6 +591,16 @@ namespace Monopoly.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Portal {
+            get {
+                object obj = ResourceManager.GetObject("Portal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Ready {
@@ -677,6 +697,16 @@ namespace Monopoly.Properties {
             get {
                 object obj = ResourceManager.GetObject("Tax", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Teleport {
+            get {
+                object obj = ResourceManager.GetObject("Teleport", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

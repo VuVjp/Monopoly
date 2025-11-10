@@ -1,6 +1,7 @@
 ﻿using Monopoly.Scripts;
 using Monopoly.Scripts.Sockets;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Media;
+using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Monopoly.Screens
@@ -24,8 +25,8 @@ namespace Monopoly.Screens
         Board board;
         private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
-        private WaveOutEvent bgMusic;
-        private WaveFileReader bgReader;
+        private WaveOutEvent bgMusic, moveSound;
+        private WaveFileReader bgReader, moveSoundReader;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -73,6 +74,7 @@ namespace Monopoly.Screens
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
             GameLoader();
             InitAudio();
+            
             if (!PlayerManager.isOnline)
             {
                 for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -140,17 +142,23 @@ namespace Monopoly.Screens
             };
             bgMusic.Play();
         }
-        private void PlaySFX(byte[] soundBytes, int durationMs)
+        private void PlaySFX(byte[] soundBytes, int durationMs, float gain = 1.0f)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 using (var ms = new MemoryStream(soundBytes))
                 using (var reader = new WaveFileReader(ms))
                 using (var output = new WaveOutEvent())
                 {
-                    output.Init(reader);
+                    var sampleProvider = reader.ToSampleProvider();
+                    var volumeProvider = new VolumeSampleProvider(sampleProvider)
+                    {
+                        Volume = gain
+                    };
+
+                    output.Init(volumeProvider);
                     output.Play();
-                    Task.Delay(durationMs).Wait();
+                    await Task.Delay(durationMs);
                 }
             });
         }
@@ -492,7 +500,7 @@ namespace Monopoly.Screens
             popupTimer.Start();
         }
 
-        private void MoveTimer_Tick(object sender, EventArgs e)
+        private async void MoveTimer_Tick(object sender, EventArgs e)
         {
             if (!moveLogic.ContainsKey(currPlayer)) return;
             var state = moveLogic[currPlayer];
@@ -507,6 +515,7 @@ namespace Monopoly.Screens
                 PlaySFX(Properties.Resources.Money, 500);
             }
             curr = next;
+            PlaySFX(Properties.Resources.Move, 300, 2F);
             foreach (Panel pnl in this.Controls.OfType<Panel>())
             {
                 if (pnl.Controls.Contains(pcb))
@@ -525,16 +534,16 @@ namespace Monopoly.Screens
             if (curr == target)
             {
                 MoveTimer.Stop();
-                MoveTimer.Tick -= MoveTimer_Tick;
+                MoveTimer.Tick -= MoveTimer_Tick!;
                 playerPos[currPlayer] = curr;
                 moveLogic.Remove(currPlayer);
                 movementInProgress = false;
 
-                if (curr == 28)
+                if (/*curr == 28*/ true)
                 {
                     extraTurn = false;
                     Doubles[currPlayer] = 0;
-                    GoToJail(currPlayer);
+                    await GoToJail(currPlayer);
                     if (!extraTurn)
                     {
                         NextPlayer();
@@ -591,14 +600,15 @@ namespace Monopoly.Screens
                 moveLogic[currPlayer] = (pcb, curr, target);
             }
         }
-        private void GoToJail(int player)
+        private async Task GoToJail(int player)
         {
             MessageBox.Show($"{PlayerManager.Players[player].Name} goes to jail!");
             Doubles[player] = 0;
             inJail[player] = true;
             jailTurns[player] = 0;
-            MovePlayerToPosition(player, 10);
+            await MovePlayerToPosition(player, 10);
         }
+
         private void HandleJailTurn(int d1, int d2)
         {
             var player = currPlayer;
@@ -646,27 +656,65 @@ namespace Monopoly.Screens
                 pcb.BringToFront();
         }
 
-        private void MovePlayerToPosition(int player, int targetPos)
+        private async Task MovePlayerToPosition(int player, int targetPos)
         {
-            var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
-            if (pcb == null) return;
-
-            foreach (Panel pnl in this.Controls.OfType<Panel>())
-                if (pnl.Controls.Contains(pcb))
+            await this.Invoke(async() => {
+                if (movementInProgress) return;
+                movementInProgress = true;
+                var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
+                if (pcb == null) { movementInProgress = false; return; }
+                int startPos = playerPos[player];
+                Panel startPanel = this.Controls.Find("pnl" + (startPos + 1), true).FirstOrDefault() as Panel;
+                Panel targetPanel = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
+                if (startPanel == null || targetPanel == null) { movementInProgress = false; return; }
+                var portal = new MemoryStream(Properties.Resources.Portal);
+                var portalStream = new MemoryStream(Properties.Resources.Portal);
+                portalStream.Position = 0;
+                PictureBox portalStart = new PictureBox
                 {
-                    pnl.Controls.Remove(pcb);
-                    break;
-                }
+                    Size = new Size(50, 50),
+                    BackColor = Color.Transparent,
+                    Image = Image.FromStream(portalStream),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(labels[startPos].Location.X, labels[startPos].Location.Y - 20)
+                };
 
-            Panel newPnl = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
-            if (newPnl != null)
-            {
-                newPnl.Controls.Add(pcb);
+                PictureBox portalEnd = new PictureBox
+                {
+                    Size = new Size(50, 50),
+                    BackColor = Color.Transparent,
+                    Image = Image.FromStream(portalStream),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 20)
+                };
+
+                startPanel.Controls.Add(portalStart);
+                targetPanel.Controls.Add(portalEnd);
+                portalStart.BringToFront();
+                portalEnd.BringToFront();
+                startPanel.Controls.Remove(pcb);
+                portalStart.Controls.Add(pcb);
+                pcb.Location = new Point(5, 5);
+                pcb.BringToFront();
+                PlaySFX(Properties.Resources.Teleport, 400);
+                //await Task.Run(() => Task.Delay(200));
+                portalStart.Controls.Remove(pcb);
+                portalEnd.Controls.Add(pcb);
+                pcb.Location = new Point(5, 5);
+                //await Task.Run(() =>  Task.Delay(200)); 
+                portalEnd.Controls.Remove(pcb);
+                targetPanel.Controls.Add(pcb);
                 pcb.Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 15);
                 pcb.BringToFront();
-            }
-            playerPos[player] = targetPos;
+                startPanel.Controls.Remove(portalStart);
+                targetPanel.Controls.Remove(portalEnd);
+                portalStart.Dispose();
+                portalEnd.Dispose();
+                playerPos[player] = targetPos;
+                movementInProgress = false;
+            });
         }
+
         #endregion
         #region Online Methods
         private void RandomizeTurnOrder()
