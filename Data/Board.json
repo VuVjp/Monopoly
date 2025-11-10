@@ -133,7 +133,7 @@
 
     {
       "name": "Jail / Just Visiting",
-      "type": "corner",
+      "type": "Visiting Jail",
       "description": "You're just visiting or stuck in jail.",
       "owner": null,
       "level": 0
