@@ -209,6 +209,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney1.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -223,6 +224,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney2.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -237,10 +239,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney3.Text = $"${newMoney}";
-                            if (PlayerManager.isOnline)
-                            {
-
-                            }
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -255,6 +254,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney4.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -765,7 +765,7 @@ namespace Monopoly.Screens
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
                 _waiter = new TaskCompletionSource();
                 CheckPlrPos(playerIndex);
-                //await _waiter.Task;
+                await _waiter.Task;
                 if (Dices[0] == Dices[1])
                 {
                     PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
@@ -1003,6 +1003,7 @@ namespace Monopoly.Screens
                     panels[pos].Controls.Add(pcb);
                     pcb.BringToFront();
                 }));
+                PlaySFX(Properties.Resources.Move, 150,4);
                 await Task.Delay(150);
             }
 
