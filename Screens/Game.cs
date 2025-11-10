@@ -515,7 +515,7 @@ namespace Monopoly.Screens
                 PlaySFX(Properties.Resources.Money, 500);
             }
             curr = next;
-            PlaySFX(Properties.Resources.Move, 300, 2F);
+            PlaySFX(Properties.Resources.Move, 300, 4);
             foreach (Panel pnl in this.Controls.OfType<Panel>())
             {
                 if (pnl.Controls.Contains(pcb))
@@ -560,9 +560,9 @@ namespace Monopoly.Screens
                     bool someoneInJail = inJail.Any(kv => kv.Value == true && kv.Key != currPlayer);
                     if (someoneInJail)
                     {
-                        MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $200!");
-                        PlayerManager.Players[currPlayer].PlayerMoney -= 200;
-                        ShowPopup(labels[10], -200);
+                        MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $500!");
+                        PlayerManager.Players[currPlayer].PlayerMoney -= 500;
+                        ShowPopup(labels[10], -500);
                         PlaySFX(Properties.Resources.Money, 500);
                     }
                 }
@@ -625,11 +625,11 @@ namespace Monopoly.Screens
 
             if (jailTurns[player] >= 3)
             {
-                MessageBox.Show($"{p.Name}  failed 3 times. Must pay $500 to get out");
-                if (p.PlayerMoney >= 500)
+                MessageBox.Show($"{p.Name}  failed 3 times. Must pay $1000 to get out");
+                if (p.PlayerMoney >= 1000)
                 {
-                    p.PlayerMoney -= 500;
-                    PlaySFX(Properties.Resources.Money, 500);
+                    p.PlayerMoney -= 1000;
+                    PlaySFX(Properties.Resources.Money, 1000);
                 }
                 else
                 {
@@ -658,19 +658,20 @@ namespace Monopoly.Screens
 
         private async Task MovePlayerToPosition(int player, int targetPos)
         {
-            await this.Invoke(async() => {
-                if (movementInProgress) return;
-                movementInProgress = true;
-                var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
-                if (pcb == null) { movementInProgress = false; return; }
-                int startPos = playerPos[player];
-                Panel startPanel = this.Controls.Find("pnl" + (startPos + 1), true).FirstOrDefault() as Panel;
-                Panel targetPanel = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
-                if (startPanel == null || targetPanel == null) { movementInProgress = false; return; }
-                var portal = new MemoryStream(Properties.Resources.Portal);
+            if (movementInProgress) return;
+            movementInProgress = true;
+            var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
+            if (pcb == null) { movementInProgress = false; return; }
+            int startPos = playerPos[player];
+            Panel startPanel = this.Controls.Find("pnl" + (startPos + 1), true).FirstOrDefault() as Panel;
+            Panel targetPanel = this.Controls.Find("pnl" + (targetPos + 1), true).FirstOrDefault() as Panel;
+            if (startPanel == null || targetPanel == null) { movementInProgress = false; return; }
+            PictureBox portalStart = null;
+            PictureBox portalEnd = null;
+            this.Invoke(() =>
+            {
                 var portalStream = new MemoryStream(Properties.Resources.Portal);
-                portalStream.Position = 0;
-                PictureBox portalStart = new PictureBox
+                portalStart = new PictureBox
                 {
                     Size = new Size(50, 50),
                     BackColor = Color.Transparent,
@@ -678,16 +679,14 @@ namespace Monopoly.Screens
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     Location = new Point(labels[startPos].Location.X, labels[startPos].Location.Y - 20)
                 };
-
-                PictureBox portalEnd = new PictureBox
+                portalEnd = new PictureBox
                 {
                     Size = new Size(50, 50),
                     BackColor = Color.Transparent,
-                    Image = Image.FromStream(portalStream),
+                    Image = Image.FromStream(new MemoryStream(Properties.Resources.Portal)),
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 20)
                 };
-
                 startPanel.Controls.Add(portalStart);
                 targetPanel.Controls.Add(portalEnd);
                 portalStart.BringToFront();
@@ -696,16 +695,21 @@ namespace Monopoly.Screens
                 portalStart.Controls.Add(pcb);
                 pcb.Location = new Point(5, 5);
                 pcb.BringToFront();
-                PlaySFX(Properties.Resources.Teleport, 400);
-                //await Task.Run(() => Task.Delay(200));
+            });
+            PlaySFX(Properties.Resources.Teleport, 400,5);
+            await Task.Delay(200);
+            this.Invoke(() =>
+            {
                 portalStart.Controls.Remove(pcb);
                 portalEnd.Controls.Add(pcb);
                 pcb.Location = new Point(5, 5);
-                //await Task.Run(() =>  Task.Delay(200)); 
+            });
+            await Task.Delay(200);
+            this.Invoke(() =>
+            {
                 portalEnd.Controls.Remove(pcb);
                 targetPanel.Controls.Add(pcb);
                 pcb.Location = new Point(labels[targetPos].Location.X, labels[targetPos].Location.Y - 15);
-                pcb.BringToFront();
                 startPanel.Controls.Remove(portalStart);
                 targetPanel.Controls.Remove(portalEnd);
                 portalStart.Dispose();
@@ -714,6 +718,7 @@ namespace Monopoly.Screens
                 movementInProgress = false;
             });
         }
+
 
         #endregion
         #region Online Methods
