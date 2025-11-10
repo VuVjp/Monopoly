@@ -14,6 +14,7 @@ using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -208,6 +209,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney1.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -222,6 +224,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney2.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -236,10 +239,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney3.Text = $"${newMoney}";
-                            if (PlayerManager.isOnline)
-                            {
-
-                            }
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -254,6 +254,7 @@ namespace Monopoly.Screens
                         _moneyChangedHandlers[i] = (newMoney) =>
                         {
                             lblPlayerMoney4.Text = $"${newMoney}";
+                            PlaySFX(Properties.Resources.Money, 500);
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
                         break;
@@ -757,8 +758,9 @@ namespace Monopoly.Screens
                     Dice1.Enabled = true;
                     Dice2.Enabled = true;
                 }
+              
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
-
+                _=  DrawCard(playerIndex, "chance");
                 await _rollWaiter.Task;
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
@@ -769,6 +771,11 @@ namespace Monopoly.Screens
                 _waiter = new TaskCompletionSource();
                 CheckPlrPos(playerIndex);
                 await _waiter.Task;
+                if (Dices[0] == Dices[1])
+                {
+                    PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
+                    continue;
+                }
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
@@ -792,6 +799,10 @@ namespace Monopoly.Screens
                 GoToJailOnl(plrIndex);
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
                 _waiter?.SetResult();
+            }
+            else if(propType == "Visiting Jail")
+            {
+
             }
             else if (propType == "tax")
             {
@@ -878,10 +889,12 @@ namespace Monopoly.Screens
                     break;
                 case CardAction.GetOutOfJailFree:
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.GetOutOfJailFree, card.description, plr.Name));
+                    _ = Task.Run(() => MessageBox.Show(card.description));
                     plr.GetOutOfJailFree++;
                     break;
                 case CardAction.Jail:
                     GoToJailOnl(plrIndex);
+                    _ = Task.Run(()=> MessageBox.Show(card.description));
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
                     break;
             }
@@ -995,6 +1008,7 @@ namespace Monopoly.Screens
                     panels[pos].Controls.Add(pcb);
                     pcb.BringToFront();
                 }));
+                PlaySFX(Properties.Resources.Move, 150,4);
                 await Task.Delay(150);
             }
 
@@ -1069,7 +1083,7 @@ namespace Monopoly.Screens
                     {
                         var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
-                        Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
+                        _ = Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
                         plrInfo!.PlayerMoney = int.Parse(values[1]);
                         break;
                     }
@@ -1077,7 +1091,7 @@ namespace Monopoly.Screens
                     {
                         var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
-                        Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
+                        _ = Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
                         plrInfo!.PlayerMoney = int.Parse(values[1]);
                         break;
                     }
@@ -1086,11 +1100,11 @@ namespace Monopoly.Screens
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         int plrIndex = PlayerManager.Players.IndexOf(plr!);
                         GoToJailOnl(plrIndex);
-                        if (data.Msg != null) Task.Run(() => MessageBox.Show(data.Msg, plr!.Name));
+                        if (data.Msg != null) _ = Task.Run(() => MessageBox.Show(data.Msg, plr!.Name));
                         break;
                     }
                 case Data.ActionType.GetOutOfJailFree:
-                    Task.Run(() => MessageBox.Show(data.Msg, data.From!));
+                    _ = Task.Run(() => MessageBox.Show(data.Msg, data.From!));
                     break;
                 case Data.ActionType.PickCard:
                     this.Invoke(() =>
@@ -1109,7 +1123,7 @@ namespace Monopoly.Screens
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
-                        Task.Run(() => MessageBox.Show(values[0], plr!.Name));
+                        _ = Task.Run(() => MessageBox.Show(values[0], plr!.Name));
                         foreach (var p in PlayerManager.Players)
                         {
                             if (p == plr || p.IsBankrupt == true) continue;
@@ -1122,7 +1136,7 @@ namespace Monopoly.Screens
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
-                        Task.Run(() => MessageBox.Show(values[0], plr!.Name));
+                        _ = Task.Run(() => MessageBox.Show(values[0], plr!.Name));
                         foreach (var p in PlayerManager.Players)
                         {
                             if (p == plr || p.IsBankrupt == true) continue;
