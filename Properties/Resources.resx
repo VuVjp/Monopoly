@@ -319,4 +319,22 @@
   <data name="LuxuryTax" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LuxuryTax.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DiceSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DiceSound.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BackGroundMusic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackgroundMusic.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Money" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Money.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Teleport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Teleport.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Portal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Portal.gif;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Move.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
