@@ -33,7 +33,7 @@ namespace Monopoly.Screens
             monopoly.LoadScreen(new PlayerConfig(monopoly));
             if (PlayerManager.isOnline)
             {
-                SocketClientManager.SocketClient.Connect("10.0.6.9", 9999);
+                SocketClientManager.SocketClient.Connect("", 9999);
             }
         }
 

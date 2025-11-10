@@ -284,9 +284,9 @@ namespace Monopoly.Screens
             pos16.Location = new Point(6, 21);
             pos16.Margin = new Padding(1, 0, 1, 0);
             pos16.Name = "pos16";
-            pos16.Size = new Size(95, 28);
+            pos16.Size = new Size(74, 28);
             pos16.TabIndex = 45;
-            pos16.Text = "St. Petersburg\r\n1200 $";
+            pos16.Text = "Petersburg\r\n1200 $";
             pos16.TextAlign = ContentAlignment.MiddleCenter;
             pos16.Visible = false;
             // 
@@ -1606,6 +1606,7 @@ namespace Monopoly.Screens
             // 
             // pnl8
             // 
+            pnl8.BackColor = Color.Transparent;
             pnl8.BackgroundImage = Resources.Paris;
             pnl8.BackgroundImageLayout = ImageLayout.Stretch;
             pnl8.BorderStyle = BorderStyle.FixedSingle;

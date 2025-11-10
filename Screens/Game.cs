@@ -13,10 +13,12 @@ using System.Media;
 using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Monopoly.Screens
@@ -88,6 +90,8 @@ namespace Monopoly.Screens
                 pcbChat.Visible = false;
                 Dice1.Click += RollDice!;
                 Dice2.Click += RollDice!;
+                pcbChance.Click += PickChance!;
+                pcbFortune.Click += PickFortune!;
                 RollTimer.Tick += RollTimer_Tick!;
                 RollTimer.Interval = 300;
                 endTime = 1000;
@@ -95,7 +99,8 @@ namespace Monopoly.Screens
                 X2 = Dice2.Location.X;
                 Y1 = Dice1.Location.Y;
                 Y2 = Dice2.Location.Y;
-
+                pcbFortune.Enabled = false;
+                pcbChance.Enabled = false;
 
                 label1.Text = PlayerManager.Players[currPlayer].Name;
                 label1.ForeColor = PlayerManager.Players[currPlayer].Color;
@@ -326,12 +331,232 @@ namespace Monopoly.Screens
         }
 
         #region Offline Methods
+        private async Task HandlePropertyAsync(int currPlayer, string propertyName)
+        {
+            var player = PlayerManager.Players[currPlayer];
+            var property = board.properties.FirstOrDefault(p => p.name == propertyName);
+
+            if (property == null) return;
+            if (property.type != "property") return;
+            var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(property.name));
+            var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
+
+            if (property.owner != null)
+            {
+                if (player.Name == property.owner) return;
+                double rent = (double)property.levels[property.level.ToString()]!;
+                player.PlayerMoney -= rent;
+                ShowPopup(lbl, -rent);
+                PlaySFX(Properties.Resources.Money, 500);
+
+                var owner = PlayerManager.Players.First(p => p.Name == property.owner);
+                owner.PlayerMoney += rent;
+                return;
+            }
+
+            var dr = MessageBox.Show(
+                $"{player.Name}, do you want to buy {property.name} for ${property.price}?",
+                "Buy Property",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                if (player.PlayerMoney >= property.price)
+                {
+                    double price = (double)property.price;
+                    player.PlayerMoney -= price;
+                    property.owner = player.Name;
+                    player.OwnedProperties.Add(board.properties.IndexOf(property));
+                    if (pnl != null)
+                    {
+                        pnl.BackColor = player.Color;
+                    }
+                    ShowPopup(lbl, -price);
+                    PlaySFX(Properties.Resources.Money, 500);
+                }
+                else
+                {
+                    MessageBox.Show($"{player.Name} doesn't have enough money to buy {property.name}");
+                }
+            }
+        }
+
+        private async void PickChance(object sender, EventArgs e)
+        {
+            if (movementInProgress) return;
+            pcbChance.Enabled = false;
+            var card = board.chance[new Random().Next(board.chance.Count)];
+            var plr = PlayerManager.Players[currPlayer];
+            await ShowCardPanelAsync(card, currPlayer, "Chance");
+            UpdateCardButtonsState();
+        }
+        private async void PickFortune(object sender, EventArgs e)
+        {
+            if (movementInProgress) return;
+            pcbFortune.Enabled = false;
+            var card = board.fortune[new Random().Next(board.fortune.Count)];
+            var plr = PlayerManager.Players[currPlayer];
+            await ShowCardPanelAsync(card, currPlayer,"Community Chest");
+            UpdateCardButtonsState();
+        }
+        private Label GetLabelForPlayerPosition(int currPlayer)
+        {
+            return labels[playerPos[currPlayer]];
+        }
+        private async Task HandleCardAsync(PictureBox pcbCard, List<Card> cards, string pileName)
+        {
+            if (movementInProgress) return;
+            pcbCard.Enabled = true;
+            bool cardOpened = false;
+            var tcs = new TaskCompletionSource<bool>();
+            void ClickHandler(object s, EventArgs e)
+            {
+                if (!cardOpened)
+                {
+                    cardOpened = true;
+                    tcs.TrySetResult(true);
+                }
+            }
+            pcbCard.Click += ClickHandler;
+            await tcs.Task;
+
+            pcbCard.Click -= ClickHandler;
+            pcbCard.Enabled = false;
+
+            var card = cards[new Random().Next(cards.Count)];
+            await ShowCardPanelAsync(card, currPlayer, pileName);
+        }
+        private bool cardPanelOpen = false;
+        private async Task ShowCardPanelAsync(Card card, int currPlayer, string pileName)
+        {
+            if (cardPanelOpen) return;
+            cardPanelOpen = true;
+            var tcs = new TaskCompletionSource<bool>();
+
+            var plr = PlayerManager.Players[currPlayer];
+
+            Panel cardPanel = new Panel
+            {
+                Size = new Size(420, 260),
+                BackColor = Color.FromArgb(240, 240, 240),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            cardPanel.Location = new Point(
+                (pnlGame.Width - 420) / 2,
+                (pnlGame.Height - 260) / 2
+            );
+
+            Label lblTitle = new Label
+            {
+                Text = $"{pileName} Card",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Dock = DockStyle.Top,
+                Height = 40,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            cardPanel.Controls.Add(lblTitle);
+
+            System.Windows.Forms.TextBox txtDesc = new System.Windows.Forms.TextBox
+            {
+                Multiline = true,
+                ReadOnly = true,
+                BorderStyle = BorderStyle.None,
+                Text = card.description,
+                Font = new Font("Segoe UI", 11),
+                BackColor = Color.FromArgb(240, 240, 240),
+                Location = new Point(12, 56),
+                Size = new Size(396, 120)
+            };
+            cardPanel.Controls.Add(txtDesc);
+            System.Windows.Forms.Button btnOk = new System.Windows.Forms.Button
+            {
+                Text = "OK",
+                Size = new Size(100, 34),
+                Location = new Point(160, 210)
+            };
+            cardPanel.Controls.Add(btnOk);
+            pnlGame.Controls.Add(cardPanel);
+            cardPanel.BringToFront();
+            EventHandler handler = null;
+            handler = async (s, e) =>
+            {
+                btnOk.Click -= handler;
+                switch (card.action)
+                {
+                    case CardAction.Receive:
+                        plr.PlayerMoney += card.value;
+                        ShowPopup(GetLabelForPlayerPosition(currPlayer), card.value);
+                        break;
+                    case CardAction.Pay:
+                        plr.PlayerMoney -= card.value;
+                        ShowPopup(GetLabelForPlayerPosition(currPlayer), -card.value);
+                        break;
+                    case CardAction.PayEachPlayer:
+                        int others = PlayerManager.playerCount - 1;
+                        plr.PlayerMoney -= card.value * others;
+                        ShowPopup(GetLabelForPlayerPosition(currPlayer), -card.value * others);
+                        foreach (var p in PlayerManager.Players)
+                            if (p != plr && !p.IsBankrupt)
+                                p.PlayerMoney += card.value;
+                        break;
+                    case CardAction.ReceiveFromEachPlayer:
+                        int others2 = PlayerManager.playerCount - 1;
+                        plr.PlayerMoney += card.value * others2;
+                        ShowPopup(GetLabelForPlayerPosition(currPlayer), card.value * others2);
+                        foreach (var p in PlayerManager.Players)
+                            if (p != plr && !p.IsBankrupt)
+                                p.PlayerMoney -= card.value;
+                        break;
+                    case CardAction.GetOutOfJailFree:
+                        plr.GetOutOfJailFree++;
+                        break;
+                    case CardAction.Jail:
+                        await GoToJail(currPlayer);
+                        break;
+                }
+
+                pnlGame.Controls.Remove(cardPanel);
+                cardPanel.Dispose();
+                cardPanelOpen = false;
+                tcs.SetResult(true);
+            };
+            btnOk.Click += handler;
+            pnlGame.Controls.Add(cardPanel);
+            cardPanel.BringToFront();
+            await tcs.Task;
+        }
+        private void UpdateCardButtonsState()
+        {
+            int pos = playerPos[currPlayer];
+            pcbChance.Enabled = (pos == 2 || pos == 13);
+            pcbFortune.Enabled = (pos == 20 || pos == 32);
+        }
+
         private void RollDice(object sender, EventArgs e)
         {
             if (movementInProgress) return;
             if (inJail[currPlayer])
             {
                 var player = PlayerManager.Players[currPlayer];
+                if (player.GetOutOfJailFree > 0)
+                {
+                    var useCard = MessageBox.Show(
+                        $"{player.Name} has 'Get Out of Jail Free'. Use ?",
+                        "Use Get Out Of Jail Free?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (useCard == DialogResult.Yes)
+                    {
+                        player.GetOutOfJailFree--;
+                        inJail[currPlayer] = false;
+                        jailTurns[currPlayer] = 0;
+                        MessageBox.Show($"{player.Name} used Get Out of Jail Free and will be free next turn");
+                        NextPlayer();
+                        return;
+                    }
+                }
                 DialogResult dr = MessageBox.Show(
                     $"{player.Name} is in jail.\nPay $500 to get out?",
                     "Jail",
@@ -356,7 +581,9 @@ namespace Monopoly.Screens
                         MessageBox.Show($"{player.Name} doesn't have enough money");
                     }
                 }
+                return;
             }
+
             if (!Rolling)
             {
                 Rolling = true;
@@ -452,55 +679,6 @@ namespace Monopoly.Screens
             MoveTimer.Interval = 400;
             MoveTimer.Start();
         }
-        private void ShowPopup(Label targetLabel, double amount)
-        {
-            if (targetLabel == null) return;
-            bool isPositive = amount >= 0;
-            string sign = isPositive ? "+" : "-";
-            string finalText = $"{sign}{Math.Abs(amount)}$";
-            Color baseColor = isPositive ? Color.Gold : Color.Red;
-
-            Label popup = new Label
-            {
-                Text = finalText,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                AutoSize = true,
-                BackColor = Color.Transparent,
-                ForeColor = baseColor,
-            };
-            var parentPanel = targetLabel.Parent ?? this;
-            parentPanel.Controls.Add(popup);
-            popup.BringToFront();
-            Size pref = popup.PreferredSize;
-
-            int popupX = targetLabel.Left + (targetLabel.Width - pref.Width) / 2;
-            int popupY = targetLabel.Top - pref.Height - 4;
-            if (popupY < 0)
-                popupY = targetLabel.Top + targetLabel.Height + 4;
-            popup.Location = new Point(popupX, popupY);
-            System.Windows.Forms.Timer popupTimer = new System.Windows.Forms.Timer();
-            int steps = 0;
-            int maxSteps = 18;
-            popupTimer.Interval = 35;
-            popupTimer.Tick += (s, e) =>
-            {
-                steps++;
-                popup.Top -= 2;
-                int alpha = (int)(255 * (1 - (double)steps / maxSteps));
-                alpha = Math.Max(0, Math.Min(255, alpha));
-                popup.ForeColor = Color.FromArgb(alpha, baseColor);
-
-                if (steps >= maxSteps)
-                {
-                    popupTimer.Stop();
-                    popupTimer.Dispose();
-                    parentPanel.Controls.Remove(popup);
-                    popup.Dispose();
-                }
-            };
-            popupTimer.Start();
-        }
-
         private async void MoveTimer_Tick(object sender, EventArgs e)
         {
             if (!moveLogic.ContainsKey(currPlayer)) return;
@@ -539,8 +717,21 @@ namespace Monopoly.Screens
                 playerPos[currPlayer] = curr;
                 moveLogic.Remove(currPlayer);
                 movementInProgress = false;
+                var property = board.properties.FirstOrDefault(p =>labels[curr].Text.TrimStart().StartsWith(p.name));
+                if (property != null)
+                {
+                    await HandlePropertyAsync(currPlayer, property.name);
+                }
+                if (curr == 2 || curr == 13)
+                {
+                    await HandleCardAsync(pcbChance, board.chance, "Chance");
+                }
+                else if (curr == 20 || curr == 31)
+                {
+                    await HandleCardAsync(pcbFortune, board.fortune, "Community Chest");
+                }
 
-                if (/*curr == 28*/ true)
+                if (curr == 28)
                 {
                     extraTurn = false;
                     Doubles[currPlayer] = 0;
@@ -626,6 +817,24 @@ namespace Monopoly.Screens
 
             if (jailTurns[player] >= 3)
             {
+                if (p.GetOutOfJailFree > 0)
+                {
+                    var useCard = MessageBox.Show(
+                        $"{p.Name} failed 3 times but has 'Get Out of Jail Free'. Use it to get out?",
+                        "Use Get Out Of Jail Free?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (useCard == DialogResult.Yes)
+                    {
+                        p.GetOutOfJailFree--;
+                        inJail[player] = false;
+                        jailTurns[player] = 0;
+                        MessageBox.Show($"{p.Name} used the card and is free.");
+                        NextPlayer();
+                        return;
+                    }
+                }
+
                 MessageBox.Show($"{p.Name}  failed 3 times. Must pay $1000 to get out");
                 if (p.PlayerMoney >= 1000)
                 {
@@ -647,6 +856,7 @@ namespace Monopoly.Screens
             }
         }
 
+
         private void NextPlayer()
         {
             currPlayer = (currPlayer + 1) % PlayerManager.playerCount;
@@ -655,6 +865,54 @@ namespace Monopoly.Screens
             var pcb = this.Controls.Find("Player " + (currPlayer + 1), true).FirstOrDefault() as PictureBox;
             if (pcb != null)
                 pcb.BringToFront();
+        }
+        private void ShowPopup(Label targetLabel, double amount)
+        {
+            if (targetLabel == null) return;
+            bool isPositive = amount >= 0;
+            string sign = isPositive ? "+" : "-";
+            string finalText = $"{sign}{Math.Abs(amount)}$";
+            Color baseColor = isPositive ? Color.Gold : Color.Red;
+
+            Label popup = new Label
+            {
+                Text = finalText,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                ForeColor = baseColor,
+            };
+            var parentPanel = targetLabel.Parent ?? this;
+            parentPanel.Controls.Add(popup);
+            popup.BringToFront();
+            Size pref = popup.PreferredSize;
+
+            int popupX = targetLabel.Left + (targetLabel.Width - pref.Width) / 2;
+            int popupY = targetLabel.Top - pref.Height - 4;
+            if (popupY < 0)
+                popupY = targetLabel.Top + targetLabel.Height + 4;
+            popup.Location = new Point(popupX, popupY);
+            System.Windows.Forms.Timer popupTimer = new System.Windows.Forms.Timer();
+            int steps = 0;
+            int maxSteps = 18;
+            popupTimer.Interval = 35;
+            popupTimer.Tick += (s, e) =>
+            {
+                steps++;
+                popup.Top -= 2;
+                int alpha = (int)(255 * (1 - (double)steps / maxSteps));
+                alpha = Math.Max(0, Math.Min(255, alpha));
+                popup.ForeColor = Color.FromArgb(alpha, baseColor);
+
+                if (steps >= maxSteps)
+                {
+                    popupTimer.Stop();
+                    popupTimer.Dispose();
+                    parentPanel.Controls.Remove(popup);
+                    popup.Dispose();
+                }
+            };
+            popupTimer.Start();
         }
 
         private async Task MovePlayerToPosition(int player, int targetPos)
