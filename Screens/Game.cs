@@ -59,6 +59,7 @@ namespace Monopoly.Screens
 
         #region Online Properties
         int unSeenMsg = 0;
+        int currentPlayerIndex = 0;
         List<int> turnOrder;
         List<Panel> panels;
         int activePlr = PlayerManager.playerCount;
@@ -222,6 +223,12 @@ namespace Monopoly.Screens
                             lblPlayerMoney1.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                            {
+                                lblPlayerName1.Text = "Disconnect";
+                                lblPlayerName1.BackColor = Color.FromArgb(255, 240, 240);
+                                lblPlayerMoney1.Text = "0";
+                            }
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(0);
@@ -242,6 +249,12 @@ namespace Monopoly.Screens
                             lblPlayerMoney2.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                            {
+                                lblPlayerName2.Text = "Disconnect";
+                                lblPlayerName2.BackColor = Color.FromArgb(255, 240, 240);
+                                lblPlayerMoney2.Text = "0";
+                            }
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(1);
@@ -262,6 +275,12 @@ namespace Monopoly.Screens
                             lblPlayerMoney3.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            if(player.PlayerMoney == double.MinValue && !player.isPlaying)
+                            {
+                                lblPlayerName3.Text = "Disconnect";
+                                lblPlayerName3.BackColor = Color.FromArgb(255, 240, 240);
+                                lblPlayerMoney3.Text = "0";
+                            }
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(2);
@@ -282,6 +301,12 @@ namespace Monopoly.Screens
                             lblPlayerMoney4.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                            {
+                                lblPlayerName4.Text = "Disconnect";
+                                lblPlayerName4.BackColor = Color.FromArgb(255, 240, 240);
+                                lblPlayerMoney4.Text = "0";
+                            }
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(3);
@@ -1032,7 +1057,6 @@ namespace Monopoly.Screens
         private async Task GameLoop()
         {
             int steps;
-            int currentPlayerIndex = 0;
             while (true)
             {
                 _rollWaiter = new TaskCompletionSource();
@@ -1437,9 +1461,18 @@ namespace Monopoly.Screens
             }
         }
 
-        private void SocketServerManager_OnClientDisconnect(Socket socket, string arg2)
+        private async void SocketServerManager_OnClientDisconnect(Socket socket, string plrName)
         {
-
+            PlayerDisconnectHandler(plrName);
+            await SocketServerManager.Broadcast(new Data(Data.ActionType.Disconnect,"",plrName));
+        }
+        private void PlayerDisconnectHandler(string plrName)
+        {
+            var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == plrName);
+            if (plr == null) return;
+            plr.IsBankrupt = true;
+            plr.isPlaying = false;
+            plr.PlayerMoney = double.MinValue;
         }
 
         private async void SocketClientManager_OnDataReceived(Data data)
@@ -1600,6 +1633,11 @@ namespace Monopoly.Screens
                             if(result == DialogResult.Yes ) fRS = true;
                             await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.Decide,fRS.ToString()));
                         });
+                        break;
+                    }
+                    case Data.ActionType.Disconnect:
+                    {
+                        PlayerDisconnectHandler(data.From!);
                         break;
                     }
             }

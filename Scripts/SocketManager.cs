@@ -405,9 +405,9 @@ namespace Monopoly.Scripts.Sockets
                     OnDataReceived?.Invoke(client, received);
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-                Console.WriteLine($"Client {plr} disconnected with error: {ex.Message}");
+                
             }
             finally
             {
