@@ -35,7 +35,10 @@ namespace Monopoly.Scripts
             GetOutOfJailFree,
             PayRent,
             Decide,
-            Disconnect
+            Disconnect,
+            SellProp,
+            SellHouse,
+            SellRequest
         }
         public string? Msg = null!;
         public string? From = null!; 

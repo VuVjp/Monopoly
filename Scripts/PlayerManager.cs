@@ -56,6 +56,7 @@ namespace Monopoly.Scripts
         public int doubleRollCount = 0;
         public int GetOutOfJailFree = 0;
         public int utility = 0;
+        public bool isBuying = false;
         public bool isPlaying = true;
         public List<int> OwnedProperties = new List<int>();
     }
