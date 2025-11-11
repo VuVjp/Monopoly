@@ -1881,9 +1881,9 @@ namespace Monopoly.Screens
             pos2.Location = new Point(8, 53);
             pos2.Margin = new Padding(1, 0, 1, 0);
             pos2.Name = "pos2";
-            pos2.Size = new Size(60, 28);
+            pos2.Size = new Size(82, 28);
             pos2.TabIndex = 46;
-            pos2.Text = "TP. HCM\r\n3100 $";
+            pos2.Text = "Ho Chi Minh\r\n3100 $";
             pos2.TextAlign = ContentAlignment.MiddleCenter;
             pos2.Visible = false;
             // 
