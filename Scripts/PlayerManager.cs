@@ -26,7 +26,13 @@ namespace Monopoly.Scripts
             { "pcbAvt7", Color.Cyan },
             { "pcbAvt8", Color.White },
         };
-        public static List<PlayerInfo> Players = null!;
+        public static List<PlayerInfo> Players = new List<PlayerInfo>();
+
+        public static void ResetPlayers()
+        {
+            Players = new List<PlayerInfo>();
+        }
+
     }
     public class PlayerInfo
     {

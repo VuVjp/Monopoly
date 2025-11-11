@@ -443,7 +443,6 @@ namespace Monopoly.Screens
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            PlayerManager.Players = new List<PlayerInfo>();
             if(PlayerManager.isOnline)
             {
                 if(PlayerManager.curPlayerIndex < PlayerManager.playerCount)
@@ -452,6 +451,7 @@ namespace Monopoly.Screens
                     return;
                 }
             }
+            PlayerManager.ResetPlayers();
             for (int i = 0; i < int.Parse(txbPlrCounter.Text.First().ToString()); i++)
             {
                 var pcb = playerBoxes[i];
