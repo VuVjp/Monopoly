@@ -28,8 +28,8 @@ namespace Monopoly.Screens
         Board board;
         private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
-        private WaveOutEvent bgMusic, moveSound;
-        private WaveFileReader bgReader, moveSoundReader;
+        private WaveOutEvent bgMusic;
+        private WaveFileReader bgReader;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -38,12 +38,12 @@ namespace Monopoly.Screens
         Properties.Resources.Dice5,
         Properties.Resources.Dice6};
         List<Label> labels;
-
+     
         #region Offline Properties
         List<Panel> horizontal = new List<Panel>();
         List<Panel> vertical = new List<Panel>();
         Dictionary<int, bool> passedGo = new Dictionary<int, bool>();
-
+        List<int> activePlayers;
         int direction;
         int X1;
         int X2;
@@ -94,6 +94,12 @@ namespace Monopoly.Screens
                     inJail[i] = false;
                     jailTurns[i] = 0;
                 }
+                activePlayers = new List<int>();
+                for (int i = 0; i < PlayerManager.playerCount; i++)
+                {
+                    activePlayers.Add(i);
+                }
+                currPlayer = activePlayers[0];
                 pcbInfo.Visible = false;
                 pcbChat.Visible = false;
                 pnlChat.Visible = false;
@@ -384,24 +390,31 @@ namespace Monopoly.Screens
         #region Offline Methods
         private void CheckBankrupt(int currPlayer)
         {
+            if (!activePlayers.Contains(currPlayer)) return;
             var player = PlayerManager.Players[currPlayer];
-
             if (player.PlayerMoney < 0 && player.OwnedProperties.Count > 0)
             {
-                var res = MessageBox.Show($"{player.Name} was owed ${player.PlayerMoney*(-1)}. You are forced to sell your properties", "Bank", MessageBoxButtons.OK);
-                if (res == DialogResult.OK)
-                {
-                    PromptSellProperties(currPlayer);
-                }
+                MessageBox.Show($"{player.Name} must sell properties");
+                PromptSellProperties(currPlayer);
             }
+
             if (player.OwnedProperties.Count == 0 && player.PlayerMoney <= 0)
             {
                 player.IsBankrupt = true;
-                SetPlayerBankruptUI(currPlayer);
                 ResetPlayerProperties(currPlayer);
-                MessageBox.Show($"{player.Name} is bankrupt");
+                SetPlayerBankruptUI(currPlayer);
+                NextPlayer();
+
+                activePlayers.Remove(currPlayer);
+                RemovePlayerData(currPlayer);
+
+                if (activePlayers.Count == 1)
+                {
+                    MessageBox.Show($"{PlayerManager.Players[activePlayers[0]].Name} wins the game!");
+                }
             }
         }
+
 
         private void SetPlayerBankruptUI(int index)
         {
@@ -425,9 +438,9 @@ namespace Monopoly.Screens
                     break;
             }
         }
-        private void PromptSellProperties(int playerIndex, double requiredAmount = 0)
+        private void PromptSellProperties(int currPlayer, double requiredAmount = 0)
         {
-            var player = PlayerManager.Players[playerIndex];
+            var player = PlayerManager.Players[currPlayer];
             using (Form frm = new Form())
             {
                 frm.Text = $"{player.Name} - Sell Properties";
@@ -446,9 +459,9 @@ namespace Monopoly.Screens
                     var prop = board.properties[idx];
                     string line;
                     if (prop.level > 0)
-                        line = $"{prop.name} - Level {prop.level} (UpgradePrice: ${prop.upgrade_price})";
+                        line = $"{prop.name} - Level {prop.level} (Lastest house price: ${prop.upgrade_price * (1 + 0.25 * prop.level)*0.5})";
                     else
-                        line = $"{prop.name} - No houses (Price: ${prop.price})";
+                        line = $"{prop.name} - No houses (Price: ${prop.sell_price})";
                     lst.Items.Add(new ListItemForSell { PropertyIndex = idx, Display = line });
                 }
                System.Windows.Forms.Button btnSellHouse = new System.Windows.Forms.Button() { Text = "Sell 1 House", Location = new Point(380, 12), Size = new Size(120, 36) };
@@ -474,15 +487,50 @@ namespace Monopoly.Screens
                     var item = (ListItemForSell)lst.SelectedItem;
                     var prop = board.properties[item.PropertyIndex];
                     if (prop.level <= 0) { MessageBox.Show("This property have no house."); return; }
-                    double gain = (double)(prop.upgrade_price * (1 + 0.25 * prop.level) / 2);
+                    double gain = (double)(prop.upgrade_price * (1 + 0.25 * prop.level) * 0.5);
                     prop.level -= 1;
                     player.PlayerMoney += gain;
-                    ShowPopup(labels[playerPos[playerIndex]], gain);
+                    ShowPopup(labels[playerPos[currPlayer]], gain);
                     PlaySFX(Properties.Resources.Money, 500);
+                    var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(prop.name));
+                    var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
+                    var housePanel = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+                    if (housePanel != null)
+                        housePanel.Controls.Clear();
+                    if (prop.level >= 4)
+                    {
+                        var hotel = new PictureBox()
+                        {
+                            Size = housePanel.Size,
+                            BackgroundImage = direction == 1 ?
+                                Properties.Resources.HouseVip1 :
+                                Properties.Resources.HouseVip2,
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            Parent = housePanel,
+                            Location = new Point(0, 0)
+                        };
+                    }
+                    else
+                    {
+                        for (int i = 0; i < prop.level; i++)
+                        {
+                            var house = new PictureBox()
+                            {
+                                Size = new Size(20, 20),
+                                BackgroundImage = Properties.Resources.house,
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                                Parent = housePanel,
+
+                                Location = direction == 1
+                                    ? new Point(i * 27, (housePanel.Height - 20) / 2)
+                                    : new Point((housePanel.Width - 20) / 2, i * 27)
+                            };
+                        }
+                    }
                     lst.Items[lst.SelectedIndex] = new ListItemForSell
                     {
                         PropertyIndex = item.PropertyIndex,
-                        Display = prop.level > 0 ? $"{prop.name} - Level {prop.level}" : $"{prop.name} - No houses (Price: ${prop.price})"
+                        Display = prop.level > 0 ? $"{prop.name} - Level {prop.level}" : $"{prop.name} - No houses (Price: ${prop.sell_price})"
                     };
                     updateInfo();
                 };
@@ -493,11 +541,9 @@ namespace Monopoly.Screens
                     var prop = board.properties[item.PropertyIndex];
                     if (prop.level > 0)
                     {
-                        var res = MessageBox.Show("This property have houses or hotel. Sell All?", "Confirm", MessageBoxButtons.YesNo);
-                        if (res != DialogResult.Yes) return;
+                        var res = MessageBox.Show("You have to sell all house before sell property"); return;
                     }
-
-                    double gain = (Double)((prop.price) + ((prop.upgrade_price * (1 + 0.25 * prop.level)/2)));
+                    double gain = (double)prop.sell_price;
                     prop.owner = null;
                     prop.level = 0;
                     player.PlayerMoney += gain;
@@ -507,11 +553,8 @@ namespace Monopoly.Screens
                     if (pnl != null)
                     {
                         pnl.BackColor = Color.Transparent;
-                        var housePanel = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
-                        if (housePanel != null)
-                            housePanel.Controls.Clear();
                     }
-                    ShowPopup(lbl ?? labels[playerPos[playerIndex]], gain);
+                    ShowPopup(lbl ?? labels[playerPos[currPlayer]], gain);
                     PlaySFX(Properties.Resources.Money, 500);
                     lst.Items.RemoveAt(lst.SelectedIndex);
                     updateInfo();
@@ -639,8 +682,8 @@ namespace Monopoly.Screens
                                                 Parent = pcbHouse,
 
                                                 Location = direction == 1
-                                                    ? new Point(i * 22, (pcbHouse.Height - 20) / 2)
-                                                    : new Point((pcbHouse.Width - 20) / 2, i * 22)
+                                                    ? new Point(i * 27, (pcbHouse.Height - 20) / 2)
+                                                    : new Point((pcbHouse.Width - 20) / 2, i * 27)
                                             };
                                         }
                                     }
@@ -660,15 +703,29 @@ namespace Monopoly.Screens
                     return;
                 }
                 double rent = (double)property.levels[property.level.ToString()]!;
-                player.PlayerMoney -= rent;
-                ShowPopup(lbl, -rent);
-                PlaySFX(Properties.Resources.Money, 500);
-
+                if (player.IsBankrupt || player.IsInJail)
+                {
+                    return;
+                }
+                EnsurePlayerCanPay(currPlayer, rent);
                 var owner = PlayerManager.Players.First(p => p.Name == property.owner);
                 owner.PlayerMoney += rent;
                 return;
             }
-
+            if (player.OwnedProperties.Count == 0 && player.PlayerMoney < (double)property.price) return;
+            var ownedProperty =board.properties.FindAll(p => p.owner == player.Name).ToList();
+            if (player.PlayerMoney < (double)property.price)
+            {
+                double money = 0;
+                for (int i = 0; i < ownedProperty.Count; i++)
+                {
+                    if (ownedProperty[i].level == 0)
+                        money += (double)ownedProperty[i].sell_price;
+                    if (ownedProperty[i].level > 0)
+                        money += (double)(ownedProperty[i].sell_price + (ownedProperty[i].upgrade_price * (1 + 0.25 * ownedProperty[i].level)));
+                }
+                if (money < (double)property.price) return;
+            }
             var dr = MessageBox.Show(
           $"{player.Name}, do you want to buy {property.name} for ${property.price}?",
           "Buy Property",
@@ -747,6 +804,362 @@ namespace Monopoly.Screens
             }
 
             player.OwnedProperties.Clear();
+        }
+        private void RollDice(object sender, EventArgs e)
+        {
+            if (movementInProgress) return;
+            if (inJail[currPlayer])
+            {
+                var player = PlayerManager.Players[currPlayer];
+                if (player.GetOutOfJailFree > 0)
+                {
+                    var useCard = MessageBox.Show(
+                        $"{player.Name} has 'Get Out of Jail Free'. Use ?",
+                        "Use Get Out Of Jail Free?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (useCard == DialogResult.Yes)
+                    {
+                        player.GetOutOfJailFree--;
+                        inJail[currPlayer] = false;
+                        jailTurns[currPlayer] = 0;
+                        MessageBox.Show($"{player.Name} used Get Out of Jail Free and will be free next turn");
+                        NextPlayer();
+                        return;
+                    }
+                }
+                DialogResult dr = MessageBox.Show(
+                    $"{player.Name} is in jail.\nPay $1000 to get out?",
+                    "Jail",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Yes)
+                {
+                    if (player.PlayerMoney >= 1000)
+                    {
+                        player.PlayerMoney -= 1000;
+                        inJail[currPlayer] = false;
+                        jailTurns[currPlayer] = 0;
+                        MessageBox.Show($"{player.Name} paid $1000 and will be free next turn");
+                        NextPlayer();
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"{player.Name} doesn't have enough money");
+                    }
+                }
+            }
+
+            if (!Rolling)
+            {
+                Rolling = true;
+                PlaySFX(Properties.Resources.DiceSound, 1000);
+                RollTimer.Start();
+                rollTime = 0;
+            }
+        }
+
+        private void RollTimer_Tick(object sender, EventArgs e)
+        {
+            if (rollTime >= endTime)
+            {
+                RollTimer.Stop();
+                Rolling = false;
+                int[] result = new int[2];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = GameManager.RollDice();
+                }
+                Dice1.BackgroundImage = listImage[result[0] - 1];
+                Dice2.BackgroundImage = listImage[result[1] - 1];
+                if (!Rolling)
+                {
+                    int d1 = result[0];
+                    int d2 = result[1];
+                    if (inJail[currPlayer])
+                    {
+                        HandleJailTurn(d1, d2);
+                        return;
+                    }
+                    if (d1 == d2)
+                    {
+                        Doubles[currPlayer]++;
+                        if (Doubles[currPlayer] == 3)
+                        {
+                            GoToJail(currPlayer);
+                            NextPlayer();
+                            return;
+                        }
+                        int steps = d1 + d2;
+                        extraTurn = true;
+                        MovePlayer(currPlayer, steps);
+                        return;
+                    }
+                    else
+                    {
+                        Doubles[currPlayer] = 0;
+                        extraTurn = false;
+                        int steps = d1 + d2;
+                        MovePlayer(currPlayer, steps);
+                    }
+                }
+            }
+            else
+            {
+                rollTime += RollTimer.Interval;
+                if (rollTime < endTime / 3)
+                    RollTimer.Interval = 40;
+                else if (rollTime < endTime * 2 / 3)
+                    RollTimer.Interval = 70;
+                else
+                    RollTimer.Interval = 120;
+                Random rnd = new Random();
+                Dice1.BackgroundImage = listImage[rnd.Next(6)];
+                Dice2.BackgroundImage = listImage[rnd.Next(6)];
+                int shakeRange = Math.Max(1, 8 - rollTime / 250);
+                int offsetX = rnd.Next(-shakeRange, shakeRange + 1);
+                int offsetY = rnd.Next(-shakeRange, shakeRange + 1);
+
+                Dice1.Location = new Point(X1 + offsetX, Y1 + offsetY);
+                Dice2.Location = new Point(X2 + offsetX, Y2 + offsetY);
+            }
+        }
+
+        private void MovePlayer(int player, int steps)
+        {
+            var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
+            if (pcb == null) return;
+
+            int curr = playerPos[player];
+            int target = (curr + steps) % labels.Count;
+            bool hasPassed = (curr + steps) >= labels.Count;
+            passedGo[player] = hasPassed;
+            moveLogic[player] = (pcb, curr, target);
+            movementInProgress = true;
+            Dice1.Enabled = false;
+            Dice2.Enabled = false;
+
+            MoveTimer.Stop();
+            MoveTimer.Tick -= MoveTimer_Tick!;
+            MoveTimer.Tick += MoveTimer_Tick!;
+            MoveTimer.Interval = 400;
+            MoveTimer.Start();
+        }
+        private async void MoveTimer_Tick(object sender, EventArgs e)
+        {
+            if (!activePlayers.Contains(currPlayer)) return;
+            var state = moveLogic[currPlayer];
+            var pcb = state.Pcb;
+            int curr = state.CurrPos;
+            int target = state.TargetPos;
+            int next = (curr + 1) % labels.Count;
+            if (curr + 1 == labels.Count)
+            {
+                PlayerManager.Players[currPlayer].PlayerMoney += 500;
+                ShowPopup(labels[0], 2000);
+                PlaySFX(Properties.Resources.Money, 500);
+            }
+            curr = next;
+            PlaySFX(Properties.Resources.Move, 300, 4);
+            foreach (Panel pnl in this.Controls.OfType<Panel>())
+            {
+                if (pnl.Controls.Contains(pcb))
+                {
+                    pnl.Controls.Remove(pcb);
+                    break;
+                }
+            }
+            Panel newPnl = this.Controls.Find("pnl" + (curr + 1), true).FirstOrDefault() as Panel;
+            if (newPnl != null)
+            {
+                newPnl.Controls.Add(pcb);
+                pcb.Location = new Point(labels[curr].Location.X, labels[curr].Location.Y - 15);
+                pcb.BringToFront();
+            }
+            if (curr == target)
+            {
+                MoveTimer.Stop();
+                MoveTimer.Tick -= MoveTimer_Tick!;
+                playerPos[currPlayer] = curr;
+                moveLogic.Remove(currPlayer);
+                movementInProgress = false;
+                var property = board.properties.FirstOrDefault(p => labels[curr].Text.TrimStart().StartsWith(p.name));
+                if (property != null)
+                {
+                    await HandlePropertyAsync(currPlayer, property.name);
+                }
+                if (curr == 2 || curr == 13)
+                {
+                    await HandleCardAsync(pcbChance, board.chance, "Chance");
+                }
+                else if (curr == 20 || curr == 31)
+                {
+                    await HandleCardAsync(pcbFortune, board.fortune, "Community Chest");
+                }
+
+                if (curr == 28)
+                {
+                    extraTurn = false;
+                    Doubles[currPlayer] = 0;
+                    await GoToJail(currPlayer);
+                    if (!extraTurn)
+                    {
+                        NextPlayer();
+                        Dice1.Enabled = true;
+                        Dice2.Enabled = true;
+                    }
+
+                    else extraTurn = false;
+                    return;
+                }
+
+                if (curr == 10)
+                {
+                    bool someoneInJail = inJail.Any(kv => kv.Value == true && kv.Key != currPlayer);
+                    if (someoneInJail)
+                    {
+                        MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $500!");
+                        EnsurePlayerCanPay(currPlayer, 500);
+                    }
+                }
+                if (curr == 3)
+                {
+                    double tax = PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
+                    EnsurePlayerCanPay(currPlayer, tax);
+                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Income Tax -10% Property Value");
+                }
+                if (curr == 26)
+                {
+                    EnsurePlayerCanPay(currPlayer, 2000);
+                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Luxury Tax -2000$");
+                }
+                if (extraTurn)
+                {
+                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} rolled a double and gets extra turn");
+                    extraTurn = false;
+                    Dice1.Enabled = true;
+                    Dice2.Enabled = true;
+                }
+                else
+                {
+                    NextPlayer();
+                    Dice1.Enabled = true;
+                    Dice2.Enabled = true;
+                }
+            }
+            else
+            {
+                moveLogic[currPlayer] = (pcb, curr, target);
+            }
+        }
+        private void EnsurePlayerCanPay(int currPlayer, double amount)
+        {
+            var player = PlayerManager.Players[currPlayer];
+
+            while (player.PlayerMoney < amount && player.OwnedProperties.Count > 0)
+            {
+                MessageBox.Show($"{player.Name} doesn't have ${amount}$, Must sell property to pay.");
+                PromptSellProperties(currPlayer, amount - player.PlayerMoney);
+            }
+
+            if (player.PlayerMoney < amount)
+            {
+                player.PlayerMoney -= amount;
+                CheckBankrupt(currPlayer);
+            }
+            else
+            {
+                player.PlayerMoney -= amount;
+                ShowPopup(labels[playerPos[currPlayer]], -amount);
+                PlaySFX(Properties.Resources.Money, 500);
+            }
+        }
+
+        private async Task GoToJail(int player)
+        {
+            MessageBox.Show($"{PlayerManager.Players[player].Name} goes to jail!");
+            Doubles[player] = 0;
+            inJail[player] = true;
+            jailTurns[player] = 0;
+            await MovePlayerToPosition(player, 10);
+        }
+
+        private void HandleJailTurn(int d1, int d2)
+        {
+            var player = currPlayer;
+            var p = PlayerManager.Players[player];
+            if (d1 == d2)
+            {
+                MessageBox.Show($"{p.Name} rolled a double and is free!");
+                inJail[player] = false;
+                jailTurns[player] = 0;
+                MovePlayer(player, d1 + d2);
+                return;
+            }
+            jailTurns[player]++;
+
+            if (jailTurns[player] >= 3)
+            {
+                if (p.GetOutOfJailFree > 0)
+                {
+                    var useCard = MessageBox.Show(
+                        $"{p.Name} failed 3 times but has 'Get Out of Jail Free'. Use it to get out?",
+                        "Use Get Out Of Jail Free?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (useCard == DialogResult.Yes)
+                    {
+                        p.GetOutOfJailFree--;
+                        inJail[player] = false;
+                        jailTurns[player] = 0;
+                        MessageBox.Show($"{p.Name} used the card and is free.");
+                        NextPlayer();
+                        return;
+                    }
+                }
+
+                MessageBox.Show($"{p.Name} failed 3 times. Must pay $1000 to get out");
+                EnsurePlayerCanPay(player, 1000);
+                inJail[player] = false;
+                jailTurns[player] = 0;
+                NextPlayer();
+            }
+            else
+            {
+                MessageBox.Show($"{p.Name} failed to roll a double ({jailTurns[player]}/3)");
+                NextPlayer();
+            }
+        }
+        private void NextPlayer()
+        {
+            if (activePlayers.Count == 0) return;
+
+            int index = activePlayers.IndexOf(currPlayer);
+            if (index == -1 || index + 1 >= activePlayers.Count)
+            {
+                currPlayer = activePlayers[0];
+            }
+            else
+            {
+                currPlayer = activePlayers[index + 1];
+            }
+
+            label1.Text = PlayerManager.Players[currPlayer].Name;
+            label1.ForeColor = PlayerManager.Players[currPlayer].Color;
+        }
+
+
+        private void RemovePlayerData(int playerIndex)
+        {
+            playerPos.Remove(playerIndex);
+            Doubles.Remove(playerIndex);
+            inJail.Remove(playerIndex);
+            jailTurns.Remove(playerIndex);
+            passedGo.Remove(playerIndex);
+            moveLogic.Remove(playerIndex);
         }
 
         private async void PickChance(object sender, EventArgs e)
@@ -854,15 +1267,14 @@ namespace Monopoly.Screens
                     case CardAction.Receive:
                         plr.PlayerMoney += card.value;
                         ShowPopup(GetLabelForPlayerPosition(currPlayer), card.value);
+                        PlaySFX(Properties.Resources.Money, 500);
                         break;
                     case CardAction.Pay:
-                        plr.PlayerMoney -= card.value;
-                        ShowPopup(GetLabelForPlayerPosition(currPlayer), -card.value);
+                        EnsurePlayerCanPay(currPlayer, card.value);
                         break;
                     case CardAction.PayEachPlayer:
                         int others = PlayerManager.playerCount - 1;
-                        plr.PlayerMoney -= card.value * others;
-                        ShowPopup(GetLabelForPlayerPosition(currPlayer), -card.value * others);
+                        EnsurePlayerCanPay(currPlayer, card.value * others);
                         foreach (var p in PlayerManager.Players)
                             if (p != plr && !p.IsBankrupt)
                                 p.PlayerMoney += card.value;
@@ -873,7 +1285,7 @@ namespace Monopoly.Screens
                         ShowPopup(GetLabelForPlayerPosition(currPlayer), card.value * others2);
                         foreach (var p in PlayerManager.Players)
                             if (p != plr && !p.IsBankrupt)
-                                p.PlayerMoney -= card.value;
+                                EnsurePlayerCanPay(currPlayer, card.value);
                         break;
                     case CardAction.GetOutOfJailFree:
                         plr.GetOutOfJailFree++;
@@ -900,339 +1312,6 @@ namespace Monopoly.Screens
             pcbFortune.Enabled = (pos == 20 || pos == 32);
         }
 
-        private void RollDice(object sender, EventArgs e)
-        {
-            if (movementInProgress) return;
-            if (inJail[currPlayer])
-            {
-                var player = PlayerManager.Players[currPlayer];
-                if (player.GetOutOfJailFree > 0)
-                {
-                    var useCard = MessageBox.Show(
-                        $"{player.Name} has 'Get Out of Jail Free'. Use ?",
-                        "Use Get Out Of Jail Free?",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (useCard == DialogResult.Yes)
-                    {
-                        player.GetOutOfJailFree--;
-                        inJail[currPlayer] = false;
-                        jailTurns[currPlayer] = 0;
-                        MessageBox.Show($"{player.Name} used Get Out of Jail Free and will be free next turn");
-                        NextPlayer();
-                        return;
-                    }
-                }
-                DialogResult dr = MessageBox.Show(
-                    $"{player.Name} is in jail.\nPay $500 to get out?",
-                    "Jail",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (dr == DialogResult.Yes)
-                {
-                    if (player.PlayerMoney >= 500)
-                    {
-                        player.PlayerMoney -= 500;
-                        ShowPopup(labels[10], -500);
-                        PlaySFX(Properties.Resources.Money, 500);
-                        inJail[currPlayer] = false;
-                        jailTurns[currPlayer] = 0;
-                        MessageBox.Show($"{player.Name} paid $500 and will be free next turn");
-                        NextPlayer();
-                        return;
-                    }
-                    else
-                    {
-                        MessageBox.Show($"{player.Name} doesn't have enough money");
-                    }
-                }
-                return;
-            }
-
-            if (!Rolling)
-            {
-                Rolling = true;
-                PlaySFX(Properties.Resources.DiceSound, 1000);
-                RollTimer.Start();
-                rollTime = 0;
-            }
-        }
-
-        private void RollTimer_Tick(object sender, EventArgs e)
-        {
-            if (rollTime >= endTime)
-            {
-                RollTimer.Stop();
-                Rolling = false;
-                int[] result = new int[2];
-                for (int i = 0; i < result.Length; i++)
-                {
-                    result[i] = GameManager.RollDice();
-                }
-                Dice1.BackgroundImage = listImage[result[0] - 1];
-                Dice2.BackgroundImage = listImage[result[1] - 1];
-                if (!Rolling)
-                {
-                    int d1 = result[0];
-                    int d2 = result[1];
-                    if (inJail[currPlayer])
-                    {
-                        HandleJailTurn(d1, d2);
-                        return;
-                    }
-                    if (d1 == d2)
-                    {
-                        Doubles[currPlayer]++;
-                        if (Doubles[currPlayer] == 3)
-                        {
-                            GoToJail(currPlayer);
-                            NextPlayer();
-                            return;
-                        }
-                        int steps = d1 + d2;
-                        extraTurn = true;
-                        MovePlayer(currPlayer, steps);
-                        return;
-                    }
-                    else
-                    {
-                        Doubles[currPlayer] = 0;
-                        extraTurn = false;
-                        int steps = d1 + d2;
-                        MovePlayer(currPlayer, steps);
-                    }
-                }
-            }
-            else
-            {
-                rollTime += RollTimer.Interval;
-                if (rollTime < endTime / 3)
-                    RollTimer.Interval = 40;
-                else if (rollTime < endTime * 2 / 3)
-                    RollTimer.Interval = 70;
-                else
-                    RollTimer.Interval = 120;
-                Random rnd = new Random();
-                Dice1.BackgroundImage = listImage[rnd.Next(6)];
-                Dice2.BackgroundImage = listImage[rnd.Next(6)];
-                int shakeRange = Math.Max(1, 8 - rollTime / 250);
-                int offsetX = rnd.Next(-shakeRange, shakeRange + 1);
-                int offsetY = rnd.Next(-shakeRange, shakeRange + 1);
-
-                Dice1.Location = new Point(X1 + offsetX, Y1 + offsetY);
-                Dice2.Location = new Point(X2 + offsetX, Y2 + offsetY);
-            }
-        }
-
-        private void MovePlayer(int player, int steps)
-        {
-            var pcb = this.Controls.Find("Player " + (player + 1), true).FirstOrDefault() as PictureBox;
-            if (pcb == null) return;
-
-            int curr = playerPos[player];
-            int target = (curr + steps) % labels.Count;
-            bool hasPassed = (curr + steps) >= labels.Count;
-            passedGo[player] = hasPassed;
-            moveLogic[player] = (pcb, curr, target);
-            movementInProgress = true;
-            Dice1.Enabled = false;
-            Dice2.Enabled = false;
-
-            MoveTimer.Stop();
-            MoveTimer.Tick -= MoveTimer_Tick!;
-            MoveTimer.Tick += MoveTimer_Tick!;
-            MoveTimer.Interval = 400;
-            MoveTimer.Start();
-        }
-        private async void MoveTimer_Tick(object sender, EventArgs e)
-        {
-            if (!moveLogic.ContainsKey(currPlayer)) return;
-            var state = moveLogic[currPlayer];
-            var pcb = state.Pcb;
-            int curr = state.CurrPos;
-            int target = state.TargetPos;
-            int next = (curr + 1) % labels.Count;
-            if (curr + 1 == labels.Count)
-            {
-                PlayerManager.Players[currPlayer].PlayerMoney += 2000;
-                ShowPopup(labels[0], 2000);
-                PlaySFX(Properties.Resources.Money, 500);
-            }
-            curr = next;
-            PlaySFX(Properties.Resources.Move, 300, 4);
-            foreach (Panel pnl in this.Controls.OfType<Panel>())
-            {
-                if (pnl.Controls.Contains(pcb))
-                {
-                    pnl.Controls.Remove(pcb);
-                    break;
-                }
-            }
-            Panel newPnl = this.Controls.Find("pnl" + (curr + 1), true).FirstOrDefault() as Panel;
-            if (newPnl != null)
-            {
-                newPnl.Controls.Add(pcb);
-                pcb.Location = new Point(labels[curr].Location.X, labels[curr].Location.Y - 15);
-                pcb.BringToFront();
-            }
-            if (curr == target)
-            {
-                MoveTimer.Stop();
-                MoveTimer.Tick -= MoveTimer_Tick!;
-                playerPos[currPlayer] = curr;
-                moveLogic.Remove(currPlayer);
-                movementInProgress = false;
-                var property = board.properties.FirstOrDefault(p => labels[curr].Text.TrimStart().StartsWith(p.name));
-                if (property != null)
-                {
-                    await HandlePropertyAsync(currPlayer, property.name);
-                }
-                if (curr == 2 || curr == 13)
-                {
-                    await HandleCardAsync(pcbChance, board.chance, "Chance");
-                }
-                else if (curr == 20 || curr == 31)
-                {
-                    await HandleCardAsync(pcbFortune, board.fortune, "Community Chest");
-                }
-
-                if (curr == 28)
-                {
-                    extraTurn = false;
-                    Doubles[currPlayer] = 0;
-                    await GoToJail(currPlayer);
-                    if (!extraTurn)
-                    {
-                        NextPlayer();
-                        Dice1.Enabled = true;
-                        Dice2.Enabled = true;
-                    }
-
-                    else extraTurn = false;
-                    return;
-                }
-
-                if (curr == 10)
-                {
-                    bool someoneInJail = inJail.Any(kv => kv.Value == true && kv.Key != currPlayer);
-                    if (someoneInJail)
-                    {
-                        MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} visits jail and pays $500!");
-                        PlayerManager.Players[currPlayer].PlayerMoney -= 500;
-                        ShowPopup(labels[10], -500);
-                        PlaySFX(Properties.Resources.Money, 500);
-                    }
-                }
-                if (curr == 3)
-                {
-                    double tax = PlayerManager.Players[currPlayer].PlayerMoney * 0.1;
-                    PlaySFX(Properties.Resources.Money, 500);
-                    PlayerManager.Players[currPlayer].PlayerMoney -= tax;
-                    ShowPopup(labels[3], (0 - tax));
-                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Income Tax -10% Property Value");
-                }
-                if (curr == 26)
-                {
-                    PlayerManager.Players[currPlayer].PlayerMoney -= 2000;
-                    ShowPopup(labels[26], -2000);
-                    PlaySFX(Properties.Resources.Money, 500);
-                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} Pay Luxury Tax -2000$");
-                }
-                if (extraTurn)
-                {
-                    MessageBox.Show($"{PlayerManager.Players[currPlayer].Name} rolled a double and gets extra turn");
-                    extraTurn = false;
-                    Dice1.Enabled = true;
-                    Dice2.Enabled = true;
-                }
-                else
-                {
-                    NextPlayer();
-                    Dice1.Enabled = true;
-                    Dice2.Enabled = true;
-                }
-            }
-            else
-            {
-                moveLogic[currPlayer] = (pcb, curr, target);
-            }
-        }
-        private async Task GoToJail(int player)
-        {
-            MessageBox.Show($"{PlayerManager.Players[player].Name} goes to jail!");
-            Doubles[player] = 0;
-            inJail[player] = true;
-            jailTurns[player] = 0;
-            await MovePlayerToPosition(player, 10);
-        }
-
-        private void HandleJailTurn(int d1, int d2)
-        {
-            var player = currPlayer;
-            var p = PlayerManager.Players[player];
-            if (d1 == d2)
-            {
-                MessageBox.Show($"{p.Name} rolled a double and is free!");
-                inJail[player] = false;
-                jailTurns[player] = 0;
-                MovePlayer(player, d1 + d2);
-                return;
-            }
-            jailTurns[player]++;
-
-            if (jailTurns[player] >= 3)
-            {
-                if (p.GetOutOfJailFree > 0)
-                {
-                    var useCard = MessageBox.Show(
-                        $"{p.Name} failed 3 times but has 'Get Out of Jail Free'. Use it to get out?",
-                        "Use Get Out Of Jail Free?",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-                    if (useCard == DialogResult.Yes)
-                    {
-                        p.GetOutOfJailFree--;
-                        inJail[player] = false;
-                        jailTurns[player] = 0;
-                        MessageBox.Show($"{p.Name} used the card and is free.");
-                        NextPlayer();
-                        return;
-                    }
-                }
-
-                MessageBox.Show($"{p.Name}  failed 3 times. Must pay $1000 to get out");
-                if (p.PlayerMoney >= 1000)
-                {
-                    p.PlayerMoney -= 1000;
-                    PlaySFX(Properties.Resources.Money, 1000);
-                }
-                else
-                {
-                    MessageBox.Show($"{p.Name} doesn't have enough money");
-                }
-                inJail[player] = false;
-                jailTurns[player] = 0;
-                NextPlayer();
-            }
-            else
-            {
-                MessageBox.Show($"{p.Name} failed to roll a double ({jailTurns[player]}/3)");
-                NextPlayer();
-            }
-        }
-
-
-        private void NextPlayer()
-        {
-            currPlayer = (currPlayer + 1) % PlayerManager.playerCount;
-            label1.Text = PlayerManager.Players[currPlayer].Name;
-            label1.ForeColor = PlayerManager.Players[currPlayer].Color;
-            var pcb = this.Controls.Find("Player " + (currPlayer + 1), true).FirstOrDefault() as PictureBox;
-            if (pcb != null)
-                pcb.BringToFront();
-        }
         private void ShowPopup(Label targetLabel, double amount)
         {
             if (targetLabel == null) return;
