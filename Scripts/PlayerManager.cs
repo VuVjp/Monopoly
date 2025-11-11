@@ -42,11 +42,13 @@ namespace Monopoly.Scripts
             {
                 if (_money != value)
                 {
+                    oldMoney = _money;
                     _money = value;
                     OnMoneyChanged?.Invoke(_money); 
                 }
             }
         }
+        public double oldMoney = 0;
         public int Position = 1;
         public bool IsBankrupt = false;
         public bool IsInJail = false;
