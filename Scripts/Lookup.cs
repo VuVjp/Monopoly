@@ -246,7 +246,10 @@ namespace Monopoly.Scripts.LookUp
                 t.Join();
             }
 
-            return results;
+            List<MyTcpInfo> res = new List<MyTcpInfo>(results);
+            results.Clear();
+
+            return res;
         }
     }
 };
