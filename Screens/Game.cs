@@ -2730,24 +2730,6 @@ namespace Monopoly.Screens
             plr.IsBankrupt = true;
             plr.isPlaying = false;
             plr.PlayerMoney = double.MinValue;
-            if(PlayerManager.Players[currPlayerIndex] == plr)
-            {
-                _gameLoopCts?.Cancel();
-                _ = Task.Run(async () =>
-                {
-                    await Task.Delay(1000);
-                    try { _rollWaiter?.SetResult(false); } catch { }
-                    await Task.Delay(150 * 15);
-                    try { _pickCardWaiter?.SetResult(false); } catch { }
-                    try { _buyWaiter?.SetResult(false); } catch { }
-                    try { _upgradeWaiter.SetResult(false); } catch { }
-                });
-
-                await Task.Delay(1000);
-
-                _gameLoopCts = new CancellationTokenSource();
-                _ = Task.Run(() => GameLoop(_gameLoopCts.Token));
-            }
         }
 
         private async void SocketClientManager_OnDataReceived(Data data)
