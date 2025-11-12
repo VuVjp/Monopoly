@@ -1977,6 +1977,7 @@ namespace Monopoly.Screens
                     if(steps%2 == 0)
                     {
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.message,$"{currentPlr.Name} now is free!"));
+                        currentPlr.IsInJail = false;
                     }
                     currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
                     continue;
