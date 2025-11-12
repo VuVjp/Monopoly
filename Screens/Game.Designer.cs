@@ -258,12 +258,12 @@ namespace Monopoly.Screens
             pos17.AutoSize = true;
             pos17.BackColor = Color.Transparent;
             pos17.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos17.Location = new Point(30, 29);
+            pos17.Location = new Point(39, 36);
             pos17.Margin = new Padding(1, 0, 1, 0);
             pos17.Name = "pos17";
-            pos17.Size = new Size(10, 14);
+            pos17.Size = new Size(117, 14);
             pos17.TabIndex = 54;
-            pos17.Text = " ";
+            pos17.Text = " Electric Company";
             pos17.TextAlign = ContentAlignment.MiddleCenter;
             pos17.Visible = false;
             // 
@@ -1797,9 +1797,9 @@ namespace Monopoly.Screens
             pos5.Location = new Point(39, 55);
             pos5.Margin = new Padding(1, 0, 1, 0);
             pos5.Name = "pos5";
-            pos5.Size = new Size(10, 14);
+            pos5.Size = new Size(90, 14);
             pos5.TabIndex = 50;
-            pos5.Text = " ";
+            pos5.Text = " Water Works\r\n";
             pos5.TextAlign = ContentAlignment.MiddleCenter;
             pos5.Visible = false;
             // 

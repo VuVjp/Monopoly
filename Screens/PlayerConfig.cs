@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -62,6 +63,55 @@ namespace Monopoly.Screens
             else
             {
                 OfflineModeSetup();
+            }
+        }
+        public void TryLoadSavedGameFromFile(string savePath)
+        {
+            if (!File.Exists(savePath)) return;
+
+            try
+            {
+                using (var con = new SQLiteConnection($"Data Source={savePath};Version=3;"))
+                {
+                    con.Open();
+                    using (var cmd = new SQLiteCommand("SELECT * FROM Players", con))
+                    {
+                        var reader = cmd.ExecuteReader();
+                        PlayerManager.Players = new List<PlayerInfo>();
+                        while (reader.Read())
+                        {
+                            PlayerInfo plr = new PlayerInfo(reader.GetInt32(0))
+                            {
+                                Name = reader["Name"].ToString(),
+                                PlayerMoney = reader.GetInt32(reader.GetOrdinal("Money")),
+                                IsBankrupt = reader.GetInt32(reader.GetOrdinal("IsBankrupt")) == 1,
+                                Color = string.IsNullOrEmpty(reader["Color"].ToString())
+                                    ? Color.Empty
+                                    : ColorTranslator.FromHtml(reader["Color"].ToString()!),
+                            };
+
+                            string avatarBase64 = reader["Avatar"].ToString() ?? "";
+                            if (!string.IsNullOrEmpty(avatarBase64))
+                            {
+                                byte[] imgBytes = Convert.FromBase64String(avatarBase64);
+                                using (var ms = new MemoryStream(imgBytes))
+                                {
+                                    PictureBox pb = new PictureBox();
+                                    pb.Image = Image.FromStream(ms);
+                                    plr.Avt = pb;
+                                }
+                            }
+
+                            PlayerManager.Players.Add(plr);
+                        }
+                    }
+                }
+
+                PlayerManager.playerCount = PlayerManager.Players.Count;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Save fail: {ex.Message}");
             }
         }
 
@@ -440,13 +490,12 @@ namespace Monopoly.Screens
                 selectedUI.Size = new Size(pcb.Size.Width + 20, pcb.Size.Height + 20);
             }
         }
-
         private void btnPlay_Click(object sender, EventArgs e)
         {
             PlayerManager.Players = new List<PlayerInfo>();
-            if(PlayerManager.isOnline)
+            if (PlayerManager.isOnline)
             {
-                if(PlayerManager.curPlayerIndex < PlayerManager.playerCount)
+                if (PlayerManager.curPlayerIndex < PlayerManager.playerCount)
                 {
                     MessageBox.Show("Not all players have joined!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -460,8 +509,9 @@ namespace Monopoly.Screens
                     MessageBox.Show("All players must select an avatar!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
                 var pictureBox = (PictureBox)pcb.Tag!;
-                PlayerInfo plr = new PlayerInfo()
+                PlayerInfo plr = new PlayerInfo(i + 1)
                 {
                     Name = "Player " + (i + 1),
                     Avt = pictureBox,
@@ -469,6 +519,7 @@ namespace Monopoly.Screens
                 };
                 PlayerManager.Players.Add(plr);
             }
+
             PlayerManager.playerCount = PlayerManager.Players.Count;
             if (PlayerManager.isOnline && PlayerManager.isAdmin)
             {
@@ -486,7 +537,6 @@ namespace Monopoly.Screens
             }
             monopoly.LoadScreen(new Game(monopoly));
         }
-
         private void btnReturn_Click(object sender, EventArgs e)
         {
             if (PlayerManager.isOnline && PlayerManager.isAdmin)

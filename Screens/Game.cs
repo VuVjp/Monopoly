@@ -18,6 +18,8 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
+using System.IO;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -38,12 +40,14 @@ namespace Monopoly.Screens
         Properties.Resources.Dice5,
         Properties.Resources.Dice6};
         List<Label> labels;
-     
+
         #region Offline Properties
+        private string dbPath;
         List<Panel> horizontal = new List<Panel>();
         List<Panel> vertical = new List<Panel>();
         Dictionary<int, bool> passedGo = new Dictionary<int, bool>();
         List<int> activePlayers;
+        int[] result = new int[2];
         int direction;
         int X1;
         int X2;
@@ -74,11 +78,15 @@ namespace Monopoly.Screens
         private TaskCompletionSource<bool> _buyWaiter;
         private TaskCompletionSource<int> _sellWaiter;
         #endregion
-        public Game(Monopoly monopoly)
+        public Game(Monopoly monopoly, string saveFile = "")
         {
             InitializeComponent();
             this.monopoly = monopoly;
-            horizontal = new List<Panel> { pnl2, pnl6, pnl7, pnl8, pnl10, pnl20, pnl22, pnl23, pnl25, pnl26, pnl28};
+
+            dbPath = string.IsNullOrEmpty(saveFile)
+           ? Path.Combine(Application.StartupPath, "savegame.sqlite")
+           : saveFile;
+            horizontal = new List<Panel> { pnl2, pnl6, pnl7, pnl8, pnl10, pnl20, pnl22, pnl23, pnl25, pnl26, pnl28 };
             vertical = new List<Panel> { pnl12, pnl13, pnl15, pnl16, pnl18, pnl30, pnl31, pnl33, pnl35, pnl36 };
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
@@ -88,6 +96,11 @@ namespace Monopoly.Screens
 
             if (!PlayerManager.isOnline)
             {
+                if (PlayerManager.IsLoadingSavedGame)
+                {
+                    LoadGame();
+                    PlayerManager.IsLoadingSavedGame = false;
+                }
                 for (int i = 0; i < PlayerManager.playerCount; i++)
                 {
                     Doubles[i] = 0;
@@ -109,6 +122,8 @@ namespace Monopoly.Screens
                 Dice2.Click += RollDice!;
                 pcbChance.Click += PickChance!;
                 pcbFortune.Click += PickFortune!;
+                pcbSave.Click += pcbSaveGame!;
+                pcbReturn.Click += pcbReturnMenu;
                 RollTimer.Tick += RollTimer_Tick!;
                 RollTimer.Interval = 300;
                 endTime = 1000;
@@ -141,6 +156,7 @@ namespace Monopoly.Screens
 
                 if (PlayerManager.isAdmin)
                 {
+                    LoadPlayerInBoard();
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
                     SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
                     RandomizeTurnOrder();
@@ -236,14 +252,15 @@ namespace Monopoly.Screens
                         {
                             lblPlayerMoney1.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
+                            if (this.IsHandleCreated)
+                                this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(0);
                             }
-                            if(player.PlayerMoney < 0 && !PlayerManager.isOnline)
+                            if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
-                                    CheckBankrupt(i);
+                                CheckBankrupt(i);
                             }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
@@ -260,7 +277,8 @@ namespace Monopoly.Screens
                         {
                             lblPlayerMoney2.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
+                            if (this.IsHandleCreated)
+                                this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(1);
@@ -284,7 +302,8 @@ namespace Monopoly.Screens
                         {
                             lblPlayerMoney3.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
+                            if (this.IsHandleCreated)
+                                this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(2);
@@ -308,7 +327,8 @@ namespace Monopoly.Screens
                         {
                             lblPlayerMoney4.Text = $"${newMoney}";
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
+                            if (this.IsHandleCreated)
+                                this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.PlayerMoney));
                             if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                             {
                                 SellProp(3);
@@ -323,10 +343,9 @@ namespace Monopoly.Screens
                 }
             }
         }
-
         private void LoadPlayerInBoard()
         {
-            for (int i = 0; i < PlayerManager.playerCount; i++)
+            for (int i = 0; i <  PlayerManager.playerCount; i++)
             {
                 if (i == 0)
                 {
@@ -341,6 +360,7 @@ namespace Monopoly.Screens
                     pnl1.Controls.Add(pictureBox);
                     pictureBox.BringToFront();
                     playerPos[i] = 0;
+                    int pos = playerPos.ContainsKey(i) ? playerPos[i] : 0;
                 }
                 else if (i == 1)
                 {
@@ -388,34 +408,422 @@ namespace Monopoly.Screens
         }
 
         #region Offline Methods
+
+        private void pcbSaveGame(object sender, EventArgs e)
+        {
+            if (movementInProgress) return;
+            if (!PlayerManager.isOnline)
+            {
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                dbPath = Path.Combine(Application.StartupPath, $"save_{timestamp}.sqlite");
+                SaveGame();
+            }
+        }
+
+        private void pcbReturnMenu(object sender, EventArgs e)
+        {
+                monopoly.LoadScreen(new MainMenu(monopoly));
+        }
+        private void InitDatabase()
+        {
+            bool createFile = !File.Exists(dbPath);
+            if (createFile)
+                SQLiteConnection.CreateFile(dbPath);
+
+            using (var con = new SQLiteConnection($"Data Source={dbPath};Version=3;"))
+            {
+                con.Open();
+
+                string sqlPlayer = @"
+                CREATE TABLE IF NOT EXISTS Players (
+                    Id INTEGER PRIMARY KEY,
+                    Name TEXT,
+                    Money INTEGER,
+                    Position INTEGER,
+                    InJail INTEGER,
+                    JailTurns INTEGER,
+                    GetOutOfJailFree INTEGER,
+                    Doubles INTEGER,
+                    IsActive INTEGER,
+                    IsBankrupt INTEGER,
+                    Color TEXT,
+                    currPlayer INT
+                );";
+                using (var cmd = new SQLiteCommand(sqlPlayer, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmdCheck = new SQLiteCommand("PRAGMA table_info(Players);", con))
+                {
+                    var reader = cmdCheck.ExecuteReader();
+                    bool hasAvatar = false;
+                    bool hascurrPlayer = false;
+                    while (reader.Read())
+                    {
+                        string col = reader["name"].ToString();
+                        if (col == "Avatar") hasAvatar = true;
+                        if (col == "currPlayer") hascurrPlayer = true;
+                    }
+                    if (!hasAvatar)
+                    {
+                        using (var cmdAlter = new SQLiteCommand("ALTER TABLE Players ADD COLUMN Avatar TEXT;", con))
+                        {
+                            cmdAlter.ExecuteNonQuery();
+                        }
+                    }
+                    if (!hascurrPlayer)
+                    {
+                        using (var cmdAlter = new SQLiteCommand("ALTER TABLE Players ADD COLUMN currPlayer INT;", con))
+                        {
+                            cmdAlter.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                string sqlPlayerProp = @"
+                CREATE TABLE IF NOT EXISTS PlayerProperties (
+                    PlayerId INTEGER,
+                    PropertyName TEXT,
+                    PRIMARY KEY(PlayerId, PropertyName)
+                );";
+                using (var cmd = new SQLiteCommand(sqlPlayerProp, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+
+                string sqlProperty = @"
+                CREATE TABLE IF NOT EXISTS Properties (
+                    Name TEXT PRIMARY KEY,
+                    Owner TEXT,
+                    Houses INTEGER
+                );";
+                using (var cmd = new SQLiteCommand(sqlProperty, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void SaveGame()
+        {
+            InitDatabase();
+
+            using (var con = new SQLiteConnection($"Data Source={dbPath};Version=3;"))
+            {
+                con.Open();
+                using (var tran = con.BeginTransaction())
+                {
+                    using (var del = new SQLiteCommand("DELETE FROM Players", con, tran)) del.ExecuteNonQuery();
+                    using (var del = new SQLiteCommand("DELETE FROM PlayerProperties", con, tran)) del.ExecuteNonQuery();
+                    using (var del = new SQLiteCommand("DELETE FROM Properties", con, tran)) del.ExecuteNonQuery();
+
+                    for (int i = 0; i < PlayerManager.playerCount; i++)
+                    {
+                        var p = PlayerManager.Players[i];
+
+                        string sql = @"INSERT INTO Players 
+                        (Id, Name, Money, Position, InJail, JailTurns, GetOutOfJailFree, Doubles, IsActive, IsBankrupt, Color, Avatar, currPlayer)
+                        VALUES (@id,@name,@money,@pos,@injail,@jailturns,@gojf,@doubles,@active,@bankrupt,@color,@avatar, @currPlayer)";
+
+                        using (SQLiteCommand cmd = new SQLiteCommand(sql, con, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@id", i);
+                            cmd.Parameters.AddWithValue("@name", p.Name ?? "");
+                            cmd.Parameters.AddWithValue("@money", p.PlayerMoney);
+                            cmd.Parameters.AddWithValue("@pos", p.IsBankrupt ? -1 : (playerPos.ContainsKey(i) ? playerPos[i] : 0));
+                            cmd.Parameters.AddWithValue("@injail", inJail.ContainsKey(i) && inJail[i] ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@jailturns", jailTurns.ContainsKey(i) ? jailTurns[i] : 0);
+                            cmd.Parameters.AddWithValue("@gojf", p.GetOutOfJailFree);
+                            cmd.Parameters.AddWithValue("@doubles", Doubles.ContainsKey(i) ? Doubles[i] : 0);
+                            cmd.Parameters.AddWithValue("@active", (activePlayers != null && activePlayers.Contains(i)) ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@bankrupt", p.IsBankrupt ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@color", p.Color == Color.Empty ? "" : ColorTranslator.ToHtml(p.Color));
+                            cmd.Parameters.AddWithValue("@currPlayer", currPlayer);
+                            using (var ms = new MemoryStream())
+                            {
+                                p.Avt.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                string avatarBase64 = Convert.ToBase64String(ms.ToArray());
+                                cmd.Parameters.AddWithValue("@avatar", avatarBase64);
+                            }
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        foreach (var prop in board.properties.Where(a => a.owner == p.Name))
+                        {
+                            string sqlProp = "INSERT INTO PlayerProperties (PlayerId, PropertyName) VALUES (@pid,@prop)";
+                            using (SQLiteCommand cmdProp = new SQLiteCommand(sqlProp, con, tran))
+                            {
+                                cmdProp.Parameters.AddWithValue("@pid", i);
+                                cmdProp.Parameters.AddWithValue("@prop", prop.name ?? "");
+                                cmdProp.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    foreach (var prop in board.properties)
+                    {
+                        string sql = "INSERT OR REPLACE INTO Properties (Name, Owner, Houses) VALUES (@name,@owner,@houses)";
+                        using (SQLiteCommand cmd = new SQLiteCommand(sql, con, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@name", prop.name ?? "");
+                            cmd.Parameters.AddWithValue("@owner", (object?)prop.owner ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@houses", prop.level);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    tran.Commit();
+                }
+            }
+
+            MessageBox.Show("Game saved successfully!", "Save Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ResetGameStateBeforeLoad()
+        {
+            activePlayers = new List<int>();
+            playerPos = new Dictionary<int, int>();
+            Doubles = new Dictionary<int, int>();
+            inJail = new Dictionary<int, bool>();
+            jailTurns = new Dictionary<int, int>();
+            if (panels != null)
+            {
+                foreach (var p in panels)
+                {
+                    p.BackColor = Color.Transparent;
+                    var housePanel = p.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+                    if (housePanel != null) housePanel.Controls.Clear();
+                }
+            }
+        }
+        private void LoadGame()
+        {
+            if (!File.Exists(dbPath))
+            {
+                MessageBox.Show("Save file not found!");
+                return;
+            }
+
+            using (var con = new SQLiteConnection($"Data Source={dbPath};Version=3;"))
+            {
+                con.Open();
+                int savedPlayerCount = Convert.ToInt32(new SQLiteCommand("SELECT COUNT(*) FROM Players", con).ExecuteScalar());
+                int currPlayerTurn = 0;
+                var turnResult = new SQLiteCommand("SELECT currPlayer FROM Players LIMIT 1", con).ExecuteScalar();
+                if (turnResult != null && int.TryParse(turnResult.ToString(), out int turn)) currPlayerTurn = turn;
+
+                ResetGameStateBeforeLoad();
+
+                PlayerManager.playerCount = savedPlayerCount;
+                PlayerManager.Players = new List<PlayerInfo>();
+                for (int i = 0; i < savedPlayerCount; i++) PlayerManager.Players.Add(new PlayerInfo(i));
+                using (var cmd = new SQLiteCommand("SELECT * FROM Players ORDER BY Id", con))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = Convert.ToInt32(reader["Id"]);
+                        if (id < 0 || id >= PlayerManager.Players.Count) continue;
+
+                        var player = PlayerManager.Players[id];
+                        player.Name = reader["Name"]?.ToString() ?? $"Player{id + 1}";
+                        player.PlayerMoney = Convert.ToInt32(reader["Money"]);
+
+                        try { player.Color = ColorTranslator.FromHtml(reader["Color"]?.ToString() ?? ""); }
+                        catch { player.Color = Color.Black; }
+
+                        int pos = Convert.ToInt32(reader["Position"]);
+                        player.Position = pos;
+                        player.IsBankrupt = Convert.ToInt32(reader["IsBankrupt"]) == 1;
+
+                        inJail[id] = Convert.ToInt32(reader["InJail"]) == 1;
+                        jailTurns[id] = Convert.ToInt32(reader["JailTurns"]);
+                        Doubles[id] = Convert.ToInt32(reader["Doubles"]);
+
+                        string avatarBase64 = reader["Avatar"]?.ToString() ?? "";
+                        player.Avt = LoadAvatarFromBase64(avatarBase64);
+
+                        if (!player.IsBankrupt)
+                        {
+                            activePlayers.Add(id);
+                            if (pos >= 0) playerPos[id] = pos;
+                        }
+                        else
+                        {
+                            ResetPlayerProperties(id);
+                            SetPlayerBankruptUI(id);
+                            activePlayers.Remove(id);
+                        }
+                    }
+                }
+                LoadPlayerProperties(con);
+                LoadProperties(con);
+
+                currPlayer = currPlayerTurn;
+            }
+            LoadPlayerInfo();
+            foreach (var player in PlayerManager.Players)
+            {
+                if (player.IsBankrupt) continue;
+
+                foreach (var prop in board.properties.Where(p => p.owner == player.Name))
+                {
+                    var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(prop.name));
+                    var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
+                    if (pnl != null)
+                    {
+                        if (prop.level == 0)
+                            pnl.BackColor = player.Color;
+
+                        var housePanel = pnl.Controls.OfType<PictureBox>()
+                            .FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+                        int direction = horizontal.Contains(pnl) ? 1 :
+                                        vertical.Contains(pnl) ? 2 : 0;
+                        DrawHouse(prop, housePanel, direction);
+                    }
+                }
+            }
+            pnl1.Controls.OfType<PictureBox>()
+                .Where(pb => pb.Name.StartsWith("Player"))
+                .ToList()
+                .ForEach(pb => pnl1.Controls.Remove(pb));
+            moveLogic.Clear();
+            foreach (var kvp in playerPos)
+            {
+                int id = kvp.Key;
+                int pos = kvp.Value;
+                if (pos < 0 || pos >= labels.Count) continue;
+
+                var targetLabel = labels[pos];
+                var parentPanel = targetLabel.Parent as Panel;
+                if (parentPanel == null) continue;
+
+                var pcb = new PictureBox
+                {
+                    Name = $"Player {id + 1}",
+                    Size = new Size(40, 40),
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    BackColor = Color.Transparent,
+                    Image = PlayerManager.Players[id].Avt.Image,
+                    Enabled = false,
+                    Location = new Point(targetLabel.Location.X, targetLabel.Location.Y - 15),
+                    Visible = !PlayerManager.Players[id].IsBankrupt
+                };
+
+                parentPanel.Controls.Add(pcb);
+                pcb.BringToFront();
+                moveLogic[id] = (pcb, pos, pos);
+            }
+
+            movementInProgress = false;
+            Rolling = false;
+            extraTurn = false;
+
+            Dice1.Enabled = true;
+            Dice2.Enabled = true;
+            Dice1.Click -= RollDice;
+            Dice2.Click -= RollDice;
+            Dice1.Click += RollDice;
+            Dice2.Click += RollDice;
+
+            MessageBox.Show("Game loaded successfully!", "Load Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private PictureBox LoadAvatarFromBase64(string base64)
+        {
+            if (string.IsNullOrEmpty(base64)) return new PictureBox { Image = Properties.Resources.VuVjp };
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64);
+                using (var ms = new MemoryStream(bytes))
+                {
+                    return new PictureBox { Image = Image.FromStream(ms) };
+                }
+            }
+            catch { return new PictureBox { Image = Properties.Resources.VuVjp }; }
+        }
+        private void LoadPlayerProperties(SQLiteConnection con)
+        {
+            using (var cmd = new SQLiteCommand("SELECT * FROM PlayerProperties", con))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int pid = Convert.ToInt32(reader["PlayerId"]);
+                    if (pid < 0 || pid >= PlayerManager.Players.Count) continue;
+
+                    string propName = reader["PropertyName"]?.ToString();
+                    if (string.IsNullOrWhiteSpace(propName)) continue;
+
+                    var prop = board.properties.FirstOrDefault(p => p.name == propName);
+                    if (prop != null)
+                    {
+                        PlayerManager.Players[pid].OwnedProperties.Add(board.properties.IndexOf(prop));
+                        prop.owner = PlayerManager.Players[pid].Name;
+                    }
+                }
+            }
+        }
+        private void LoadProperties(SQLiteConnection con)
+        {
+            using (var cmd = new SQLiteCommand("SELECT * FROM Properties", con))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string name = reader["Name"]?.ToString();
+                    if (string.IsNullOrWhiteSpace(name)) continue;
+
+                    var prop = board.properties.FirstOrDefault(p => p.name == name);
+                    if (prop != null)
+                    {
+                        prop.owner = reader["Owner"] != DBNull.Value ? reader["Owner"]?.ToString() : null;
+                        prop.level = reader["Houses"] != DBNull.Value ? Convert.ToInt32(reader["Houses"]) : 0;
+                    }
+                }
+            }
+        }
+
+        private PictureBox GetPlayerPictureBox(int index)
+        {
+            switch (index)
+            {
+                case 0: return pcbPlrAvt1;
+                case 1: return pcbPlrAvt2;
+                case 2: return pcbPlrAvt3;
+                case 3: return pcbPlrAvt4;
+                default: return null;
+            }
+        }
         private void CheckBankrupt(int currPlayer)
         {
             if (!activePlayers.Contains(currPlayer)) return;
+
             var player = PlayerManager.Players[currPlayer];
+
             if (player.PlayerMoney < 0 && player.OwnedProperties.Count > 0)
             {
                 MessageBox.Show($"{player.Name} must sell properties");
                 PromptSellProperties(currPlayer);
             }
-
-            if (player.OwnedProperties.Count == 0 && player.PlayerMoney <= 0)
+            if (player.PlayerMoney <= 0 && player.OwnedProperties.Count == 0)
             {
                 player.IsBankrupt = true;
                 ResetPlayerProperties(currPlayer);
                 SetPlayerBankruptUI(currPlayer);
-                NextPlayer();
-
                 activePlayers.Remove(currPlayer);
-                RemovePlayerData(currPlayer);
-
+                if (playerPos.ContainsKey(currPlayer))
+                {
+                    var pcb = GetPlayerPictureBox(currPlayer);
+                    if (pcb != null) pcb.Visible = false;
+                    playerPos.Remove(currPlayer);
+                }
                 if (activePlayers.Count == 1)
                 {
                     MessageBox.Show($"{PlayerManager.Players[activePlayers[0]].Name} wins the game!");
                 }
+                if (currPlayer == this.currPlayer)
+                    NextPlayer();
             }
         }
-
-
         private void SetPlayerBankruptUI(int index)
         {
             switch (index)
@@ -459,12 +867,12 @@ namespace Monopoly.Screens
                     var prop = board.properties[idx];
                     string line;
                     if (prop.level > 0)
-                        line = $"{prop.name} - Level {prop.level} (Lastest house price: ${prop.upgrade_price * (1 + 0.25 * prop.level)*0.5})";
+                        line = $"{prop.name} - Level {prop.level} (Lastest house price: ${prop.upgrade_price * (1 + 0.25 * prop.level) * 0.5})";
                     else
                         line = $"{prop.name} - No houses (Price: ${prop.sell_price})";
                     lst.Items.Add(new ListItemForSell { PropertyIndex = idx, Display = line });
                 }
-               System.Windows.Forms.Button btnSellHouse = new System.Windows.Forms.Button() { Text = "Sell 1 House", Location = new Point(380, 12), Size = new Size(120, 36) };
+                System.Windows.Forms.Button btnSellHouse = new System.Windows.Forms.Button() { Text = "Sell 1 House", Location = new Point(380, 12), Size = new Size(120, 36) };
                 System.Windows.Forms.Button btnSellProperty = new System.Windows.Forms.Button() { Text = "Sell Property", Location = new Point(380, 56), Size = new Size(120, 36) };
                 System.Windows.Forms.Button btnClose = new System.Windows.Forms.Button() { Text = "Done", Location = new Point(380, 320), Size = new Size(120, 36) };
 
@@ -576,217 +984,187 @@ namespace Monopoly.Screens
             public override string ToString() => Display;
         }
 
-
         private async Task HandlePropertyAsync(int currPlayer, string propertyName)
         {
             var player = PlayerManager.Players[currPlayer];
             var property = board.properties.FirstOrDefault(p => p.name == propertyName);
             if (property == null) return;
-            if (property.type != "property") return;
+            if (property.type != "property" && property.type != "utility") return;
             var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(property.name));
             var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
-            if (horizontal.Contains(pnl))
-                direction = 1;
-            if (vertical.Contains(pnl))
-                direction = 2;
-            var pcbHouse = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+            var pcbHouse = pnl?.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
 
-            if (pcbHouse == null) return;
-
-            if (property.owner != null)
+            int direction = horizontal.Contains(pnl) ? 1 : vertical.Contains(pnl) ? 2 : 0;
+            if (property.owner != null && property.owner != player.Name)
             {
-                if (player.Name == property.owner)
-                {
-                    if (property.level >= 4) return;
-                   double price = (double)(property.upgrade_price * (1 + 0.25 * property.level));
-                    var x = MessageBox.Show(
-               $"{player.Name}, do you want to buy house lv${property.level + 1} for ${price}?",
-               "Buy House",
-               MessageBoxButtons.YesNo,
-               MessageBoxIcon.Question);
-                    if (x == DialogResult.Yes)
-                    {
-                        if (player.PlayerMoney >= price)
-                        {
-                            player.PlayerMoney -= price;
-                            property.level += 1;
-                            ShowPopup(lbl, -price);
-                            PlaySFX(Properties.Resources.Money, 500);
-                            pcbHouse.Controls.Clear();
-                            if (property.level >= 4)
-                            {
-                                var hotel = new PictureBox()
-                                {
-                                    Size = pcbHouse.Size,
-                                    BackgroundImage = direction == 1 ?
-                                        Properties.Resources.HouseVip1 :
-                                        Properties.Resources.HouseVip2,
-                                    BackgroundImageLayout = ImageLayout.Stretch,
-                                    Parent = pcbHouse,
-                                    Location = new Point(0, 0)
-                                };
-                            }
-                            else
-                            {
-                                for (int i = 0; i < property.level; i++)
-                                {
-                                    var house = new PictureBox()
-                                    {
-                                        Size = new Size(20, 20),
-                                        BackgroundImage = Properties.Resources.house,
-                                        BackgroundImageLayout = ImageLayout.Stretch,
-                                        Parent = pcbHouse,
-
-                                        Location = direction == 1
-                                            ? new Point(i * 22, (pcbHouse.Height - 20) / 2)
-                                            : new Point((pcbHouse.Width - 20) / 2, i * 22)
-                                    };
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var wantToSell = MessageBox.Show($"{player.Name} doesn't have enough money to buy house lv{property.level + 1}. Sell properties to raise funds?", "Not enough money", MessageBoxButtons.YesNo);
-                            if (wantToSell == DialogResult.Yes)
-                            {
-                                PromptSellProperties(currPlayer, price - player.PlayerMoney);
-                                if (player.PlayerMoney >= price)
-                                {
-                                    player.PlayerMoney -= price;
-                                    property.level += 1;
-                                    ShowPopup(lbl, -price);
-                                    PlaySFX(Properties.Resources.Money, 500);
-                                    pcbHouse.Controls.Clear();
-                                    if (property.level >= 4)
-                                    {
-                                        var hotel = new PictureBox()
-                                        {
-                                            Size = pcbHouse.Size,
-                                            BackgroundImage = direction == 1 ?
-                                                Properties.Resources.HouseVip1 :
-                                                Properties.Resources.HouseVip2,
-                                            BackgroundImageLayout = ImageLayout.Stretch,
-                                            Parent = pcbHouse,
-                                            Location = new Point(0, 0)
-                                        };
-                                    }
-                                    else
-                                    {
-                                        for (int i = 0; i < property.level; i++)
-                                        {
-                                            var house = new PictureBox()
-                                            {
-                                                Size = new Size(20, 20),
-                                                BackgroundImage = Properties.Resources.house,
-                                                BackgroundImageLayout = ImageLayout.Stretch,
-                                                Parent = pcbHouse,
-
-                                                Location = direction == 1
-                                                    ? new Point(i * 27, (pcbHouse.Height - 20) / 2)
-                                                    : new Point((pcbHouse.Width - 20) / 2, i * 27)
-                                            };
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    MessageBox.Show($"{player.Name} still doesn't have enough money after selling.");
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show($"{player.Name} doesn't have enough money to buy house lv{property.level + 1}");
-                            }
-                        }
-
-                    }
-                    return;
-                }
-                double rent = (double)property.levels[property.level.ToString()]!;
-                if (player.IsBankrupt || player.IsInJail)
-                {
-                    return;
-                }
-                EnsurePlayerCanPay(currPlayer, rent);
-                var owner = PlayerManager.Players.First(p => p.Name == property.owner);
-                owner.PlayerMoney += rent;
+                HandleRent(currPlayer, property);
                 return;
             }
-            if (player.OwnedProperties.Count == 0 && player.PlayerMoney < (double)property.price) return;
-            var ownedProperty =board.properties.FindAll(p => p.owner == player.Name).ToList();
-            if (player.PlayerMoney < (double)property.price)
+            if (property.owner == player.Name)
             {
-                double money = 0;
-                for (int i = 0; i < ownedProperty.Count; i++)
-                {
-                    if (ownedProperty[i].level == 0)
-                        money += (double)ownedProperty[i].sell_price;
-                    if (ownedProperty[i].level > 0)
-                        money += (double)(ownedProperty[i].sell_price + (ownedProperty[i].upgrade_price * (1 + 0.25 * ownedProperty[i].level)));
-                }
-                if (money < (double)property.price) return;
+                if (property.type == "utility") return;
+                HandleUpgrade(currPlayer, property, pcbHouse, lbl, direction);
+                return;
             }
-            var dr = MessageBox.Show(
-          $"{player.Name}, do you want to buy {property.name} for ${property.price}?",
-          "Buy Property",
-          MessageBoxButtons.YesNo,
-          MessageBoxIcon.Question);
-
-            if (dr == DialogResult.Yes)
-            {
-                double price = (double)property.price;
-
-                if (player.PlayerMoney >= price)
-                {
-                    player.PlayerMoney -= price;
-                    property.owner = player.Name;
-                    player.OwnedProperties.Add(board.properties.IndexOf(property));
-                    if (pnl != null)
-                        pnl.BackColor = player.Color;
-
-                    ShowPopup(lbl, -price);
-                    PlaySFX(Properties.Resources.Money, 500);
-                }
-                else
-                {
-                    if (player.OwnedProperties.Count > 0)
-                    {
-                        var wantToSell = MessageBox.Show(
-                            $"{player.Name} doesn't have enough money to buy {property.name}. Sell properties to raise funds?",
-                            "Not enough money",
-                            MessageBoxButtons.YesNo);
-
-                        if (wantToSell == DialogResult.Yes)
-                        {
-                            PromptSellProperties(currPlayer, price - player.PlayerMoney);
-
-                            if (player.PlayerMoney >= price)
-                            {
-                                player.PlayerMoney -= price;
-                                property.owner = player.Name;
-                                player.OwnedProperties.Add(board.properties.IndexOf(property));
-                                if (pnl != null)
-                                    pnl.BackColor = player.Color;
-
-                                ShowPopup(lbl, -price);
-                                PlaySFX(Properties.Resources.Money, 500);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"{player.Name} still doesn't have enough money after selling.");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($"{player.Name} doesn't have enough money to buy {property.name}");
-                    }
-                }
-            }
-    }
-        private void ResetPlayerProperties(int playerIndex)
+            HandleBuyProperty(currPlayer, property, pnl, lbl);
+        }
+        private void HandleRent(int currplayer, Property property)
         {
-            var player = PlayerManager.Players[playerIndex];
+            var player = PlayerManager.Players[currPlayer];
+            if (player.IsBankrupt || player.IsInJail) return;
+
+            double rent = 0;
+
+            if (property.type == "utility")
+            {
+                var ownerProps = board.properties.Where(p => p.owner == property.owner && p.type == "utility").Count();
+                double roll = result[0] + result[1];
+
+                rent = ownerProps switch
+                {
+                    1 => roll * 70,
+                    2 => roll * 200,
+                    _ => 0
+                };
+            }
+            else
+            {
+                rent = (double)property.levels[property.level.ToString()];
+            }
+
+            EnsurePlayerCanPay(PlayerManager.Players.IndexOf(player), rent);
+            PlayerManager.Players.First(p => p.Name == property.owner).PlayerMoney += rent;
+        }
+        private void HandleBuyProperty(int currPlayer, Property property, Panel pnl, Label lbl)
+        {
+            var player = PlayerManager.Players[currPlayer];
+            double price = (double)property.price;
+
+            if (!CanPlayerAfford(currPlayer, price))
+                return;
+
+            var dr = MessageBox.Show($"{player.Name}, do you want to buy {property.name} for ${price}?",
+                                     "Buy Property",
+                                     MessageBoxButtons.YesNo);
+
+            if (dr != DialogResult.Yes)
+                return;
+
+            TryPayWithSelling(currPlayer, price);
+
+            if (player.PlayerMoney < price)
+            {
+                MessageBox.Show($"{player.Name} still doesn't have enough money.");
+                return;
+            }
+
+            player.PlayerMoney -= price;
+            property.owner = player.Name;
+            player.OwnedProperties.Add(board.properties.IndexOf(property));
+
+            if (pnl != null)
+                pnl.BackColor = player.Color;
+
+            ShowPopup(lbl, -price);
+            PlaySFX(Properties.Resources.Money, 500);
+        }
+        private bool CanPlayerAfford(int currPlayer, double price)
+        {
+            var player = PlayerManager.Players[currPlayer];
+            if (player.PlayerMoney >= price) return true;
+
+            double total = 0;
+            foreach (var prop in board.properties.Where(p => p.owner == player.Name))
+            {
+                if (prop.level == 0)
+                    total += (double)prop.sell_price;
+                else
+                    total += (double)(prop.sell_price + prop.upgrade_price * (1 + 0.25 * prop.level));
+            }
+            return total >= price;
+        }
+        private void TryPayWithSelling(int currPlayer, double price)
+        {
+            var player = PlayerManager.Players[currPlayer];
+            if (player.PlayerMoney >= price) return;
+
+            if (player.OwnedProperties.Count == 0)
+                return;
+
+            var sell = MessageBox.Show($"{player.Name} doesn't have enough money. Sell assets?",
+                                       "Not enough money",
+                                       MessageBoxButtons.YesNo);
+
+            if (sell == DialogResult.Yes)
+                PromptSellProperties(PlayerManager.Players.IndexOf(player), price - player.PlayerMoney);
+        }
+        private void HandleUpgrade(int currPlayer, Property property, PictureBox pcbHouse, Label lbl, int direction)
+        {
+            var player = PlayerManager.Players[currPlayer];
+            if (property.level >= 4) return;
+
+            double upgradeCost = (double)(property.upgrade_price * (1 + 0.25 * property.level));
+
+            var ask = MessageBox.Show($"{player.Name}, buy house level {property.level + 1} for ${upgradeCost}?",
+                                      "Buy House",
+                                      MessageBoxButtons.YesNo);
+
+            if (ask != DialogResult.Yes)
+                return;
+
+            TryPayWithSelling(currPlayer, upgradeCost);
+
+            if (player.PlayerMoney < upgradeCost)
+            {
+                MessageBox.Show($"{player.Name} still doesn't have enough money after selling.");
+                return;
+            }
+
+            player.PlayerMoney -= upgradeCost;
+            property.level++;
+
+            ShowPopup(lbl, -upgradeCost);
+            PlaySFX(Properties.Resources.Money, 500);
+
+            DrawHouse(property, pcbHouse, direction);
+        }
+        private void DrawHouse(Property property, PictureBox pcbHouse, int direction)
+        {
+            if (pcbHouse == null) return;
+
+            pcbHouse.Controls.Clear();
+
+            if (property.level >= 4)
+            {
+                var hotel = new PictureBox()
+                {
+                    Size = pcbHouse.Size,
+                    BackgroundImage = direction == 1 ? Properties.Resources.HouseVip1 : Properties.Resources.HouseVip2,
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    Parent = pcbHouse,
+                    Location = new Point(0, 0)
+                };
+                return;
+            }
+
+            for (int i = 0; i < property.level; i++)
+            {
+                var house = new PictureBox()
+                {
+                    Size = new Size(20, 20),
+                    BackgroundImage = Properties.Resources.house,
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    Parent = pcbHouse,
+                    Location = direction == 1 ?
+                        new Point(i * 27, (pcbHouse.Height - 20) / 2) :
+                        new Point((pcbHouse.Width - 20) / 2, i * 27)
+                };
+            }
+        }
+
+        private void ResetPlayerProperties(int currPlayer)
+        {
+            var player = PlayerManager.Players[currPlayer];
             foreach (int propIndex in player.OwnedProperties)
             {
                 var prop = board.properties[propIndex];
@@ -805,6 +1183,7 @@ namespace Monopoly.Screens
 
             player.OwnedProperties.Clear();
         }
+
         private void RollDice(object sender, EventArgs e)
         {
             if (movementInProgress) return;
@@ -868,7 +1247,6 @@ namespace Monopoly.Screens
             {
                 RollTimer.Stop();
                 Rolling = false;
-                int[] result = new int[2];
                 for (int i = 0; i < result.Length; i++)
                 {
                     result[i] = GameManager.RollDice();
@@ -2142,5 +2520,6 @@ namespace Monopoly.Screens
                 }
             }
         }
+
     }
 }

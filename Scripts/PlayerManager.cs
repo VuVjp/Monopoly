@@ -27,6 +27,8 @@ namespace Monopoly.Scripts
             { "pcbAvt8", Color.White },
         };
         public static List<PlayerInfo> Players = null!;
+
+        public static bool IsLoadingSavedGame = false;
     }
     public class PlayerInfo
     {
@@ -55,5 +57,14 @@ namespace Monopoly.Scripts
         public int GetOutOfJailFree = 0;
         public int utility = 0;
         public List<int> OwnedProperties = new List<int>();
+        public PlayerInfo(int id)
+        {
+            Name = $"Player {id + 1}";
+            Color = Color.White;
+            PlayerMoney = 2000;
+            Position = 1;
+            IsBankrupt = false;
+            OwnedProperties = new List<int>();
+        }
     }
 }
