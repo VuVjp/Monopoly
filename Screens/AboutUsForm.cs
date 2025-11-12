@@ -16,7 +16,7 @@ namespace Monopoly.Screens
         {
             InitializeComponent();
             this.Text = "About Us";
-            this.Size = new Size(600, 500);
+            this.Size = new Size(610, 520);
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -49,24 +49,24 @@ namespace Monopoly.Screens
 @"We are a team of 4 developers who worked together to build this Monopoly-style board game.
 
 OUR TEAM
-1. **Nguyễn Hoàng Nguyên Vũ**
+1. Nguyễn Hoàng Nguyên Vũ
    - Designed and implemented WinForms UI
    - Developed Socket communication and client management
    - Built the main game loop and game logic
    - Optimized UI and UX for smooth gameplay
 
-2. **Phạm Minh Tình**
+2. Phạm Minh Tình
    - Designed WinForms interface
    - Implemented sound and audio effects
    - Created offline save/load system
    - Contributed to game logic and event handling
 
-3. **Trần Đình Bắc**
+3. Trần Đình Bắc
    - Conducted surveys and user research
    - Designed parts of the WinForms UI
    - Developed the server search and connection features
 
-4. **Đào Đức Long**
+4. Đào Đức Long
    - Assisted with testing, debugging, and documentation
    - Supported UI adjustments and gameplay balance
 

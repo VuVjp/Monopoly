@@ -47,7 +47,7 @@ namespace Monopoly.Screens
                 Location = new Point(20, 80),
                 Text =
                 @"                               Welcome to our Monopoly-style board game!
-                         You can play either **Offline** or **Online (LAN)** with friends. 
+                         You can play either Offline or Online with friends. 
         The goal is to become the wealthiest player by buying properties, collecting rent,
                                      and managing your money wisely.
 
