@@ -501,6 +501,7 @@ namespace Monopoly.Screens
                     return;
                 }
             }
+            PlayerManager.ResetPlayers();
             for (int i = 0; i < int.Parse(txbPlrCounter.Text.First().ToString()); i++)
             {
                 var pcb = playerBoxes[i];

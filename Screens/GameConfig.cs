@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Monopoly.Scripts.LookUp;
 
 namespace Monopoly.Screens
 {
@@ -23,9 +24,10 @@ namespace Monopoly.Screens
                 LoadSaveList();
             if (PlayerManager.isOnline)
             {
-                btnCreate.Text = "Create Room";
-                btnJoin.Text = "Join Room";
-                btnDelete.Visible = false;
+                lblTitle.Text = "Online Mode";
+                btnCreate.Text = "Create Server";
+                btnJoin.Text = "Join Server";
+                btnDelete.Text = "Find Server";
             }
         }
         private void LoadSaveList()
@@ -114,6 +116,18 @@ namespace Monopoly.Screens
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (PlayerManager.isOnline)
+            {
+                List<MyTcpInfo> myTcpInfos = BcastRequest.Lookup(1);
+                lsbGameContainer.Items.Clear();
+                foreach (MyTcpInfo tcpInfo in myTcpInfos)
+                {
+                    this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
+                }
+            }
+            else
+            {
+                
             if (lsbGameContainer.SelectedItem == null)
             {
                 MessageBox.Show("Please select a save file to delete!");
@@ -143,6 +157,5 @@ namespace Monopoly.Screens
                     MessageBox.Show($"Failed to delete file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
     }
 }

@@ -3,6 +3,7 @@ using Monopoly.Scripts.Sockets;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Media;
 using System.Net.Sockets;
 using System.Numerics;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.AccessControl;
 using System.Text;
@@ -72,12 +74,11 @@ namespace Monopoly.Screens
         List<int> turnOrder;
         List<Panel> panels;
         int activePlr = PlayerManager.playerCount;
+        private CancellationTokenSource _gameLoopCts;
         private TaskCompletionSource _rollWaiter;
-        private TaskCompletionSource _waiter;
         private TaskCompletionSource<bool> _upgradeWaiter;
-        private TaskCompletionSource _pickCardWaiter;
+        private TaskCompletionSource<bool> _pickCardWaiter;
         private TaskCompletionSource<bool> _buyWaiter;
-        private TaskCompletionSource<int> _sellWaiter;
         #endregion
         public Game(Monopoly monopoly, string saveFile = "")
         {
@@ -92,7 +93,9 @@ namespace Monopoly.Screens
             labels = new List<Label>{ pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8,
             pos9, pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18, pos19,
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
+            this.monopoly = monopoly;
             GameLoader();
+            InitAudio();
             InitAudio();
 
             if (!PlayerManager.isOnline)
@@ -164,7 +167,8 @@ namespace Monopoly.Screens
                     RandomizeTurnOrder();
 
                     pnlChat.Visible = false;
-                    Task.Run(() => GameLoop());
+                    _gameLoopCts = new CancellationTokenSource();
+                    Task.Run(() => GameLoop(_gameLoopCts.Token));
                 }
                 else
                 {
@@ -237,6 +241,7 @@ namespace Monopoly.Screens
             for (int i = 0; i < PlayerManager.playerCount; i++)
             {
                 var player = PlayerManager.Players[i];
+                var socket = SocketServerManager.ClientSockets.ElementAt(i);
 
                 if (_moneyChangedHandlers[i] != null)
                     player.OnMoneyChanged -= _moneyChangedHandlers[i];
@@ -250,24 +255,39 @@ namespace Monopoly.Screens
                         lblPlayerName1.ForeColor = player.Color;
                         pnlPlr1.Visible = true;
 
-                        _moneyChangedHandlers[i] = (newMoney) =>
+                        _moneyChangedHandlers[i] = async (newMoney) =>
                         {
-                            lblPlayerMoney1.Text = $"${newMoney}";
+                            this.Invoke(() => lblPlayerMoney1.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
-                            if (player.PlayerMoney == double.MinValue && !player.isPlaying)
-                            {
-                                lblPlayerName1.Text = "Disconnect";
-                                lblPlayerName1.BackColor = Color.FromArgb(255, 240, 240);
-                                lblPlayerMoney1.Text = "0";
-                            }
-                            if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
-                            {
-                                SellProp(0);
-                            }
                             if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
+                            }
+                            else
+                            {
+                                if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                                {
+                                    lblPlayerName1.Text = "Disconnect";
+                                    lblPlayerName1.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney1.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[0].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    RemovePropHandler(0);
+                                }
+                                else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
+                                {
+                                    lblPlayerName1.Text = "Bankrupt";
+                                    lblPlayerName1.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney1.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    RemovePropHandler(0);
+                                }
+                                else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
+                                {
+                                    await PromptSellPropertiesOnl(i, Math.Abs(player.PlayerMoney));
+                                }
                             }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
@@ -280,19 +300,39 @@ namespace Monopoly.Screens
                         lblPlayerName2.ForeColor = player.Color;
                         pnlPlr2.Visible = true;
 
-                        _moneyChangedHandlers[i] = (newMoney) =>
+                        _moneyChangedHandlers[i] = async (newMoney) =>
                         {
-                            lblPlayerMoney2.Text = $"${newMoney}";
+                            this.Invoke(() => lblPlayerMoney2.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
-                                lblPlayerMoney2.Text = "0";
-                            }
-                            if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
-                            {
-                                SellProp(1);
-                            }
+                            if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
+                            }
+                            else
+                            {
+                                if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                                {
+                                    lblPlayerName2.Text = "Disconnect";
+                                    lblPlayerName2.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney2.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[1].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    RemovePropHandler(1);
+                                }
+                                else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
+                                {
+                                    lblPlayerName2.Text = "Bankrupt";
+                                    lblPlayerName2.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney2.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    RemovePropHandler(1);
+                                }
+                                else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
+                                {
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                }
                             }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
@@ -305,24 +345,39 @@ namespace Monopoly.Screens
                         lblPlayerName3.ForeColor = player.Color;
                         pnlPlr3.Visible = true;
 
-                        _moneyChangedHandlers[i] = (newMoney) =>
+                        _moneyChangedHandlers[i] = async (newMoney) =>
                         {
-                            lblPlayerMoney3.Text = $"${newMoney}";
+                            this.Invoke(() => lblPlayerMoney3.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
-                            if(player.PlayerMoney == double.MinValue && !player.isPlaying)
-                            {
-                                lblPlayerName3.Text = "Disconnect";
-                                lblPlayerName3.BackColor = Color.FromArgb(255, 240, 240);
-                                lblPlayerMoney3.Text = "0";
-                            }
-                            if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
-                            {
-                                SellProp(2);
-                            }
                             if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
+                            }
+                            else
+                            {
+                                if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                                {
+                                    lblPlayerName3.Text = "Disconnect";
+                                    lblPlayerName3.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney3.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[2].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    RemovePropHandler(2);
+                                }
+                                else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
+                                {
+                                    lblPlayerName3.Text = "Bankrupt";
+                                    lblPlayerName3.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney3.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    RemovePropHandler(2);
+                                }
+                                else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
+                                {
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                }
                             }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
@@ -335,24 +390,39 @@ namespace Monopoly.Screens
                         lblPlayerName4.ForeColor = player.Color;
                         pnlPlr4.Visible = true;
 
-                        _moneyChangedHandlers[i] = (newMoney) =>
+                        _moneyChangedHandlers[i] = async (newMoney) =>
                         {
-                            lblPlayerMoney4.Text = $"${newMoney}";
+                            this.Invoke(() => lblPlayerMoney4.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
                             this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
-                            if (player.PlayerMoney == double.MinValue && !player.isPlaying)
-                            {
-                                lblPlayerName4.Text = "Disconnect";
-                                lblPlayerName4.BackColor = Color.FromArgb(255, 240, 240);
-                                lblPlayerMoney4.Text = "0";
-                            }
-                            if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
-                            {
-                                SellProp(3);
-                            }
                             if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
+                            }
+                            else
+                            {
+                                if (player.PlayerMoney == double.MinValue && !player.isPlaying)
+                                {
+                                    lblPlayerName4.Text = "Disconnect";
+                                    lblPlayerName4.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney4.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[3].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    RemovePropHandler(3);
+                                }
+                                else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
+                                {
+                                    lblPlayerName4.Text = "Bankrupt";
+                                    lblPlayerName4.BackColor = Color.FromArgb(136, 8, 8);
+                                    lblPlayerMoney4.Text = "0";
+                                    player.PlayerMoney = 0;
+                                    RemovePropHandler(3);
+                                }
+                                else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
+                                {
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                }
                             }
                         };
                         player.OnMoneyChanged += _moneyChangedHandlers[i];
@@ -957,6 +1027,7 @@ namespace Monopoly.Screens
                         PropertyIndex = item.PropertyIndex,
                         Display = prop.level > 0 ? $"{prop.name} - Level {prop.level}" : $"{prop.name} - No houses (Price: ${prop.sell_price})"
                     };
+
                     updateInfo();
                 };
                 btnSellProperty.Click += (s, e) =>
@@ -1844,13 +1915,34 @@ namespace Monopoly.Screens
             return new int[] { dice1, dice2 };
         }
 
-        private async Task GameLoop()
+        private async Task GameLoop(CancellationToken token)
         {
             int steps;
-            while (true)
+            while (!token.IsCancellationRequested)
             {
-                _rollWaiter = new TaskCompletionSource();
+                activePlr = 0;
+                foreach (var plr in PlayerManager.Players)
+                {
+                    if (!plr.IsBankrupt)
+                    {
+                        activePlr++;
+                    }
+                }
+                if (activePlr == 1)
+                {
+                    var player = PlayerManager.Players.FirstOrDefault(x => !x.IsBankrupt && x.isPlaying);
+                    _ = Task.Run(()=>MessageBox.Show($"{player!.Name} won the game!"));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{player!.Name} won the game!"));
+                    break;
+                }
                 int playerIndex = turnOrder[currentPlayerIndex];
+                var currentPlr = PlayerManager.Players[playerIndex];
+                if (currentPlr.IsBankrupt || !currentPlr.isPlaying)
+                {
+                    currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
+                    continue;
+                }
+                _rollWaiter = new TaskCompletionSource();
                 if (PlayerManager.Players[playerIndex].Name == "Player 1")
                 {
                     Dice1.Enabled = true;
@@ -1867,6 +1959,14 @@ namespace Monopoly.Screens
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
                 await CheckPlrPos(playerIndex);
+                for (int i = 0; i < PlayerManager.playerCount; i++)
+                {
+                    if (PlayerManager.Players[i].PlayerMoney < 0 && PlayerManager.Players[i].isPlaying)
+                    {
+                        i--;
+                        await Task.Delay(500);
+                    }
+                }
                 if (Dices[0] == Dices[1])
                 {
                     PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
@@ -1936,7 +2036,7 @@ namespace Monopoly.Screens
         {
             Card card;
             var plr = PlayerManager.Players[plrIndex];
-            _pickCardWaiter = new TaskCompletionSource();
+            _pickCardWaiter = new TaskCompletionSource<bool>();
             if (propType == "community_chest")
             {
                 if (plr.Name == "Player 1")
@@ -1963,7 +2063,8 @@ namespace Monopoly.Screens
                 }
                 card = board.chance![new Random().Next(board.chance.Count)];
             }
-            await _pickCardWaiter.Task;
+            var checker = await _pickCardWaiter.Task;
+            if(checker ==false) return;
             switch (card.action)
             {
                 case CardAction.Receive:
@@ -2044,6 +2145,54 @@ namespace Monopoly.Screens
                 }
             }
         }
+        private void UpdatePropertyVisual(string propertyName, int level)
+        {
+            var property = board.properties.FirstOrDefault(p => p.name == propertyName);
+            if (property == null) return;
+            if (property.type != "property") return;
+
+            var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(property.name));
+            var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
+            if (pnl == null) return;
+
+            int direction = horizontal.Contains(pnl) ? 1 : 2;
+
+            var pcbHouse = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+            if (pcbHouse == null) return;
+
+            pcbHouse.Controls.Clear();
+
+            if (level >= 4)
+            {
+                var hotel = new PictureBox()
+                {
+                    Size = pcbHouse.Size,
+                    BackgroundImage = direction == 1
+                        ? Properties.Resources.HouseVip1
+                        : Properties.Resources.HouseVip2,
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    Parent = pcbHouse,
+                    Location = new Point(0, 0)
+                };
+            }
+            else if (level > 0)
+            {
+                for (int i = 0; i < level; i++)
+                {
+                    var house = new PictureBox()
+                    {
+                        Size = new Size(20, 20),
+                        BackgroundImage = Properties.Resources.house,
+                        BackgroundImageLayout = ImageLayout.Stretch,
+                        Parent = pcbHouse,
+                        Location = direction == 1
+                            ? new Point(i * 22, (pcbHouse.Height - 20) / 2)
+                            : new Point((pcbHouse.Width - 20) / 2, i * 22)
+                    };
+                }
+            }
+        }
+
         private async Task UpdgradeProp(int plrIndex, int propIndex)
         {
             var prop = board.properties[propIndex];
@@ -2071,73 +2220,118 @@ namespace Monopoly.Screens
                     plr.PlayerMoney -= upgradeCost;
                     prop.level++;
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.Upgrade, $"{plr.Name} upgraded {prop.name} to Level {prop.level} for ${upgradeCost}!", $"{plr.Name}/{plr.Position - 1}/{prop.level}/{plr.PlayerMoney}"));
+                    UpdatePropertyVisual(prop.name, prop.level);
                 }
                 else
                 {
+                    if (PlayerManager.isAdmin)
+                    {
+                        await Task.Run(() => MessageBox.Show("You don’t have enough property value to cover this cost."));
 
+                    }
+                    else
+                        await SocketServerManager.SocketServer.Send(SocketServerManager.ClientSockets[plr.Name], new Data(Data.ActionType.message, "You don’t have enough property value to cover this cost."));
                 }
             }
         }
         private async Task BuyProp(int plrIndex)
         {
-            await this.Invoke(async () =>
+            var plr = PlayerManager.Players[plrIndex];
+            var prop = board.properties[plr.Position - 1];
+            bool finalResult = false;
+
+            if (plrIndex == 0)
             {
-                var plr = PlayerManager.Players[plrIndex];
-                var prop = board.properties[plr.Position - 1];
-                DialogResult result;
-                result = MessageBox.Show(
+                DialogResult dialogResult = MessageBox.Show(
                     $"Do you want to buy {prop.name} for ${prop.price}?",
                     "Purchase Property",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
-                if (result == DialogResult.Yes)
+                if (dialogResult == DialogResult.Yes)
                 {
-                    if (plr.PlayerMoney >= prop.price)
-                    {
-                        plr.PlayerMoney -= (double)prop.price;
-                        prop.owner = plr.Name;
-                        panels[plr.Position-1].BackColor = plr.Color;
+                    finalResult = true;
+                }
+            }
+            else
+            {
+                await SocketServerManager.SocketServer.Send(
+                    SocketServerManager.ClientSockets[plr.Name],
+                    new Data(Data.ActionType.Decide, $"Do you want to buy {prop.name} for ${prop.price}?")
+                );
 
-                        await SocketServerManager.Broadcast(new Data(Data.ActionType.BuyProperty, $"{plr.Name} bought {prop.name} for ${prop.price}!", $"{plr.Name}/{plr.Position - 1}/{prop.level}/{plr.PlayerMoney}"));
+                _buyWaiter = new TaskCompletionSource<bool>();
+                finalResult = await _buyWaiter.Task;
+            }
+
+            if (finalResult)
+            {
+                double price = (double)prop.price!;
+                if (plr.PlayerMoney >= price)
+                {
+                    plr.PlayerMoney -= price;
+                    prop.owner = plr.Name;
+
+                    if (panels[plr.Position - 1] != null)
+                        panels[plr.Position - 1].BackColor = plr.Color;
+
+                    await SocketServerManager.Broadcast(
+                        new Data(Data.ActionType.BuyProperty,
+                            $"{plr.Name} bought {prop.name} for ${price}!",
+                            $"{plr.Name}/{plr.Position - 1}/{prop.level}/{plr.PlayerMoney}")
+                    );
+                    plr.OwnedProperties.Add(plr.Position - 1);
+                }
+                else
+                {
+                    string msg = "You don’t have enough property value to cover this cost.";
+
+                    if (PlayerManager.isAdmin)
+                    {
+                        _ = Task.Run(() => MessageBox.Show(msg, "Insufficient Funds", MessageBoxButtons.OK, MessageBoxIcon.Warning));
                     }
                     else
                     {
-
+                        await SocketServerManager.SocketServer.Send(
+                            SocketServerManager.ClientSockets[plr.Name],
+                            new Data(Data.ActionType.message, msg)
+                        );
                     }
                 }
-            });
-            _waiter?.SetResult();
-        }
-        private bool SellProp(int plrIndex)
-        {
-            var plr = PlayerManager.Players[plrIndex];
-            if (plr.OwnedProperties.Count == 0)
-            {
-                return false;
             }
-            return true;
         }
+        private void RemovePropHandler(int plrIndex)
+        {
+            Task.Run(() =>
+            {
+                var plr = PlayerManager.Players[plrIndex];
+                foreach (int p in plr.OwnedProperties)
+                {
+                    panels[p].BackColor = Color.Transparent;
+                    board.properties[p].owner = null;
+                    board.properties[p].level = 0;
+                    UpdatePropertyVisual(board.properties[p].name, 0);
+                }
+            });
+        }
+
         private async Task PayRent(int plrIndex)
         {
             var plr = PlayerManager.Players[plrIndex];
             var owner = board.properties[plr.Position - 1].owner;
             var plr1 = PlayerManager.Players.FirstOrDefault(x => x.Name == owner);
+            double price = 0;
             if (board.properties[plr.Position - 1].type == "property")
             {
-                var price = board.properties[plr.Position - 1].levels![board.properties[plr.Position].level.ToString()];
-                plr.PlayerMoney -= price;
-                plr1!.PlayerMoney += price;
+                price = board.properties[plr.Position - 1].levels![board.properties[plr.Position].level.ToString()];
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s property. Pay ${price} rent."));
-                await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s property. Pay ${price} rent./{plr.Name}/{plr1.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s property. Pay ${price} rent./{plr.Name}/{plr1!.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
             else if (board.properties[plr.Position - 1].type == "railroad")
             {
-                var price = 1000;
-                plr.PlayerMoney -= price;
-                plr1!.PlayerMoney += price;
+                price = 1000;
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s railroad. Pay ${price}."));
-                await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s railroad. Pay ${price}./{plr.Name}/{plr1.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s railroad. Pay ${price}./{plr.Name}/{plr1!.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
             else
             {
@@ -2150,11 +2344,14 @@ namespace Monopoly.Screens
                 {
                     multiplier = 200;
                 }
-                double price = (Dices[0] + Dices[1]) * multiplier;
-                plr.PlayerMoney -= price;
-                plr1!.PlayerMoney += price;
+                price = (Dices[0] + Dices[1]) * multiplier;
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s Utility. Pay {multiplier} × dice roll = ${price}."));
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s Utility. Pay {multiplier} × dice roll = ${price}./{plr.Name}/{plr1.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
+            }
+            if (plr.PlayerMoney >= price)
+            {
+                plr.PlayerMoney -= price;
+                plr1!.PlayerMoney += price;
             }
         }
 
@@ -2172,49 +2369,231 @@ namespace Monopoly.Screens
 
         private async Task PlayerMoving(string plr, int steps)
         {
-            var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name.Equals(plr));
-            if (plrInfo == null) return;
-
-            var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
-            if (pcb == null) return;
-
-            int oldPos = plrInfo.Position;
-            bool passedStart = (plrInfo.Position + steps) >= labels.Count;
-            plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
-
-            for (int i = 0; i < steps; i++)
+            await this.Invoke(async () =>
             {
-                int pos = (oldPos + i) % labels.Count;
-                this.Invoke(new Action(() =>
-                {
-                    pcb.Location = new Point(labels[pos].Location.X, labels[pos].Location.Y - 15);
-                    panels[pos].Controls.Add(pcb);
-                    pcb.BringToFront();
-                }));
-                PlaySFX(Properties.Resources.Move, 150, 4);
-                await Task.Delay(150);
-            }
+                var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name.Equals(plr));
+                if (plrInfo == null) return;
 
-            if (passedStart)
-            {
-                _ = Task.Run(() => MessageBox.Show($"{plrInfo.Name} passed GO! Collect $2000"));
-                if (PlayerManager.isAdmin)
-                {
-                    plrInfo.PlayerMoney += 2000;
+                var pcb = (PictureBox)this.Controls.Find(plr, true).FirstOrDefault()!;
+                if (pcb == null) return;
 
-                    foreach (var client in SocketServerManager.ClientSockets)
+                int oldPos = plrInfo.Position;
+                bool passedStart = (plrInfo.Position + steps) >= labels.Count;
+                plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
+
+                for (int i = 0; i < steps; i++)
+                {
+                    int pos = (oldPos + i) % labels.Count;
+                    this.Invoke(new Action(() =>
                     {
-                        if (client.Key == "Player 1") continue;
-                        if (client.Value != null)
+                        pcb.Location = new Point(labels[pos].Location.X, labels[pos].Location.Y - 15);
+                        panels[pos].Controls.Add(pcb);
+                        pcb.BringToFront();
+                    }));
+                    PlaySFX(Properties.Resources.Move, 150, 4);
+                    await Task.Delay(150);
+                }
+
+                if (passedStart)
+                {
+                    _ = Task.Run(() => MessageBox.Show($"{plrInfo.Name} passed GO! Collect $2000"));
+                    if (PlayerManager.isAdmin)
+                    {
+                        plrInfo.PlayerMoney += 2000;
+
+                        foreach (var client in SocketServerManager.ClientSockets)
                         {
-                            await SocketServerManager.SocketServer.Send(
-                                client.Value,
-                                new Data(Data.ActionType.Recieve, $"2000/{plrInfo.PlayerMoney}", plr)
-                            );
+                            if (client.Key == "Player 1") continue;
+                            if (client.Value != null)
+                            {
+                                await SocketServerManager.SocketServer.Send(
+                                    client.Value,
+                                    new Data(Data.ActionType.Recieve, $"{plrInfo.Name} passed GO! Collect $2000/{plrInfo.PlayerMoney}", plr)
+                                );
+                            }
                         }
                     }
                 }
+            });
+        }
+        private async Task PromptSellPropertiesOnl(int playerIndex, double requiredAmount = 0)
+        {
+            var player = PlayerManager.Players[playerIndex];
+            double propertiesValue = 0;
+            using (Form frm = new Form())
+            {
+                frm.Text = $"{player.Name} - Sell Properties";
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.Size = new Size(520, 420);
+                frm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                frm.MaximizeBox = frm.MinimizeBox = false;
+
+                ListBox lst = new ListBox()
+                {
+                    Location = new Point(12, 12),
+                    Size = new Size(360, 320)
+                };
+
+                foreach (int idx in player.OwnedProperties.ToList())
+                {
+                    var prop = board.properties[idx];
+                    string line = prop.level > 0
+                        ? $"{prop.name} - Level {prop.level} (Sell Price: ${prop.upgrade_price})"
+                        : $"{prop.name} - No houses (Price: ${prop.price})";
+                    for (int i = 0; i < prop.level; i++)
+                    {
+                        propertiesValue += (double)prop.upgrade_price! + ((double)prop.upgrade_price * i * 0.5);
+                    }
+                    propertiesValue += (double)prop.sell_price!;
+                    lst.Items.Add(new ListItemForSell { PropertyIndex = idx, Display = line });
+                }
+                if (propertiesValue < requiredAmount)
+                {
+                    var plr = PlayerManager.Players[playerIndex];
+                    if (PlayerManager.isAdmin)
+                    {
+                        plr.isPlaying = false;
+                        plr.IsBankrupt = true;
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", plr.Name));
+                    }
+                    else
+                    {
+                        await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.Bankrupt, "", plr.Name));
+                    }
+                }
+
+                var btnSellHouse = new System.Windows.Forms.Button()
+                {
+                    Text = "Sell 1 House",
+                    Location = new Point(380, 12),
+                    Size = new Size(120, 36)
+                };
+                var btnSellProperty = new System.Windows.Forms.Button()
+                {
+                    Text = "Sell Property",
+                    Location = new Point(380, 56),
+                    Size = new Size(120, 36)
+                };
+                var btnClose = new System.Windows.Forms.Button()
+                {
+                    Text = "Done",
+                    Location = new Point(380, 320),
+                    Size = new Size(120, 36)
+                };
+
+                Label lblInfo = new Label()
+                {
+                    Location = new Point(12, 340),
+                    Size = new Size(480, 36),
+                    AutoSize = false
+                };
+                Action updateInfo = () =>
+                {
+                    lblInfo.Text = $"Money: ${player.PlayerMoney}    Required: ${(requiredAmount > 0 ? requiredAmount.ToString() : "0")}";
+                };
+
+                frm.Controls.Add(lst);
+                frm.Controls.Add(btnSellHouse);
+                frm.Controls.Add(btnSellProperty);
+                frm.Controls.Add(btnClose);
+                frm.Controls.Add(lblInfo);
+                updateInfo();
+
+                btnSellHouse.Click += async (s, e) =>
+                {
+                    if (lst.SelectedItem == null)
+                    {
+                        MessageBox.Show("Choose a property to sell house.");
+                        return;
+                    }
+                    var item = (ListItemForSell)lst.SelectedItem;
+                    var prop = board.properties[item.PropertyIndex];
+                    if (prop.level <= 0)
+                    {
+                        MessageBox.Show("This property has no houses.");
+                        return;
+                    }
+                    if (PlayerManager.isAdmin)
+                    {
+                        await SellHouseHandler(player, item.PropertyIndex);
+                    }
+                    else
+                    {
+                        await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.SellHouse, $"{item.PropertyIndex}", player.Name));
+                    }
+
+                    MessageBox.Show($"Sold 1 house at {prop.name}");
+                    updateInfo();
+                };
+
+                btnSellProperty.Click += async (s, e) =>
+                {
+                    if (lst.SelectedItem == null)
+                    {
+                        MessageBox.Show("Choose a property to sell.");
+                        return;
+                    }
+                    var item = (ListItemForSell)lst.SelectedItem;
+                    var prop = board.properties[item.PropertyIndex];
+
+                    var res = DialogResult.Yes;
+                    if (prop.level > 0)
+                        res = MessageBox.Show("This property has houses or hotel. Sell all?", "Confirm", MessageBoxButtons.YesNo);
+
+                    if (res == DialogResult.Yes)
+                    {
+                        if (PlayerManager.isAdmin)
+                        {
+                            await SellPropHandler(player, item.PropertyIndex);
+                        }
+                        else
+                        {
+                            await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.SellProp, item.PropertyIndex.ToString(), player.Name));
+                        }
+                        MessageBox.Show($"Sold property {prop.name}");
+                        updateInfo();
+                        lst.Items.RemoveAt(lst.SelectedIndex);
+                    }
+                };
+
+                btnClose.Click += (s, e) =>
+                {
+                    if (player.PlayerMoney > requiredAmount)
+                    {
+                        frm.DialogResult = DialogResult.OK;
+                        frm.Close();
+                        MessageBox.Show("You need to sell properties to continue");
+                    }
+                };
+                frm.ShowDialog();
             }
+        }
+        private async Task SellHouseHandler(PlayerInfo player, int index)
+        {
+            var prop = board.properties[index];
+            player.PlayerMoney += (double)prop.upgrade_price! + ((double)prop.upgrade_price * prop.level * 0.5);
+            prop.level--;
+            UpdatePropertyVisual(prop.name, prop.level);
+            await SocketServerManager.Broadcast(new Data(Data.ActionType.SellHouse, $"{index}/{player.PlayerMoney}/{prop.level.ToString()}", player.Name));
+        }
+        private async Task SellPropHandler(PlayerInfo player, int index)
+        {
+            var prop = board.properties[index];
+            prop.owner = null;
+            double totalMoney = (double)prop.sell_price!;
+            panels[index].BackColor = Color.Transparent;
+            player.OwnedProperties.Remove(index);
+            if (prop.type == "utility")
+            {
+                player.utility--;
+            }
+            for (int i = 0; i < prop.level; i++)
+            {
+                totalMoney += (double)prop.upgrade_price! + ((double)prop.upgrade_price * i * 0.5);
+            }
+            player.PlayerMoney += totalMoney;
+            await SocketServerManager.Broadcast(new Data(Data.ActionType.SellProp, $"{index}/{player.PlayerMoney}", player.Name));
+            UpdatePropertyVisual(prop.name, 0);
         }
 
         private async void SocketServerManager_OnDataReceived(Socket client, Data data)
@@ -2241,11 +2620,33 @@ namespace Monopoly.Screens
                     _rollWaiter?.SetResult();
                     break;
                 case Data.ActionType.PickCard:
-                    _pickCardWaiter?.SetResult();
+                    _pickCardWaiter?.SetResult(true);
                     break;
                 case Data.ActionType.Decide:
                     {
+                        _buyWaiter?.SetResult(bool.Parse(data.Msg!));
                         _upgradeWaiter?.SetResult(bool.Parse(data.Msg!));
+                        break;
+                    }
+                case Data.ActionType.Bankrupt:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        plr!.IsBankrupt = true;
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", data.From));
+                        break;
+                    }
+                case Data.ActionType.SellProp:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+
+                        await SellPropHandler(plr!, int.Parse(data.Msg!));
+                        break;
+                    }
+                case Data.ActionType.SellHouse:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+
+                        await SellHouseHandler(plr!, int.Parse(data.Msg!));
                         break;
                     }
             }
@@ -2253,8 +2654,15 @@ namespace Monopoly.Screens
 
         private async void SocketServerManager_OnClientDisconnect(Socket socket, string plrName)
         {
+            await SocketServerManager.Broadcast(new Data(Data.ActionType.Disconnect, "", plrName));
+            _gameLoopCts?.Cancel();
+
             PlayerDisconnectHandler(plrName);
-            await SocketServerManager.Broadcast(new Data(Data.ActionType.Disconnect,"",plrName));
+
+            await Task.Delay(5000);
+
+            _gameLoopCts = new CancellationTokenSource();
+            _ = Task.Run(() => GameLoop(_gameLoopCts.Token));
         }
         private void PlayerDisconnectHandler(string plrName)
         {
@@ -2263,12 +2671,52 @@ namespace Monopoly.Screens
             plr.IsBankrupt = true;
             plr.isPlaying = false;
             plr.PlayerMoney = double.MinValue;
+            _ = Task.Run(async() =>
+            {
+                await Task.Delay(1000);
+                try { _rollWaiter?.SetResult(); } catch { }
+                await Task.Delay(150 * 15);
+                try { _pickCardWaiter?.SetResult(false); } catch { }
+                try { _buyWaiter?.SetResult(false); } catch { }
+                try { _upgradeWaiter.SetResult(false); } catch { }
+            });
         }
 
         private async void SocketClientManager_OnDataReceived(Data data)
         {
             switch (data.Action)
             {
+                case Data.ActionType.SellRequest:
+                    {
+                        await PromptSellPropertiesOnl(int.Parse(data.From!), Math.Abs(double.Parse(data.Msg!)));
+                        break;
+                    }
+                case Data.ActionType.message:
+                    {
+                        _ = Task.Run(() => MessageBox.Show(data.Msg!));
+                        break;
+                    }
+                case Data.ActionType.SellHouse:
+                    {
+                        string[] values = data.Msg!.Split("/");
+                        var prop = board.properties[int.Parse(values[0])];
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        plr!.PlayerMoney = double.Parse(values[1]);
+                        UpdatePropertyVisual(prop.name, int.Parse(values[2]));
+                        break;
+                    }
+                case Data.ActionType.SellProp:
+                    {
+                        string[] values = data.Msg!.Split("/");
+                        var prop = board.properties[int.Parse(values[0])];
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        prop.owner = null;
+                        panels[int.Parse(values[0])].BackColor = Color.Transparent;
+                        plr!.PlayerMoney = double.Parse(values[1]);
+                        plr.OwnedProperties.Remove(int.Parse(values[0]));
+                        UpdatePropertyVisual(prop.name, 0);
+                        break;
+                    }
                 case Data.ActionType.ChatMessage:
                     pnlChat.Invoke(() => txbChatHistory.AppendText($"{data.From}: {data.Msg}" + Environment.NewLine));
                     if (pnlChat.Visible == false)
@@ -2300,11 +2748,11 @@ namespace Monopoly.Screens
                                     _ = Task.Run(() => MessageBox.Show("Your turn"));
                                 }
                             }
-                            if(plr.Name == PlayerConfig.playerMapping.FirstOrDefault(plr=>plr.Value == PlayerManager.curPlayer).Key)
+                            if (plr.Name == PlayerConfig.playerMapping.FirstOrDefault(plr => plr.Value == PlayerManager.curPlayer).Key)
                             {
                                 Dice1.Enabled = true;
                                 Dice2.Enabled = true;
-                            } 
+                            }
                         }
                     });
                     break;
@@ -2401,7 +2849,9 @@ namespace Monopoly.Screens
                         string[] msg = data.Msg!.Split("/");
                         var plr = PlayerManager.Players.FirstOrDefault(p => p.Name == msg[0]);
                         plr!.PlayerMoney = double.Parse(msg[3]);
-                        board.properties[int.Parse(msg[1])].level = int.Parse(msg[2]);
+                        var prop = board.properties[int.Parse(msg[1])];
+                        prop.level = int.Parse(msg[2]);
+                        UpdatePropertyVisual(prop.name, prop.level);
                         break;
                     }
                 case Data.ActionType.BuyProperty:
@@ -2411,23 +2861,29 @@ namespace Monopoly.Screens
                         var plr = PlayerManager.Players.FirstOrDefault(p => p.Name == msg[0]);
                         plr!.PlayerMoney = double.Parse(msg[3]);
                         board.properties[int.Parse(msg[1])].owner = plr.Name;
-                        panels[plr.Position-1].BackColor = plr.Color;
+                        panels[plr.Position - 1].BackColor = plr.Color;
                         break;
                     }
                 case Data.ActionType.Decide:
                     {
-                        _ = Task.Run(async()=>
+                        _ = Task.Run(async () =>
                         {
                             bool fRS = false;
                             var result = MessageBox.Show(data.Msg, "", MessageBoxButtons.YesNo);
-                            if(result == DialogResult.Yes ) fRS = true;
-                            await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.Decide,fRS.ToString()));
+                            if (result == DialogResult.Yes) fRS = true;
+                            await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.Decide, fRS.ToString()));
                         });
                         break;
                     }
-                    case Data.ActionType.Disconnect:
+                case Data.ActionType.Disconnect:
                     {
                         PlayerDisconnectHandler(data.From!);
+                        break;
+                    }
+                case Data.ActionType.Bankrupt:
+                    {
+                        var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        plr!.PlayerMoney = double.MinValue;
                         break;
                     }
             }
@@ -2509,7 +2965,7 @@ namespace Monopoly.Screens
             }
             else
             {
-                _pickCardWaiter?.SetResult();
+                _pickCardWaiter?.SetResult(true);
             }
         }
         private void pcb_MouseEnter(object sender, EventArgs e)

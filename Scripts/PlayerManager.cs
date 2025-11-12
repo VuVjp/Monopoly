@@ -26,9 +26,15 @@ namespace Monopoly.Scripts
             { "pcbAvt7", Color.Cyan },
             { "pcbAvt8", Color.White },
         };
-        public static List<PlayerInfo> Players = null!;
 
         public static bool IsLoadingSavedGame = false;
+        public static List<PlayerInfo> Players = new List<PlayerInfo>();
+
+        public static void ResetPlayers()
+        {
+            Players = new List<PlayerInfo>();
+        }
+
     }
     public class PlayerInfo
     {
@@ -58,6 +64,7 @@ namespace Monopoly.Scripts
         public int doubleRollCount = 0;
         public int GetOutOfJailFree = 0;
         public int utility = 0;
+        public bool isBuying = false;
         public bool isPlaying = true;
         public List<int> OwnedProperties = new List<int>();
         public PlayerInfo(int id)
