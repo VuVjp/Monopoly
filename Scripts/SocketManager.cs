@@ -291,6 +291,7 @@ namespace Monopoly.Scripts.Sockets
                     ClientSockets[ClientSockets.FirstOrDefault(x => x.Value == socket).Key] = null!;
                 }
             }
+            bcast.Stop();
             socketServer.Dispose();
         }
         public static async Task Broadcast(Socket sender, Data data)

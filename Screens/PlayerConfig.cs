@@ -62,6 +62,7 @@ namespace Monopoly.Screens
             }
             else
             {
+                txbEndPoint.Visible = false;
                 OfflineModeSetup();
             }
         }
@@ -151,7 +152,7 @@ namespace Monopoly.Screens
                 SocketServerManager.isAcceptingPlayers = true;
                 PlayerManager.curPlayer = pcbPlr1;
                 btnPlay.Enabled = true;
-                Task.Run(async () =>
+                _ = Task.Run(async () =>
                 {
                     while (SocketServerManager.isListening)
                     {
@@ -201,6 +202,7 @@ namespace Monopoly.Screens
             }
             else
             {
+                txbEndPoint.Visible = false;
                 btnPlay.Enabled = false;
                 btnPlus.Visible = false;
                 btnMinus.Visible = false;
