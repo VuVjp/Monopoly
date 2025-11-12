@@ -75,7 +75,7 @@ namespace Monopoly.Screens
         List<Panel> panels;
         int activePlr = PlayerManager.playerCount;
         private CancellationTokenSource _gameLoopCts;
-        private TaskCompletionSource _rollWaiter;
+        private TaskCompletionSource<bool> _rollWaiter;
         private TaskCompletionSource<bool> _upgradeWaiter;
         private TaskCompletionSource<bool> _pickCardWaiter;
         private TaskCompletionSource<bool> _buyWaiter;
@@ -1923,13 +1923,13 @@ namespace Monopoly.Screens
 
         private async Task GameLoop(CancellationToken token)
         {
+            activePlr = 0;
             int steps;
             while (!token.IsCancellationRequested)
             {
-                activePlr = 0;
                 foreach (var plr in PlayerManager.Players)
                 {
-                    if (!plr.IsBankrupt)
+                    if (!plr.IsBankrupt && plr.isPlaying)
                     {
                         activePlr++;
                     }
@@ -1950,7 +1950,7 @@ namespace Monopoly.Screens
                     currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
                     continue;
                 }
-                _rollWaiter = new TaskCompletionSource();
+                _rollWaiter = new TaskCompletionSource<bool>();
                 if (PlayerManager.Players[playerIndex].Name == "Player 1")
                 {
                     Dice1.Enabled = true;
@@ -1958,14 +1958,29 @@ namespace Monopoly.Screens
                 }
                 label1.Text = PlayerManager.Players[playerIndex].Name;
                 label1.ForeColor = PlayerManager.Players[playerIndex].Color;
-                await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
-                await _rollWaiter.Task;
-                PlayerManager.Players[1].IsBankrupt = true;
-                PlayerManager.Players[1].PlayerMoney = double.MinValue;
+                if (currentPlr.IsInJail)
+                {
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name, "Roll double to get out of jail"));
+                }
+                else
+                {
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
+                }
+                bool checker = await _rollWaiter.Task;
+                if (!checker) { continue; }
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
                 Dice1.Image = listImage[Dices[0] - 1];
                 Dice2.Image = listImage[Dices[1] - 1];
+                if(currentPlr.IsInJail)
+                {
+                    if(steps%2 == 0)
+                    {
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.message,$"{currentPlr.Name} now is free!"));
+                    }
+                    currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
+                    continue;
+                }
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
                 await CheckPlrPos(playerIndex);
@@ -2347,8 +2362,9 @@ namespace Monopoly.Screens
             {
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[plrIndex].Name, "Utility"));
                 int[] Dices = RollDiceOnline();
-                _rollWaiter = new TaskCompletionSource();
-                await _rollWaiter.Task;
+                _rollWaiter = new TaskCompletionSource<bool>();
+                bool check = await _rollWaiter.Task;
+                if(!check) { return; }
                 double multiplier = 70;
                 if (plr1!.utility > 1)
                 {
@@ -2628,7 +2644,7 @@ namespace Monopoly.Screens
                     await SocketServerManager.Broadcast(client, new Data(Data.ActionType.ChatMessage, data.Msg, data.From));
                     break;
                 case Data.ActionType.RollDice:
-                    _rollWaiter?.SetResult();
+                    _rollWaiter?.SetResult(true);
                     break;
                 case Data.ActionType.PickCard:
                     _pickCardWaiter?.SetResult(true);
@@ -2683,7 +2699,7 @@ namespace Monopoly.Screens
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(1000);
-                    try { _rollWaiter?.SetResult(); } catch { }
+                    try { _rollWaiter?.SetResult(false); } catch { }
                     await Task.Delay(150 * 15);
                     try { _pickCardWaiter?.SetResult(false); } catch { }
                     try { _buyWaiter?.SetResult(false); } catch { }
@@ -2753,7 +2769,16 @@ namespace Monopoly.Screens
                         var plr = PlayerManager.Players.FirstOrDefault(y => y.Name == data.Msg);
                         if (plr != null)
                         {
-                            if (data.From != null)
+                            if (plr.Name == PlayerConfig.playerMapping.FirstOrDefault(plr => plr.Value == PlayerManager.curPlayer).Key)
+                            {
+                                Dice1.Enabled = true;
+                                Dice2.Enabled = true;
+                            }
+                            if (data.From == "Roll double to get out of jail")
+                            {
+                                _ = Task.Run(() => MessageBox.Show("Roll double to get out of jail."));
+                            }
+                            else if (data.From != null)
                             {
                                 _ = Task.Run(() => MessageBox.Show("Roll the dice to determine your payment!"));
                             }
@@ -2762,11 +2787,6 @@ namespace Monopoly.Screens
                                 {
                                     _ = Task.Run(() => MessageBox.Show("Your turn"));
                                 }
-                            }
-                            if (plr.Name == PlayerConfig.playerMapping.FirstOrDefault(plr => plr.Value == PlayerManager.curPlayer).Key)
-                            {
-                                Dice1.Enabled = true;
-                                Dice2.Enabled = true;
                             }
                         }
                     });
@@ -2911,7 +2931,7 @@ namespace Monopoly.Screens
             Dice2.Enabled = false;
             if (PlayerManager.isAdmin)
             {
-                _rollWaiter?.SetResult();
+                _rollWaiter?.SetResult(true);
             }
             else
             {

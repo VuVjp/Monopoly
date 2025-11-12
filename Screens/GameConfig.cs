@@ -96,9 +96,7 @@ namespace Monopoly.Screens
             {
                 PlayerManager.isAdmin = false;
 
-                monopoly.LoadScreen(new PlayerConfig(monopoly));
-
-                SocketClientManager.SocketClient.Connect("", 9999);
+                monopoly.LoadScreen(new FindServer(monopoly));
             }
         }
 
