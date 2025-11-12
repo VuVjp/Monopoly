@@ -114,8 +114,22 @@ namespace Monopoly.Screens
                 MessageBox.Show($"Save fail: {ex.Message}");
             }
         }
-
-        private void OnlineModeSetup()
+        private async Task<string> GetPublicIPAsync()
+        {
+            using (HttpClient http = new HttpClient())
+            {
+                string ip = await http.GetStringAsync("https://api.ipify.org");
+                return ip.Trim();
+            }
+        }
+        private string GetLocalIP()
+        {
+            return Dns.GetHostAddresses(Dns.GetHostName())
+                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork
+                                   && !IPAddress.IsLoopback(ip))?
+                .ToString() ?? "Unknown";
+        }
+        private async void OnlineModeSetup()
         {
             btnMinus.Visible = false;
             btnPlus.Visible = false;
@@ -123,6 +137,10 @@ namespace Monopoly.Screens
             txbPlrCounter.Text = $"{PlayerManager.curPlayerIndex}/{PlayerManager.playerCount}";
             if (PlayerManager.isAdmin)
             {
+                string localIP = GetLocalIP();
+                string publicIP = await GetPublicIPAsync();
+                txbEndPoint.Text = $"Local: {localIP}:9999\n" +
+                    $"Public: {publicIP}:9999";
                 SocketServerManager.OnDataReceived += HandleMessage;
                 SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
                 for (int i = 2; i < PlayerManager.playerCount; i++)

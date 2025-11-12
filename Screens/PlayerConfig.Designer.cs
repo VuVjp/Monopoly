@@ -50,6 +50,7 @@
             pnlChat = new Panel();
             txbChat = new TextBox();
             txbChatHistory = new TextBox();
+            txbEndPoint = new Label();
             ((System.ComponentModel.ISupportInitialize)pcbAvt8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcbAvt6).BeginInit();
@@ -182,7 +183,7 @@
             // btnPlay
             // 
             btnPlay.Font = new Font("Showcard Gothic", 24F);
-            btnPlay.Location = new Point(645, 607);
+            btnPlay.Location = new Point(645, 608);
             btnPlay.Margin = new Padding(2);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(314, 52);
@@ -194,7 +195,7 @@
             // btnReturn
             // 
             btnReturn.Font = new Font("Showcard Gothic", 24F);
-            btnReturn.Location = new Point(300, 607);
+            btnReturn.Location = new Point(300, 608);
             btnReturn.Margin = new Padding(2);
             btnReturn.Name = "btnReturn";
             btnReturn.Size = new Size(314, 52);
@@ -311,14 +312,25 @@
             txbChatHistory.Name = "txbChatHistory";
             txbChatHistory.ReadOnly = true;
             txbChatHistory.ScrollBars = ScrollBars.Vertical;
-            txbChatHistory.Size = new Size(282, 297);
+            txbChatHistory.Size = new Size(282, 296);
             txbChatHistory.TabIndex = 0;
+            // 
+            // txbEndPoint
+            // 
+            txbEndPoint.AutoSize = true;
+            txbEndPoint.Font = new Font("Cooper Black", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txbEndPoint.Location = new Point(0, 0);
+            txbEndPoint.Name = "txbEndPoint";
+            txbEndPoint.Size = new Size(38, 31);
+            txbEndPoint.TabIndex = 40;
+            txbEndPoint.Text = "...";
             // 
             // PlayerConfig
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(233, 227, 208);
+            Controls.Add(txbEndPoint);
             Controls.Add(pnlChat);
             Controls.Add(btnMinus);
             Controls.Add(btnPlus);
@@ -383,5 +395,6 @@
         private Panel pnlChat;
         private TextBox txbChat;
         private TextBox txbChatHistory;
+        private Label txbEndPoint;
     }
 }

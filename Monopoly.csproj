@@ -8,7 +8,12 @@
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <ImplicitUsings>enable</ImplicitUsings>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Logo.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
