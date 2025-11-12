@@ -75,11 +75,12 @@
             // 
             // lsbGameContainer
             // 
+            lsbGameContainer.Font = new Font("Segoe UI", 20F);
             lsbGameContainer.FormattingEnabled = true;
-            lsbGameContainer.Location = new Point(227, 114);
+            lsbGameContainer.Location = new Point(227, 125);
             lsbGameContainer.Margin = new Padding(2);
             lsbGameContainer.Name = "lsbGameContainer";
-            lsbGameContainer.Size = new Size(800, 439);
+            lsbGameContainer.Size = new Size(800, 411);
             lsbGameContainer.TabIndex = 11;
             // 
             // btnJoin

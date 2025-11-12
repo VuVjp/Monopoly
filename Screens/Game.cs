@@ -79,6 +79,7 @@ namespace Monopoly.Screens
         private TaskCompletionSource<bool> _upgradeWaiter;
         private TaskCompletionSource<bool> _pickCardWaiter;
         private TaskCompletionSource<bool> _buyWaiter;
+        private int currPlayerIndex;
         #endregion
         public Game(Monopoly monopoly, string saveFile = "")
         {
@@ -271,7 +272,6 @@ namespace Monopoly.Screens
                                     lblPlayerName1.Text = "Disconnect";
                                     lblPlayerName1.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney1.Text = "0";
-                                    player.PlayerMoney = 0;
                                     var pcb = this.Controls.Find(PlayerManager.Players[0].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(0);
@@ -280,8 +280,10 @@ namespace Monopoly.Screens
                                 {
                                     lblPlayerName1.Text = "Bankrupt";
                                     lblPlayerName1.BackColor = Color.FromArgb(136, 8, 8);
-                                    lblPlayerMoney1.Text = "0";
-                                    player.PlayerMoney = 0;
+                                    lblPlayerMoney1.Text = "0"; 
+                                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
+                                    var pcb = this.Controls.Find(PlayerManager.Players[0].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
                                     RemovePropHandler(0);
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
@@ -316,7 +318,6 @@ namespace Monopoly.Screens
                                     lblPlayerName2.Text = "Disconnect";
                                     lblPlayerName2.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney2.Text = "0";
-                                    player.PlayerMoney = 0;
                                     var pcb = this.Controls.Find(PlayerManager.Players[1].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(1);
@@ -325,13 +326,16 @@ namespace Monopoly.Screens
                                 {
                                     lblPlayerName2.Text = "Bankrupt";
                                     lblPlayerName2.BackColor = Color.FromArgb(136, 8, 8);
-                                    lblPlayerMoney2.Text = "0";
-                                    player.PlayerMoney = 0;
+                                    lblPlayerMoney2.Text = "0"; 
+                                    var pcb = this.Controls.Find(PlayerManager.Players[1].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(1);
+
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
-                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), "1"));
                                 }
                             }
                         };
@@ -361,7 +365,6 @@ namespace Monopoly.Screens
                                     lblPlayerName3.Text = "Disconnect";
                                     lblPlayerName3.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney3.Text = "0";
-                                    player.PlayerMoney = 0;
                                     var pcb = this.Controls.Find(PlayerManager.Players[2].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(2);
@@ -371,12 +374,14 @@ namespace Monopoly.Screens
                                     lblPlayerName3.Text = "Bankrupt";
                                     lblPlayerName3.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney3.Text = "0";
-                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[2].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(2);
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
-                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), "2"));
                                 }
                             }
                         };
@@ -406,7 +411,6 @@ namespace Monopoly.Screens
                                     lblPlayerName4.Text = "Disconnect";
                                     lblPlayerName4.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney4.Text = "0";
-                                    player.PlayerMoney = 0;
                                     var pcb = this.Controls.Find(PlayerManager.Players[3].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(3);
@@ -416,12 +420,14 @@ namespace Monopoly.Screens
                                     lblPlayerName4.Text = "Bankrupt";
                                     lblPlayerName4.BackColor = Color.FromArgb(136, 8, 8);
                                     lblPlayerMoney4.Text = "0";
-                                    player.PlayerMoney = 0;
+                                    var pcb = this.Controls.Find(PlayerManager.Players[3].Name, true).FirstOrDefault() as PictureBox;
+                                    pcb!.Visible = false;
+                                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(3);
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
-                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), i.ToString()));
+                                    await SocketServerManager.SocketServer.Send(socket.Value, new Data(Data.ActionType.SellRequest, player.PlayerMoney.ToString(), "3"));
                                 }
                             }
                         };
@@ -1936,6 +1942,8 @@ namespace Monopoly.Screens
                     break;
                 }
                 int playerIndex = turnOrder[currentPlayerIndex];
+
+                currPlayerIndex = turnOrder[currentPlayerIndex];
                 var currentPlr = PlayerManager.Players[playerIndex];
                 if (currentPlr.IsBankrupt || !currentPlr.isPlaying)
                 {
@@ -1952,6 +1960,8 @@ namespace Monopoly.Screens
                 label1.ForeColor = PlayerManager.Players[playerIndex].Color;
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name));
                 await _rollWaiter.Task;
+                PlayerManager.Players[1].IsBankrupt = true;
+                PlayerManager.Players[1].PlayerMoney = double.MinValue;
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
                 Dice1.Image = listImage[Dices[0] - 1];
@@ -2082,7 +2092,7 @@ namespace Monopoly.Screens
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.PayEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
-                        if (p == plr || p.IsBankrupt == true) continue;
+                        if (p == plr || p.IsBankrupt == true || !p.isPlaying) continue;
                         p.PlayerMoney += card.value;
                     }
                     _ = Task.Run(() => MessageBox.Show(card.description));
@@ -2092,7 +2102,7 @@ namespace Monopoly.Screens
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.ReceiveFromEachPlayer, $"{card.description}/{card.value}/{card.value * activePlr}", plr.Name));
                     foreach (var p in PlayerManager.Players)
                     {
-                        if (p == plr || p.IsBankrupt == true) continue;
+                        if (p == plr || p.IsBankrupt == true || !p.isPlaying) continue;
                         p.PlayerMoney -= card.value;
                     }
                     _ = Task.Run(() => MessageBox.Show(card.description));
@@ -2460,6 +2470,7 @@ namespace Monopoly.Screens
                     {
                         await SocketClientManager.SocketClient.Send(new Data(Data.ActionType.Bankrupt, "", plr.Name));
                     }
+                    return;
                 }
 
                 var btnSellHouse = new System.Windows.Forms.Button()
@@ -2632,6 +2643,7 @@ namespace Monopoly.Screens
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         plr!.IsBankrupt = true;
+                        plr.PlayerMoney = double.MinValue;
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", data.From));
                         break;
                     }
@@ -2658,28 +2670,31 @@ namespace Monopoly.Screens
             _gameLoopCts?.Cancel();
 
             PlayerDisconnectHandler(plrName);
-
-            await Task.Delay(5000);
-
-            _gameLoopCts = new CancellationTokenSource();
-            _ = Task.Run(() => GameLoop(_gameLoopCts.Token));
         }
-        private void PlayerDisconnectHandler(string plrName)
+        private async void PlayerDisconnectHandler(string plrName)
         {
             var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == plrName);
             if (plr == null) return;
             plr.IsBankrupt = true;
             plr.isPlaying = false;
             plr.PlayerMoney = double.MinValue;
-            _ = Task.Run(async() =>
+            if(PlayerManager.Players[currPlayerIndex] == plr)
             {
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    try { _rollWaiter?.SetResult(); } catch { }
+                    await Task.Delay(150 * 15);
+                    try { _pickCardWaiter?.SetResult(false); } catch { }
+                    try { _buyWaiter?.SetResult(false); } catch { }
+                    try { _upgradeWaiter.SetResult(false); } catch { }
+                });
+
                 await Task.Delay(1000);
-                try { _rollWaiter?.SetResult(); } catch { }
-                await Task.Delay(150 * 15);
-                try { _pickCardWaiter?.SetResult(false); } catch { }
-                try { _buyWaiter?.SetResult(false); } catch { }
-                try { _upgradeWaiter.SetResult(false); } catch { }
-            });
+
+                _gameLoopCts = new CancellationTokenSource();
+                _ = Task.Run(() => GameLoop(_gameLoopCts.Token));
+            }
         }
 
         private async void SocketClientManager_OnDataReceived(Data data)
@@ -2883,6 +2898,7 @@ namespace Monopoly.Screens
                 case Data.ActionType.Bankrupt:
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
+                        plr!.IsBankrupt = true;
                         plr!.PlayerMoney = double.MinValue;
                         break;
                     }
