@@ -2232,6 +2232,7 @@ namespace Monopoly.Screens
             var plr = PlayerManager.Players[plrIndex];
             double upgradeCost = (double)prop.upgrade_price! + ((double)prop.level * (double)prop.upgrade_price * 0.25);
             bool finalResult = false;
+            if (prop.level >= 4) return;
             if (plrIndex == 0)
             {
                 DialogResult dialogResult = MessageBox.Show($"Upgrade {prop.name} to level {prop.level + 1} for ${upgradeCost}?", "Upgrade", MessageBoxButtons.YesNo);

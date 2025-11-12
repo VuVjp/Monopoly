@@ -46,7 +46,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(1253, 74);
             lblTitle.TabIndex = 14;
-            lblTitle.Text = "Singleplayer";
+            lblTitle.Text = "OFFLINE MODE";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnDelete

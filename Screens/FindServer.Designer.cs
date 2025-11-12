@@ -47,7 +47,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(1253, 145);
             lblTitle.TabIndex = 18;
-            lblTitle.Text = "Join Server";
+            lblTitle.Text = "Join Directly";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnJoin

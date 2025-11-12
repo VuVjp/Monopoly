@@ -29,7 +29,7 @@ namespace Monopoly.Screens
             {
                 lblTitle.Text = "Online Mode";
                 btnCreate.Text = "Create Server";
-                btnJoin.Text = "Find Server";
+                btnJoin.Text = "Join Directly";
                 btnDelete.Text = "Refesh";
                 lsbGameContainer.DoubleClick += LsbGameContainer_DoubleClick;
                 _ = Task.Run(async() =>

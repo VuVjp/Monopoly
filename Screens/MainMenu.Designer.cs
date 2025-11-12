@@ -91,7 +91,7 @@
             btnOnline.Name = "btnOnline";
             btnOnline.Size = new Size(666, 52);
             btnOnline.TabIndex = 10;
-            btnOnline.Text = "Multiplayer";
+            btnOnline.Text = "Online mode";
             btnOnline.UseVisualStyleBackColor = true;
             btnOnline.Click += btnOnline_Click;
             // 
@@ -103,7 +103,7 @@
             btnSingle.Name = "btnSingle";
             btnSingle.Size = new Size(666, 52);
             btnSingle.TabIndex = 9;
-            btnSingle.Text = "Singleplayer";
+            btnSingle.Text = "Offline mode";
             btnSingle.UseVisualStyleBackColor = true;
             btnSingle.Click += btnSingle_Click;
             // 
