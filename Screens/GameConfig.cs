@@ -16,6 +16,9 @@ namespace Monopoly.Screens
     public partial class GameConfig : UserControl
     {
         private Monopoly monopoly;
+
+        private List<MyTcpInfo> myTcpInfos;
+        private bool isRefreshing = false;
         public GameConfig(Monopoly monopoly)
         {
             InitializeComponent();
@@ -26,10 +29,33 @@ namespace Monopoly.Screens
             {
                 lblTitle.Text = "Online Mode";
                 btnCreate.Text = "Create Server";
-                btnJoin.Text = "Join Server";
-                btnDelete.Text = "Find Server";
+                btnJoin.Text = "Find Server";
+                btnDelete.Text = "Refesh";
+                lsbGameContainer.DoubleClick += LsbGameContainer_DoubleClick;
+                _ = Task.Run(async () =>
+                {
+                    myTcpInfos = BcastRequest.Lookup(1);
+
+                    lsbGameContainer.Items.Clear();
+                    foreach (MyTcpInfo tcpInfo in myTcpInfos)
+                    {
+                        this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
+                    }
+                    await Task.Delay(1000);
+                });
             }
         }
+
+        private void LsbGameContainer_DoubleClick(object? sender, EventArgs e)
+        {
+            ListBox listBox = (ListBox)sender!;
+            if (listBox.SelectedItem == null) return;
+            var endPoint = myTcpInfos[listBox.SelectedIndex].GetRemote();
+            PlayerManager.isAdmin = false;
+            monopoly.LoadScreen(new PlayerConfig(monopoly));
+            SocketClientManager.SocketClient.Connect(endPoint.Address.ToString(), endPoint.Port);
+        }
+
         private void LoadSaveList()
         {
             lsbGameContainer.Items.Clear();
@@ -51,7 +77,6 @@ namespace Monopoly.Screens
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
-            PlayerManager.isAdmin = false;
 
             if (!PlayerManager.isOnline && lsbGameContainer.Items.Count > 0)
             {
@@ -60,18 +85,18 @@ namespace Monopoly.Screens
                     MessageBox.Show("Please select a save file first!");
                     return;
                 }
-                string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString());
+                string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString()!);
                 PlayerManager.IsLoadingSavedGame = true;
                 PlayerConfig playerConfig = new PlayerConfig(monopoly);
                 playerConfig.TryLoadSavedGameFromFile(selectedFile);
                 monopoly.LoadScreen(new Game(monopoly, selectedFile));
                 return;
             }
-
-            monopoly.LoadScreen(new PlayerConfig(monopoly));
             if (PlayerManager.isOnline)
             {
-                SocketClientManager.SocketClient.Connect("", 9999);
+                PlayerManager.isAdmin = false;
+
+                monopoly.LoadScreen(new FindServer(monopoly));
             }
         }
 
@@ -118,44 +143,54 @@ namespace Monopoly.Screens
         {
             if (PlayerManager.isOnline)
             {
-                List<MyTcpInfo> myTcpInfos = BcastRequest.Lookup(1);
-                lsbGameContainer.Items.Clear();
-                foreach (MyTcpInfo tcpInfo in myTcpInfos)
+                if (!isRefreshing)
                 {
-                    this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
+                    _ = Task.Run(() =>
+                    {
+                        isRefreshing = true;
+                        myTcpInfos = BcastRequest.Lookup(1);
+
+                        lsbGameContainer.Items.Clear();
+                        foreach (MyTcpInfo tcpInfo in myTcpInfos)
+                        {
+                            this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
+                        }
+                        isRefreshing = false;
+                    });
                 }
             }
             else
             {
-                
-            if (lsbGameContainer.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a save file to delete!");
-                return;
-            }
-
-            string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString());
-
-            var dr = MessageBox.Show(
-                $"Are you sure you want to delete '{Path.GetFileName(selectedFile)}'?",
-                "Delete Save",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (dr == DialogResult.Yes)
-            {
-                try
+                if (lsbGameContainer.SelectedItem == null)
                 {
-                    if (File.Exists(selectedFile))
-                        File.Delete(selectedFile);
-
-                    LoadSaveList();
+                    MessageBox.Show("Please select a save file to delete!");
+                    return;
                 }
-                catch (Exception ex)
+
+                string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString()!);
+
+                var dr = MessageBox.Show(
+                    $"Are you sure you want to delete '{Path.GetFileName(selectedFile)}'?",
+                    "Delete Save",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (dr == DialogResult.Yes)
                 {
-                    MessageBox.Show($"Failed to delete file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        if (File.Exists(selectedFile))
+                            File.Delete(selectedFile);
+
+                        LoadSaveList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to delete file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
+        }
     }
 }
