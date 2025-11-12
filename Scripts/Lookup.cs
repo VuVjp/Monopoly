@@ -133,6 +133,7 @@ namespace Monopoly.Scripts.LookUp
             is_running = false;
 
             s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             s.Bind(new IPEndPoint(IPAddress.Any, 26305));
 
             t = new Thread(new ThreadStart(Thread_Worker));
