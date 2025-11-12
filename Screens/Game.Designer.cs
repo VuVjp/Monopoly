@@ -258,7 +258,7 @@ namespace Monopoly.Screens
             pos17.AutoSize = true;
             pos17.BackColor = Color.Transparent;
             pos17.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos17.Location = new Point(39, 36);
+            pos17.Location = new Point(26, 21);
             pos17.Margin = new Padding(1, 0, 1, 0);
             pos17.Name = "pos17";
             pos17.Size = new Size(117, 14);
@@ -286,7 +286,7 @@ namespace Monopoly.Screens
             pos16.AutoSize = true;
             pos16.Enabled = false;
             pos16.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos16.Location = new Point(6, 21);
+            pos16.Location = new Point(26, 21);
             pos16.Margin = new Padding(1, 0, 1, 0);
             pos16.Name = "pos16";
             pos16.Size = new Size(74, 28);
@@ -775,7 +775,7 @@ namespace Monopoly.Screens
             // 
             pos36.Enabled = false;
             pos36.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos36.Location = new Point(42, 18);
+            pos36.Location = new Point(41, 26);
             pos36.Margin = new Padding(1, 0, 1, 0);
             pos36.Name = "pos36";
             pos36.Size = new Size(73, 28);
@@ -815,7 +815,7 @@ namespace Monopoly.Screens
             // 
             pos35.Enabled = false;
             pos35.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos35.Location = new Point(48, 23);
+            pos35.Location = new Point(41, 26);
             pos35.Margin = new Padding(1, 0, 1, 0);
             pos35.Name = "pos35";
             pos35.Size = new Size(60, 28);
@@ -855,12 +855,12 @@ namespace Monopoly.Screens
             pos34.AutoSize = true;
             pos34.BackColor = Color.Transparent;
             pos34.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos34.Location = new Point(57, 34);
+            pos34.Location = new Point(41, 26);
             pos34.Margin = new Padding(1, 0, 1, 0);
             pos34.Name = "pos34";
-            pos34.Size = new Size(10, 14);
+            pos34.Size = new Size(96, 14);
             pos34.TabIndex = 60;
-            pos34.Text = " ";
+            pos34.Text = " Oslo S Station";
             pos34.TextAlign = ContentAlignment.MiddleCenter;
             pos34.Visible = false;
             // 
@@ -884,7 +884,7 @@ namespace Monopoly.Screens
             pos33.AutoSize = true;
             pos33.Enabled = false;
             pos33.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos33.Location = new Point(48, 20);
+            pos33.Location = new Point(41, 26);
             pos33.Margin = new Padding(1, 0, 1, 0);
             pos33.Name = "pos33";
             pos33.Size = new Size(51, 28);
@@ -923,7 +923,7 @@ namespace Monopoly.Screens
             pos32.AutoSize = true;
             pos32.BackColor = Color.Transparent;
             pos32.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos32.Location = new Point(57, 27);
+            pos32.Location = new Point(41, 26);
             pos32.Margin = new Padding(1, 0, 1, 0);
             pos32.Name = "pos32";
             pos32.Size = new Size(10, 14);
@@ -952,7 +952,7 @@ namespace Monopoly.Screens
             pos31.AutoSize = true;
             pos31.Enabled = false;
             pos31.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos31.Location = new Point(34, 21);
+            pos31.Location = new Point(41, 26);
             pos31.Margin = new Padding(1, 0, 1, 0);
             pos31.Name = "pos31";
             pos31.Size = new Size(80, 28);
@@ -993,7 +993,7 @@ namespace Monopoly.Screens
             pos30.AutoSize = true;
             pos30.Enabled = false;
             pos30.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos30.Location = new Point(39, 21);
+            pos30.Location = new Point(41, 26);
             pos30.Margin = new Padding(1, 0, 1, 0);
             pos30.Name = "pos30";
             pos30.Size = new Size(69, 28);
@@ -1032,7 +1032,7 @@ namespace Monopoly.Screens
             pos29.AutoSize = true;
             pos29.BackColor = Color.Transparent;
             pos29.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos29.Location = new Point(57, 45);
+            pos29.Location = new Point(49, 56);
             pos29.Margin = new Padding(1, 0, 1, 0);
             pos29.Name = "pos29";
             pos29.Size = new Size(10, 14);
@@ -1061,7 +1061,7 @@ namespace Monopoly.Screens
             pos28.AutoSize = true;
             pos28.Enabled = false;
             pos28.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos28.Location = new Point(15, 32);
+            pos28.Location = new Point(18, 43);
             pos28.Margin = new Padding(1, 0, 1, 0);
             pos28.Name = "pos28";
             pos28.Size = new Size(45, 28);
@@ -1100,7 +1100,7 @@ namespace Monopoly.Screens
             pos27.AutoSize = true;
             pos27.BackColor = Color.Transparent;
             pos27.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos27.Location = new Point(35, 45);
+            pos27.Location = new Point(18, 43);
             pos27.Margin = new Padding(1, 0, 1, 0);
             pos27.Name = "pos27";
             pos27.Size = new Size(10, 14);
@@ -1129,7 +1129,7 @@ namespace Monopoly.Screens
             pos26.AutoSize = true;
             pos26.Enabled = false;
             pos26.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos26.Location = new Point(15, 32);
+            pos26.Location = new Point(18, 43);
             pos26.Margin = new Padding(1, 0, 1, 0);
             pos26.Name = "pos26";
             pos26.Size = new Size(45, 28);
@@ -1170,7 +1170,7 @@ namespace Monopoly.Screens
             pos25.AutoSize = true;
             pos25.Enabled = false;
             pos25.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos25.Location = new Point(17, 32);
+            pos25.Location = new Point(18, 43);
             pos25.Margin = new Padding(1, 0, 1, 0);
             pos25.Name = "pos25";
             pos25.Size = new Size(45, 28);
@@ -1209,12 +1209,12 @@ namespace Monopoly.Screens
             pos24.AutoSize = true;
             pos24.BackColor = Color.Transparent;
             pos24.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos24.Location = new Point(36, 39);
+            pos24.Location = new Point(18, 43);
             pos24.Margin = new Padding(1, 0, 1, 0);
             pos24.Name = "pos24";
-            pos24.Size = new Size(10, 14);
+            pos24.Size = new Size(116, 14);
             pos24.TabIndex = 57;
-            pos24.Text = " ";
+            pos24.Text = " Shinjuku Station";
             pos24.TextAlign = ContentAlignment.MiddleCenter;
             pos24.Visible = false;
             // 
@@ -1238,7 +1238,7 @@ namespace Monopoly.Screens
             pos23.AutoSize = true;
             pos23.Enabled = false;
             pos23.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos23.Location = new Point(6, 32);
+            pos23.Location = new Point(18, 43);
             pos23.Margin = new Padding(1, 0, 1, 0);
             pos23.Name = "pos23";
             pos23.Size = new Size(64, 28);
@@ -1279,7 +1279,7 @@ namespace Monopoly.Screens
             pos22.AutoSize = true;
             pos22.Enabled = false;
             pos22.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos22.Location = new Point(18, 32);
+            pos22.Location = new Point(18, 43);
             pos22.Margin = new Padding(1, 0, 1, 0);
             pos22.Name = "pos22";
             pos22.Size = new Size(49, 28);
@@ -1318,7 +1318,7 @@ namespace Monopoly.Screens
             pos21.AutoSize = true;
             pos21.BackColor = Color.Transparent;
             pos21.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos21.Location = new Point(36, 39);
+            pos21.Location = new Point(42, 47);
             pos21.Margin = new Padding(1, 0, 1, 0);
             pos21.Name = "pos21";
             pos21.Size = new Size(10, 14);
@@ -1347,7 +1347,7 @@ namespace Monopoly.Screens
             pos20.AutoSize = true;
             pos20.Enabled = false;
             pos20.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos20.Location = new Point(-1, 32);
+            pos20.Location = new Point(18, 43);
             pos20.Margin = new Padding(1, 0, 1, 0);
             pos20.Name = "pos20";
             pos20.Size = new Size(76, 28);
@@ -1415,7 +1415,7 @@ namespace Monopoly.Screens
             pos18.AutoSize = true;
             pos18.Enabled = false;
             pos18.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos18.Location = new Point(27, 21);
+            pos18.Location = new Point(26, 21);
             pos18.Margin = new Padding(1, 0, 1, 0);
             pos18.Name = "pos18";
             pos18.Size = new Size(45, 28);
@@ -1456,7 +1456,7 @@ namespace Monopoly.Screens
             pos15.AutoSize = true;
             pos15.Enabled = false;
             pos15.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos15.Location = new Point(21, 21);
+            pos15.Location = new Point(26, 21);
             pos15.Margin = new Padding(1, 0, 1, 0);
             pos15.Name = "pos15";
             pos15.Size = new Size(56, 28);
@@ -1496,7 +1496,7 @@ namespace Monopoly.Screens
             pos13.AutoSize = true;
             pos13.Enabled = false;
             pos13.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos13.Location = new Point(21, 24);
+            pos13.Location = new Point(26, 21);
             pos13.Margin = new Padding(1, 0, 1, 0);
             pos13.Name = "pos13";
             pos13.Size = new Size(45, 28);
@@ -1537,7 +1537,7 @@ namespace Monopoly.Screens
             pos12.AutoSize = true;
             pos12.Enabled = false;
             pos12.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos12.Location = new Point(21, 19);
+            pos12.Location = new Point(26, 21);
             pos12.Margin = new Padding(1, 0, 1, 0);
             pos12.Name = "pos12";
             pos12.Size = new Size(45, 28);
@@ -1576,7 +1576,7 @@ namespace Monopoly.Screens
             pos11.AutoSize = true;
             pos11.BackColor = Color.Transparent;
             pos11.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos11.Location = new Point(60, 54);
+            pos11.Location = new Point(50, 54);
             pos11.Margin = new Padding(1, 0, 1, 0);
             pos11.Name = "pos11";
             pos11.Size = new Size(10, 14);
@@ -1605,7 +1605,7 @@ namespace Monopoly.Screens
             pos10.AutoSize = true;
             pos10.Enabled = false;
             pos10.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos10.Location = new Point(15, 53);
+            pos10.Location = new Point(19, 61);
             pos10.Margin = new Padding(1, 0, 1, 0);
             pos10.Name = "pos10";
             pos10.Size = new Size(45, 28);
@@ -1645,12 +1645,12 @@ namespace Monopoly.Screens
             pos9.AutoSize = true;
             pos9.BackColor = Color.Transparent;
             pos9.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos9.Location = new Point(38, 53);
+            pos9.Location = new Point(19, 61);
             pos9.Margin = new Padding(1, 0, 1, 0);
             pos9.Name = "pos9";
-            pos9.Size = new Size(10, 14);
+            pos9.Size = new Size(107, 14);
             pos9.TabIndex = 51;
-            pos9.Text = " ";
+            pos9.Text = " Pancras Station";
             pos9.TextAlign = ContentAlignment.MiddleCenter;
             pos9.Visible = false;
             // 
@@ -1674,7 +1674,7 @@ namespace Monopoly.Screens
             pos8.AutoSize = true;
             pos8.Enabled = false;
             pos8.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos8.Location = new Point(18, 53);
+            pos8.Location = new Point(19, 61);
             pos8.Margin = new Padding(1, 0, 1, 0);
             pos8.Name = "pos8";
             pos8.Size = new Size(45, 28);
@@ -1715,7 +1715,7 @@ namespace Monopoly.Screens
             pos7.AutoSize = true;
             pos7.Enabled = false;
             pos7.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos7.Location = new Point(10, 53);
+            pos7.Location = new Point(19, 61);
             pos7.Margin = new Padding(1, 0, 1, 0);
             pos7.Name = "pos7";
             pos7.Size = new Size(61, 28);
@@ -1755,7 +1755,7 @@ namespace Monopoly.Screens
             pos6.AutoSize = true;
             pos6.Enabled = false;
             pos6.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos6.Location = new Point(17, 53);
+            pos6.Location = new Point(19, 61);
             pos6.Margin = new Padding(1, 0, 1, 0);
             pos6.Name = "pos6";
             pos6.Size = new Size(45, 28);
@@ -1794,7 +1794,7 @@ namespace Monopoly.Screens
             pos5.AutoSize = true;
             pos5.BackColor = Color.Transparent;
             pos5.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos5.Location = new Point(39, 55);
+            pos5.Location = new Point(19, 61);
             pos5.Margin = new Padding(1, 0, 1, 0);
             pos5.Name = "pos5";
             pos5.Size = new Size(90, 14);
@@ -1822,7 +1822,7 @@ namespace Monopoly.Screens
             pos4.AutoSize = true;
             pos4.BackColor = Color.Transparent;
             pos4.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos4.Location = new Point(36, 59);
+            pos4.Location = new Point(19, 61);
             pos4.Margin = new Padding(1, 0, 1, 0);
             pos4.Name = "pos4";
             pos4.Size = new Size(10, 14);
@@ -1849,7 +1849,7 @@ namespace Monopoly.Screens
             pos3.AutoSize = true;
             pos3.BackColor = Color.Transparent;
             pos3.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos3.Location = new Point(34, 59);
+            pos3.Location = new Point(19, 61);
             pos3.Margin = new Padding(1, 0, 1, 0);
             pos3.Name = "pos3";
             pos3.Size = new Size(10, 14);
@@ -1878,7 +1878,7 @@ namespace Monopoly.Screens
             pos2.AutoSize = true;
             pos2.Enabled = false;
             pos2.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos2.Location = new Point(8, 53);
+            pos2.Location = new Point(19, 61);
             pos2.Margin = new Padding(1, 0, 1, 0);
             pos2.Name = "pos2";
             pos2.Size = new Size(82, 28);
@@ -1917,7 +1917,7 @@ namespace Monopoly.Screens
             pos1.AutoSize = true;
             pos1.BackColor = Color.Transparent;
             pos1.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos1.Location = new Point(34, 33);
+            pos1.Location = new Point(28, 37);
             pos1.Margin = new Padding(1, 0, 1, 0);
             pos1.Name = "pos1";
             pos1.Size = new Size(10, 14);
@@ -1945,7 +1945,7 @@ namespace Monopoly.Screens
             pos14.AutoSize = true;
             pos14.BackColor = Color.Transparent;
             pos14.Font = new Font("Cooper Black", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pos14.Location = new Point(30, 34);
+            pos14.Location = new Point(26, 21);
             pos14.Margin = new Padding(1, 0, 1, 0);
             pos14.Name = "pos14";
             pos14.Size = new Size(10, 14);

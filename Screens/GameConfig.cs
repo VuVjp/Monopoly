@@ -24,7 +24,11 @@ namespace Monopoly.Screens
             InitializeComponent();
             this.monopoly = monopoly;
             if (!PlayerManager.isOnline)
+            {
                 LoadSaveList();
+                btnCreate.Text = "New Game";
+                btnJoin.Text = "Load Game";
+            }
             if (PlayerManager.isOnline)
             {
                 lblTitle.Text = "Online Mode";
@@ -74,7 +78,6 @@ namespace Monopoly.Screens
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             return Path.Combine(Application.StartupPath, $"save_{timestamp}.sqlite");
         }
-
         private void btnJoin_Click(object sender, EventArgs e)
         {
 
