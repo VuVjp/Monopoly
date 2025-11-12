@@ -106,8 +106,11 @@ namespace Monopoly.Scripts
 
         public void Start()
         {
-            is_running = true;
-            t.Start();
+            if (!is_running)
+            {
+                is_running = true;
+                t.Start();
+            }
         }
 
         public void Stop()
@@ -124,6 +127,7 @@ namespace Monopoly.Scripts
 
             remote_tcp = tcp_addr;
             name = master_name;
+            is_running = false;
 
             s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             s.Bind(new IPEndPoint(IPAddress.Any, 26305));

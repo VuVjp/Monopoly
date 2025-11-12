@@ -199,9 +199,9 @@ namespace Monopoly.Screens
 
         private void SocketClientManager_OnServerShutdown(Data obj)
         {
+            Task.Run(() => MessageBox.Show("Server has been shut down.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information));
             this.Invoke(new Action(() =>
             {
-                MessageBox.Show("Server has been shut down.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SocketClientManager.OnDataReceived -= HandleNetworkMessage!;
                 SocketClientManager.OnServerShutdown -= SocketClientManager_OnServerShutdown;
                 monopoly.LoadScreen(new GameConfig(monopoly));
@@ -551,7 +551,6 @@ namespace Monopoly.Screens
             }
             if(PlayerManager.isOnline)
             {
-                MessageBox.Show("Disconnected from the server.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SocketServerManager.OnDataReceived -= HandleMessage;
                 SocketServerManager.OnClientDisconnect -= SocketServerManager_OnClientDisconnect;
                 SocketClientManager.OnDataReceived -= HandleNetworkMessage!;

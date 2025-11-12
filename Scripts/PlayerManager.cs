@@ -44,11 +44,13 @@ namespace Monopoly.Scripts
             {
                 if (_money != value)
                 {
+                    oldMoney = _money;
                     _money = value;
                     OnMoneyChanged?.Invoke(_money); 
                 }
             }
         }
+        public double oldMoney = 0;
         public int Position = 1;
         public bool IsBankrupt = false;
         public bool IsInJail = false;
@@ -56,6 +58,7 @@ namespace Monopoly.Scripts
         public int doubleRollCount = 0;
         public int GetOutOfJailFree = 0;
         public int utility = 0;
+        public bool isPlaying = true;
         public List<int> OwnedProperties = new List<int>();
         public PlayerInfo(int id)
         {
