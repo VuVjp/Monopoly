@@ -65,7 +65,7 @@ namespace Monopoly.Screens
                 OfflineModeSetup();
             }
         }
-        public void TryLoadSavedGameFromFile(string savePath)
+        public async Task TryLoadSavedGameFromFile(string savePath)
         {
             if (!File.Exists(savePath)) return;
 
@@ -102,12 +102,13 @@ namespace Monopoly.Screens
                                 }
                             }
 
-                            PlayerManager.Players.Add(plr);
+                         PlayerManager.Players.Add(plr);
                         }
                     }
                 }
 
-                PlayerManager.playerCount = PlayerManager.Players.Count;
+                await Task.Delay(1000);
+                    PlayerManager.playerCount = PlayerManager.Players.Count;
             }
             catch (Exception ex)
             {

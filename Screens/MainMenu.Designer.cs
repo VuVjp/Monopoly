@@ -59,6 +59,7 @@
             btnHowToPlay.TabIndex = 13;
             btnHowToPlay.Text = "How To Play";
             btnHowToPlay.UseVisualStyleBackColor = true;
+            btnHowToPlay.Click += btnHowToPlay_Click;
             // 
             // btnQuit
             // 
@@ -82,6 +83,7 @@
             btnAbout.TabIndex = 11;
             btnAbout.Text = "About Us";
             btnAbout.UseVisualStyleBackColor = true;
+            btnAbout.Click += btnAbout_Click;
             // 
             // btnOnline
             // 

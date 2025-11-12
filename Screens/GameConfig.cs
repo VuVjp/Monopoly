@@ -21,7 +21,11 @@ namespace Monopoly.Screens
             InitializeComponent();
             this.monopoly = monopoly;
             if (!PlayerManager.isOnline)
+            {
                 LoadSaveList();
+                btnCreate.Text = "New Game";
+                btnJoin.Text = "Load Game";
+            }
             if (PlayerManager.isOnline)
             {
                 lblTitle.Text = "Online Mode";
@@ -48,7 +52,6 @@ namespace Monopoly.Screens
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             return Path.Combine(Application.StartupPath, $"save_{timestamp}.sqlite");
         }
-
         private void btnJoin_Click(object sender, EventArgs e)
         {
             PlayerManager.isAdmin = false;
@@ -127,35 +130,37 @@ namespace Monopoly.Screens
             }
             else
             {
-                
-            if (lsbGameContainer.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a save file to delete!");
-                return;
-            }
 
-            string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString());
-
-            var dr = MessageBox.Show(
-                $"Are you sure you want to delete '{Path.GetFileName(selectedFile)}'?",
-                "Delete Save",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (dr == DialogResult.Yes)
-            {
-                try
+                if (lsbGameContainer.SelectedItem == null)
                 {
-                    if (File.Exists(selectedFile))
-                        File.Delete(selectedFile);
-
-                    LoadSaveList();
+                    MessageBox.Show("Please select a save file to delete!");
+                    return;
                 }
-                catch (Exception ex)
+
+                string selectedFile = Path.Combine(Application.StartupPath, lsbGameContainer.SelectedItem.ToString());
+
+                var dr = MessageBox.Show(
+                    $"Are you sure you want to delete '{Path.GetFileName(selectedFile)}'?",
+                    "Delete Save",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (dr == DialogResult.Yes)
                 {
-                    MessageBox.Show($"Failed to delete file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        if (File.Exists(selectedFile))
+                            File.Delete(selectedFile);
+
+                        LoadSaveList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to delete file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
+        }
     }
 }

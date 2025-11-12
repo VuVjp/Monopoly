@@ -39,7 +39,7 @@ namespace Monopoly.Scripts
     public class PlayerInfo
     {
         public event Action<double>? OnMoneyChanged;
-        private double _money = 2000;
+        private double _money = 10000;
         public string Name = null!;
         public PictureBox Avt = null!;
         public Color Color;
@@ -71,7 +71,7 @@ namespace Monopoly.Scripts
         {
             Name = $"Player {id + 1}";
             Color = Color.White;
-            PlayerMoney = 2000;
+            PlayerMoney = 10000;
             Position = 1;
             IsBankrupt = false;
             OwnedProperties = new List<int>();

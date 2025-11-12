@@ -133,6 +133,9 @@
   <data name="plr6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plr7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="house" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\house1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="NewYork" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewYork.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -184,8 +187,8 @@
   <data name="PancrasStation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PancrasStation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Beijing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Beijing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="OsloSStation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OsloSStation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IncomeTax" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IncomeTax.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,8 +220,8 @@
   <data name="Dice5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Dice5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Ban" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ban1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Electric" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Electric1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Return" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Return.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,20 +229,23 @@
   <data name="Dice3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Dice3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OsloSStation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OsloSStation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DiceSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DiceSound.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Marseille" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Marseille.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Ready" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ready.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Train" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Train1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ThanhHoa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ThanhHoa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Beijing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Beijing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HouseVip1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HouseVip11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -283,11 +289,11 @@
   <data name="Fortune90Fix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Fortune90Fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PointingChance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PointingChance.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="VuVjp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plr1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plr5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plr6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Moscow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Moscow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -304,11 +310,11 @@
   <data name="Busan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Busan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Electric" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Electric1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="plr5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plr6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Move" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Move.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Ban" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ban1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LuxuryTax" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LuxuryTax.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -328,8 +334,8 @@
   <data name="Dice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Dice1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Ready" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ready.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Move.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Shanghai" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shanghai.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -343,7 +349,10 @@
   <data name="pexels-pixabay-326333" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pexels-pixabay-326333.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="house" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\house1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PointingFortune" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PointingFortune.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MenuMusic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainMenu.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
