@@ -32,7 +32,7 @@ namespace Monopoly.Screens
                 btnJoin.Text = "Find Server";
                 btnDelete.Text = "Refesh";
                 lsbGameContainer.DoubleClick += LsbGameContainer_DoubleClick;
-                _ = Task.Run(async () =>
+                _ = Task.Run(async() =>
                 {
                     myTcpInfos = BcastRequest.Lookup(1);
 

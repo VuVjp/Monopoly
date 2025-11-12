@@ -402,7 +402,7 @@ namespace Monopoly.Screens
             // 
             pnlLogo.BackColor = Color.Transparent;
             pnlLogo.Image = Resources.Logo;
-            pnlLogo.Location = new Point(17, 1);
+            pnlLogo.Location = new Point(13, 5);
             pnlLogo.Margin = new Padding(1);
             pnlLogo.Name = "pnlLogo";
             pnlLogo.Size = new Size(205, 205);

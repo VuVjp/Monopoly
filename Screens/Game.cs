@@ -162,7 +162,6 @@ namespace Monopoly.Screens
 
                 if (PlayerManager.isAdmin)
                 {
-                    LoadPlayerInBoard();
                     SocketServerManager.OnDataReceived += SocketServerManager_OnDataReceived;
                     SocketServerManager.OnClientDisconnect += SocketServerManager_OnClientDisconnect;
                     RandomizeTurnOrder();
@@ -275,6 +274,7 @@ namespace Monopoly.Screens
                                     var pcb = this.Controls.Find(PlayerManager.Players[0].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(0);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
                                 {
@@ -284,7 +284,8 @@ namespace Monopoly.Screens
                                     await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     var pcb = this.Controls.Find(PlayerManager.Players[0].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
-                                    RemovePropHandler(0);
+                                    RemovePropHandler(0); 
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
@@ -321,6 +322,7 @@ namespace Monopoly.Screens
                                     var pcb = this.Controls.Find(PlayerManager.Players[1].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(1);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
                                 {
@@ -331,6 +333,7 @@ namespace Monopoly.Screens
                                     pcb!.Visible = false;
                                     await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(1);
+                                    checkEndGame();
 
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
@@ -368,6 +371,7 @@ namespace Monopoly.Screens
                                     var pcb = this.Controls.Find(PlayerManager.Players[2].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(2);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
                                 {
@@ -378,6 +382,7 @@ namespace Monopoly.Screens
                                     pcb!.Visible = false;
                                     await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(2);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
@@ -414,6 +419,7 @@ namespace Monopoly.Screens
                                     var pcb = this.Controls.Find(PlayerManager.Players[3].Name, true).FirstOrDefault() as PictureBox;
                                     pcb!.Visible = false;
                                     RemovePropHandler(3);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney == double.MinValue && player.isPlaying && player.IsBankrupt)
                                 {
@@ -424,6 +430,7 @@ namespace Monopoly.Screens
                                     pcb!.Visible = false;
                                     await SocketServerManager.Broadcast(new Data(Data.ActionType.Bankrupt, "", player.Name));
                                     RemovePropHandler(3);
+                                    checkEndGame();
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
@@ -1923,10 +1930,10 @@ namespace Monopoly.Screens
 
         private async Task GameLoop(CancellationToken token)
         {
-            activePlr = 0;
             int steps;
             while (!token.IsCancellationRequested)
             {
+                activePlr = 0;
                 foreach (var plr in PlayerManager.Players)
                 {
                     if (!plr.IsBankrupt && plr.isPlaying)
@@ -1934,6 +1941,7 @@ namespace Monopoly.Screens
                         activePlr++;
                     }
                 }
+                await Task.Delay(1000);
                 if (activePlr == 1)
                 {
                     var player = PlayerManager.Players.FirstOrDefault(x => !x.IsBankrupt && x.isPlaying);
@@ -1942,7 +1950,6 @@ namespace Monopoly.Screens
                     break;
                 }
                 int playerIndex = turnOrder[currentPlayerIndex];
-
                 currPlayerIndex = turnOrder[currentPlayerIndex];
                 var currentPlr = PlayerManager.Players[playerIndex];
                 if (currentPlr.IsBankrupt || !currentPlr.isPlaying)
@@ -2596,6 +2603,35 @@ namespace Monopoly.Screens
                 frm.ShowDialog();
             }
         }
+        private async void checkEndGame()
+        {
+            int count = 0;
+            foreach (var item in PlayerManager.Players)
+            {
+                if (!item.IsBankrupt)
+                {
+                    count++;
+                }
+            }
+            if(count == 1)
+            {
+                _gameLoopCts?.Cancel();
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    try { _rollWaiter?.SetResult(false); } catch { }
+                    await Task.Delay(150 * 15);
+                    try { _pickCardWaiter?.SetResult(false); } catch { }
+                    try { _buyWaiter?.SetResult(false); } catch { }
+                    try { _upgradeWaiter.SetResult(false); } catch { }
+                });
+
+                await Task.Delay(1000);
+
+                _gameLoopCts = new CancellationTokenSource();
+                _ = Task.Run(() => GameLoop(_gameLoopCts.Token));
+            }
+        }
         private async Task SellHouseHandler(PlayerInfo player, int index)
         {
             var prop = board.properties[index];
@@ -2684,8 +2720,7 @@ namespace Monopoly.Screens
         private async void SocketServerManager_OnClientDisconnect(Socket socket, string plrName)
         {
             await SocketServerManager.Broadcast(new Data(Data.ActionType.Disconnect, "", plrName));
-            _gameLoopCts?.Cancel();
-
+            
             PlayerDisconnectHandler(plrName);
         }
         private async void PlayerDisconnectHandler(string plrName)
@@ -2697,6 +2732,7 @@ namespace Monopoly.Screens
             plr.PlayerMoney = double.MinValue;
             if(PlayerManager.Players[currPlayerIndex] == plr)
             {
+                _gameLoopCts?.Cancel();
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(1000);

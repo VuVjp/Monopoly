@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Monopoly));
             pnlMain = new Panel();
             SuspendLayout();
             // 
@@ -46,6 +47,7 @@
             ClientSize = new Size(1220, 729);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
             MaximizeBox = false;
             Name = "Monopoly";
