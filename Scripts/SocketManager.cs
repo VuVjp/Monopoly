@@ -1,10 +1,12 @@
 ﻿using Monopoly.Screens;
+using Monopoly.Scripts.LookUp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Media;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -216,6 +218,7 @@ namespace Monopoly.Scripts.Sockets
 
     internal class SocketServerManager
     {
+        public static BcastListen bcast = null!;
         public static bool isListening;
         public static bool isAcceptingPlayers;
         private static SocketServerManager? _socketServer;
@@ -238,6 +241,9 @@ namespace Monopoly.Scripts.Sockets
             ClientSockets["Player 1"] = socketServer;
             socketServer.Bind(new System.Net.IPEndPoint(System.Net.IPAddress.Parse(ip), port));
             socketServer.Listen(4);
+            IPEndPoint tcp_host = new IPEndPoint(IPAddress.Parse(ip), port);
+            bcast = new BcastListen(tcp_host,Dns.GetHostName());
+            bcast.Start();
         }
 
         public async Task Send(Socket socket, Data data)

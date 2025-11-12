@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Monopoly.Scripts.LookUp;
 
 namespace Monopoly.Screens
 {
@@ -19,11 +20,12 @@ namespace Monopoly.Screens
         {
             InitializeComponent();
             this.monopoly = monopoly;
-            if(PlayerManager.isOnline)
+            if (PlayerManager.isOnline)
             {
-                btnCreate.Text = "Create Room";
-                btnJoin.Text = "Join Room";
-                btnDelete.Visible = false;
+                lblTitle.Text = "Online Mode";
+                btnCreate.Text = "Create Server";
+                btnJoin.Text = "Join Server";
+                btnDelete.Text = "Find Server";
             }
         }
 
@@ -51,6 +53,19 @@ namespace Monopoly.Screens
                 return;
             }
             monopoly.LoadScreen(new PlayerConfig(monopoly));
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (PlayerManager.isOnline)
+            {
+                List<MyTcpInfo> myTcpInfos = BcastRequest.Lookup(1);
+                lsbGameContainer.Items.Clear();
+                foreach (MyTcpInfo tcpInfo in myTcpInfos)
+                {
+                    this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
+                }
+            }
         }
     }
 }

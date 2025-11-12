@@ -51,6 +51,7 @@
             Name = "Monopoly";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Monopoly";
+            FormClosing += Monopoly_FormClosing;
             ResumeLayout(false);
         }
 

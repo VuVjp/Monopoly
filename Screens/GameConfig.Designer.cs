@@ -59,6 +59,7 @@
             btnDelete.TabIndex = 13;
             btnDelete.Text = "Delete Game";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnReturn
             // 

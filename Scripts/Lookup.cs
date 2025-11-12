@@ -16,7 +16,7 @@ Cách dùng cho client:
     List<MyTcpInfo> founds = BcastRequest.Lookup(2); gửi broadcast và chờ phản hồi trong khoảng thời gian (giây). 2 giây là hợp lý
 */
 
-namespace Monopoly.Scripts
+namespace Monopoly.Scripts.LookUp
 {
     public struct MyTcpInfo
     {
@@ -51,7 +51,10 @@ namespace Monopoly.Scripts
         {
             return name;
         }
-
+        public override string ToString()
+        {
+            return $"IP: {remote.Address}:{remote.Port} - {name}";
+        }
     };
 
     public class BcastListen
@@ -59,7 +62,7 @@ namespace Monopoly.Scripts
         private Socket s;
         private Thread t;
         private string name;
-        private bool is_running;
+        public bool is_running;
         private IPEndPoint remote_tcp;
         public static uint magic = 0xd00ddeed ^ 0xffffffff;
 

@@ -1,4 +1,5 @@
-﻿using Monopoly.Scripts.Sockets;
+﻿using Monopoly.Scripts.LookUp;
+using Monopoly.Scripts.Sockets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,12 @@ namespace Monopoly
             pnlMain.Controls.Clear();
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Controls.Add(Screen);
+        }
+
+        private void Monopoly_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Invoke(()=>SocketServerManager.bcast?.Stop());
+            Environment.Exit(0);
         }
     }
 }
