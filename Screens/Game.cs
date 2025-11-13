@@ -160,6 +160,8 @@ namespace Monopoly.Screens
                 pcbChance.Click += CardClick!;
                 pcbFortune.Click += CardClick!;
                 pcbReturn.Click += pcbReturn_Click!;
+                pcbChance.EnabledChanged += Pcb_EnabledChanged;
+                pcbFortune.EnabledChanged += Pcb_EnabledChanged;
 
                 if (PlayerManager.isAdmin)
                 {
@@ -179,6 +181,15 @@ namespace Monopoly.Screens
                 }
             }
         }
+
+
+        private void Pcb_EnabledChanged(object? sender, EventArgs e)
+        {
+            var pcb = (PictureBox)sender!;
+            bool isTop = pcb.Name == "pcbChance" ? true : false ;
+            this.Invoke(()=>ShowPointingGif(pcb, pcb.Enabled, isTop));
+        }
+
         private void InitAudio()
         {
             bgReader = new WaveFileReader(new MemoryStream(Properties.Resources.BackGroundMusic));
@@ -1463,10 +1474,6 @@ namespace Monopoly.Screens
             int curr = state.CurrPos;
             int target = state.TargetPos;
             int next = (curr + 1) % labels.Count;
-            if (curr + 1 == labels.Count)
-            {
-                PlayerManager.Players[currPlayer].PlayerMoney += 2000;
-            }
             curr = next;
             PlaySFX(Properties.Resources.Move, 300, 4);
             foreach (Panel pnl in this.Controls.OfType<Panel>())
@@ -1496,6 +1503,10 @@ namespace Monopoly.Screens
                 if (property != null)
                 {
                     await HandlePropertyAsync(currPlayer, property.name);
+                }
+                if (curr + 1 == labels.Count)
+                {
+                    PlayerManager.Players[currPlayer].PlayerMoney += 2000;
                 }
                 if (curr == 2 || curr == 13)
                 {
@@ -2091,7 +2102,7 @@ namespace Monopoly.Screens
             }
             else if (propType == "Jail")
             {
-                GoToJailOnl(plrIndex);
+                await GoToJailOnl(plrIndex);
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
             }
             else if (propType == "Visiting Jail")
@@ -2204,24 +2215,19 @@ namespace Monopoly.Screens
                     plr.GetOutOfJailFree++;
                     break;
                 case CardAction.Jail:
-                    GoToJailOnl(plrIndex);
+                    await GoToJailOnl(plrIndex);
                     _ = Task.Run(() => MessageBox.Show(card.description));
                     await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, plr.Name));
                     break;
             }
 
         }
-        private void GoToJailOnl(int plrIndex)
+        private async Task GoToJailOnl(int plrIndex)
         {
             var plr = PlayerManager.Players[plrIndex];
             plr.Position = 11;
-            var pcb = (PictureBox)this.Controls.Find(plr.Name, true).FirstOrDefault()!;
-            this.Invoke(new Action(() =>
-            {
-                pcb.Location = new Point(labels[10].Location.X, labels[10].Location.Y - 15);
-                panels[10].Controls.Add(pcb);
-                pcb.BringToFront();
-            }));
+
+            await MovePlayerToPosition(1, 10);
             plr.IsInJail = true;
         }
 
@@ -2911,7 +2917,7 @@ namespace Monopoly.Screens
                     {
                         var plr = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         int plrIndex = PlayerManager.Players.IndexOf(plr!);
-                        GoToJailOnl(plrIndex);
+                        await GoToJailOnl(plrIndex);
                         if (data.Msg != null) _ = Task.Run(() => MessageBox.Show(data.Msg, plr!.Name));
                         break;
                     }
