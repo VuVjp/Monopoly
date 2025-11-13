@@ -2080,7 +2080,7 @@ namespace Monopoly.Screens
         {
             var plr = PlayerManager.Players[plrIndex];
             var propType = board.properties[plr.Position - 1].type;
-
+            if (propType == "corner") return;
             if (propType == "community_chest")
             {
                 await DrawCard(plrIndex, "community_chest");
@@ -2248,50 +2248,53 @@ namespace Monopoly.Screens
         }
         private void UpdatePropertyVisual(string propertyName, int level)
         {
-            var property = board.properties.FirstOrDefault(p => p.name == propertyName);
-            if (property == null) return;
-            if (property.type != "property") return;
-
-            var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(property.name));
-            var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
-            if (pnl == null) return;
-
-            int direction = horizontal.Contains(pnl) ? 1 : 2;
-
-            var pcbHouse = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
-            if (pcbHouse == null) return;
-
-            pcbHouse.Controls.Clear();
-
-            if (level >= 4)
+            this.Invoke(() =>
             {
-                var hotel = new PictureBox()
+                var property = board.properties.FirstOrDefault(p => p.name == propertyName);
+                if (property == null) return;
+                if (property.type != "property") return;
+
+                var lbl = labels.FirstOrDefault(l => l.Text.TrimStart().StartsWith(property.name));
+                var pnl = panels.FirstOrDefault(p => p.Controls.Contains(lbl));
+                if (pnl == null) return;
+
+                int direction = horizontal.Contains(pnl) ? 1 : 2;
+
+                var pcbHouse = pnl.Controls.OfType<PictureBox>().FirstOrDefault(pb => !pb.Name.StartsWith("Player"));
+                if (pcbHouse == null) return;
+
+                pcbHouse.Controls.Clear();
+
+                if (level >= 4)
                 {
-                    Size = pcbHouse.Size,
-                    BackgroundImage = direction == 1
-                        ? Properties.Resources.HouseVip1
-                        : Properties.Resources.HouseVip2,
-                    BackgroundImageLayout = ImageLayout.Stretch,
-                    Parent = pcbHouse,
-                    Location = new Point(0, 0)
-                };
-            }
-            else if (level > 0)
-            {
-                for (int i = 0; i < level; i++)
-                {
-                    var house = new PictureBox()
+                    var hotel = new PictureBox()
                     {
-                        Size = new Size(20, 20),
-                        BackgroundImage = Properties.Resources.house,
+                        Size = pcbHouse.Size,
+                        BackgroundImage = direction == 1
+                            ? Properties.Resources.HouseVip1
+                            : Properties.Resources.HouseVip2,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Parent = pcbHouse,
-                        Location = direction == 1
-                            ? new Point(i * 22, (pcbHouse.Height - 20) / 2)
-                            : new Point((pcbHouse.Width - 20) / 2, i * 22)
+                        Location = new Point(0, 0)
                     };
                 }
-            }
+                else if (level > 0)
+                {
+                    for (int i = 0; i < level; i++)
+                    {
+                        var house = new PictureBox()
+                        {
+                            Size = new Size(20, 20),
+                            BackgroundImage = Properties.Resources.house,
+                            BackgroundImageLayout = ImageLayout.Stretch,
+                            Parent = pcbHouse,
+                            Location = direction == 1
+                                ? new Point(i * 22, (pcbHouse.Height - 20) / 2)
+                                : new Point((pcbHouse.Width - 20) / 2, i * 22)
+                        };
+                    }
+                }
+            });
         }
 
         private async Task UpdgradeProp(int plrIndex, int propIndex)
