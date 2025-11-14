@@ -1964,7 +1964,7 @@ namespace Monopoly.Screens
                 portalStart.Controls.Remove(pcb);
                 portalEnd.Controls.Add(pcb);
                 pcb.Location = new Point(5, 5);
-            });
+            }); 
             await Task.Delay(200);
             this.Invoke(() =>
             {
@@ -2046,7 +2046,7 @@ namespace Monopoly.Screens
                 label1.ForeColor = PlayerManager.Players[playerIndex].Color;
                 if (currentPlr.IsInJail)
                 {
-                    await SocketServerManager.Broadcast(SocketServerManager.ClientSockets[PlayerManager.Players[playerIndex].Name], new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name, "Roll double to get out of jail"));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.RollDice, PlayerManager.Players[playerIndex].Name, "Roll double to get out of jail"));
                 }
                 else
                 {
@@ -2056,20 +2056,33 @@ namespace Monopoly.Screens
                 if (!checker) { continue; }
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
-                Dice1.Image = listImage[Dices[0] - 1];
-                Dice2.Image = listImage[Dices[1] - 1];
-                await Task.Delay(2000);
+                // cần cập nhật lại logic ở đây
+                BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
+                await DiceAni(Dices[0], Dices[1]);
+                await Task.Delay(200);
                 if (currentPlr.IsInJail)
                 {
+                    if(currentPlr.GetOutOfJailFree > 0)
+                    {
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} used a Get Out of Jail Free card.\""));
+                        currentPlr.IsInJail = false;
+                    }
                     if (steps % 2 == 0)
                     {
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} now is free!"));
                         currentPlr.IsInJail = false;
                     }
+                    if(currentPlr.JailTurn >= 3)
+                    {
+                        _ = Task.Run(() => MessageBox.Show($"{currentPlr.Name} have failed to roll doubles for 3 turns. You must pay $1000 to get out of jail.", currentPlr.Name));
+                        currentPlr.PlayerMoney -= 1000;
+                        currentPlr.IsInJail = false;
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.Pay, $"{currentPlr.Name} have failed to roll doubles for 3 turns. You must pay $1000 to get out of jail./{currentPlr.PlayerMoney}", currentPlr.Name));
+                    }
+                    currentPlr.JailTurn++;
                     currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
                     continue;
                 }
-                BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
                 await CheckPlrPos(playerIndex);
                 for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -2080,7 +2093,7 @@ namespace Monopoly.Screens
                         await Task.Delay(500);
                     }
                 }
-                await Task.Delay(2000);
+                await Task.Delay(200);
                 if (Dices[0] == Dices[1])
                 {
                     PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
@@ -2089,28 +2102,44 @@ namespace Monopoly.Screens
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
+
         private async Task DiceAni(int dice1, int dice2)
         {
-            Point oldPointD1 = Dice1.Location;
-            Point oldPointD2 = Dice2.Location;
-            int count = 0;
-            while (true)
+            Random _rand = new Random();
+            PlaySFX(Properties.Resources.DiceSound, 1000);
+            Point old1 = Dice1.Location;
+            Point old2 = Dice2.Location;
+
+            int duration = 1000;         
+            int interval = 30;          
+            int frames = duration / interval;
+
+            for (int i = 0; i < frames; i++)
             {
-                if(count == 4) { break; }
-                count++;
-                var randX = new Random().Next(-30, 30);
-                var randY = new Random().Next(-30, 30);
+                int power = 20 - (i * 20 / frames);
+                int dx1 = _rand.Next(-power, power + 1);
+                int dy1 = _rand.Next(-power, power + 1);
+                int dx2 = _rand.Next(-power, power + 1);
+                int dy2 = _rand.Next(-power, power + 1);
+                int img1 = _rand.Next(0, 6);
+                int img2 = _rand.Next(0, 6);
+
                 this.Invoke(() =>
                 {
-                    Dice1.Location = new Point(oldPointD1.X + randX, oldPointD1.Y + randY);
-                    Dice2.Location = new Point(oldPointD1.X + randX, oldPointD1.Y + randY);
+                    Dice1.Image = listImage[img1];
+                    Dice2.Image = listImage[img2];
+                    Dice1.Location = new Point(old1.X + dx1, old1.Y + dy1);
+                    Dice2.Location = new Point(old2.X + dx2, old2.Y + dy2);
                 });
-                await Task.Delay(500);
+
+                await Task.Delay(interval);
             }
+
             this.Invoke(() =>
             {
-                Dice1.Location = new Point(oldPointD1.X, oldPointD1.Y);
-                Dice2.Location = new Point(oldPointD1.X, oldPointD1.Y);
+                Dice1.Location = old1;
+                Dice2.Location = old2;
+
                 Dice1.Image = listImage[dice1 - 1];
                 Dice2.Image = listImage[dice2 - 1];
             });
@@ -2929,8 +2958,7 @@ namespace Monopoly.Screens
                     await this.Invoke(async () =>
                     {
                         string[] Dices = data.Msg!.Split("/");
-                        Dice1.Image = listImage[int.Parse(Dices[0]) - 1];
-                        Dice2.Image = listImage[int.Parse(Dices[1]) - 1];
+                        await DiceAni(int.Parse(Dices[0]), int.Parse(Dices[1]));
                         await PlayerMoving(data.From!, (int.Parse(Dices[0]) + int.Parse(Dices[1])));
                     });
                     break;

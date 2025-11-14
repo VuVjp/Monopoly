@@ -152,8 +152,10 @@ namespace Monopoly.Screens
                     {
                         isRefreshing = true;
                         myTcpInfos = BcastRequest.Lookup(1);
-
-                        lsbGameContainer.Items.Clear();
+                        this.Invoke(() =>
+                        {
+                            lsbGameContainer.Items.Clear();
+                        });
                         foreach (MyTcpInfo tcpInfo in myTcpInfos)
                         {
                             this.Invoke(() => lsbGameContainer.Items.Add(tcpInfo.ToString()));
