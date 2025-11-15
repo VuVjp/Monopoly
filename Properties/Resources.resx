@@ -355,4 +355,7 @@
   <data name="MenuMusic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MainMenu.wav;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Lobby" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lobby.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

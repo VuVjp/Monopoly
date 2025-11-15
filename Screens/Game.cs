@@ -1397,7 +1397,7 @@ namespace Monopoly.Screens
                 Rolling = false;
                 for (int i = 0; i < result.Length; i++)
                 {
-                    result[i] = GameManager.RollDice();
+                    result[i] = RollDiceOff();
                 }
                 Dice1.BackgroundImage = listImage[result[0] - 1];
                 Dice2.BackgroundImage = listImage[result[1] - 1];
@@ -1452,6 +1452,15 @@ namespace Monopoly.Screens
                 Dice1.Location = new Point(X1 + offsetX, Y1 + offsetY);
                 Dice2.Location = new Point(X2 + offsetX, Y2 + offsetY);
             }
+        }
+        static int RollDiceOff()
+        {
+
+            int result = 0;
+            Random x = new Random();
+            result = x.Next(1, 7);
+            return result;
+
         }
 
         private void MovePlayer(int player, int steps)
@@ -2507,6 +2516,12 @@ namespace Monopoly.Screens
             var owner = board.properties[plr.Position - 1].owner;
             var plr1 = PlayerManager.Players.FirstOrDefault(x => x.Name == owner);
             double price = 0;
+            if (plr1!.IsInJail)
+            {
+                _ = Task.Run(() => MessageBox.Show($"{plr1} is in jail, so no rent will be charged for this property."));
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{plr1} is in jail, so no rent will be charged for this property."));
+                return;
+            }
             if (board.properties[plr.Position - 1].type == "property")
             {
                 price = board.properties[plr.Position - 1].levels![board.properties[plr.Position].level.ToString()];
