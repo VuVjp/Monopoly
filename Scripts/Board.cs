@@ -27,6 +27,7 @@ namespace Monopoly.Scripts
         public double? amount { get; set; }
         public string? owner { get; set; }
         public int level { get; set; } = 0;
+        public string color { get; set; }
     }
 
     public enum CardAction

@@ -15,6 +15,7 @@
       "sell_price": 2300,
       "upgrade_price": 600,
       "description": "Vietnam's bustling southern city.",
+      "color": "yellow",
       "owner": null,
       "level": 0,
       "levels": {
@@ -56,6 +57,7 @@
       "sell_price": 800,
       "upgrade_price": 300,
       "description": "A beautiful French city.",
+      "color": "orange",
       "owner": null,
       "level": 0,
       "levels": {
@@ -74,6 +76,7 @@
       "sell_price": 1000,
       "upgrade_price": 350,
       "description": "Major port city in France.",
+      "color": "orange",
       "owner": null,
       "level": 0,
       "levels": {
@@ -92,6 +95,7 @@
       "sell_price": 1200,
       "upgrade_price": 400,
       "description": "Capital of France.",
+      "color": "orange",
       "owner": null,
       "level": 0,
       "levels": {
@@ -120,6 +124,7 @@
       "sell_price": 700,
       "upgrade_price": 250,
       "description": "Famous Korean island.",
+      "color": "gray",
       "owner": null,
       "level": 0,
       "levels": {
@@ -146,6 +151,7 @@
       "sell_price": 1100,
       "upgrade_price": 350,
       "description": "Seaside city in Korea.",
+      "color": "gray",
       "owner": null,
       "level": 0,
       "levels": {
@@ -164,6 +170,7 @@
       "sell_price": 1600,
       "upgrade_price": 500,
       "description": "Capital of South Korea.",
+      "color": "gray",
       "owner": null,
       "level": 0,
       "levels": {
@@ -188,6 +195,7 @@
       "sell_price": 1500,
       "upgrade_price": 450,
       "description": "Capital of Russia.",
+      "color": "purple",
       "owner": null,
       "level": 0,
       "levels": {
@@ -206,6 +214,7 @@
       "sell_price": 800,
       "upgrade_price": 300,
       "description": "Historic Russian city.",
+      "color": "purple",
       "owner": null,
       "level": 0,
       "levels": {
@@ -234,6 +243,7 @@
       "sell_price": 900,
       "upgrade_price": 350,
       "description": "A Russian cultural center.",
+      "color": "purple",
       "owner": null,
       "level": 0,
       "levels": {
@@ -260,6 +270,7 @@
       "sell_price": 1200,
       "upgrade_price": 400,
       "description": "Southern trade city of China.",
+      "color": "pink",
       "owner": null,
       "level": 0,
       "levels": {
@@ -284,6 +295,7 @@
       "sell_price": 1700,
       "upgrade_price": 500,
       "description": "Capital of China.",
+      "color": "pink",
       "owner": null,
       "level": 0,
       "levels": {
@@ -302,6 +314,7 @@
       "sell_price": 1200,
       "upgrade_price": 400,
       "description": "China's biggest city.",
+      "color": "pink",
       "owner": null,
       "level": 0,
       "levels": {
@@ -330,6 +343,7 @@
       "sell_price": 1500,
       "upgrade_price": 450,
       "description": "Capital of Japan.",
+      "color": "green",
       "owner": null,
       "level": 0,
       "levels": {
@@ -348,6 +362,7 @@
       "sell_price": 1500,
       "upgrade_price": 450,
       "description": "Major city in Japan.",
+      "color": "green",
       "owner": null,
       "level": 0,
       "levels": {
@@ -373,6 +388,7 @@
       "sell_price": 1100,
       "upgrade_price": 350,
       "description": "Old capital of Japan.",
+      "color": "green",
       "owner": null,
       "level": 0,
       "levels": {
@@ -399,6 +415,7 @@
       "sell_price": 1500,
       "upgrade_price": 450,
       "description": "The city that never sleeps.",
+      "color": "blue",
       "owner": null,
       "level": 0,
       "levels": {
@@ -417,6 +434,7 @@
       "sell_price": 1600,
       "upgrade_price": 500,
       "description": "Capital of the USA.",
+      "color": "blue",
       "owner": null,
       "level": 0,
       "levels": {
@@ -441,6 +459,7 @@
       "sell_price": 1000,
       "upgrade_price": 300,
       "description": "Tropical paradise island.",
+      "color": "blue",
       "owner": null,
       "level": 0,
       "levels": {
@@ -469,6 +488,7 @@
       "sell_price": 2100,
       "upgrade_price": 600,
       "description": "Capital of Vietnam.",
+      "color": "yellow",
       "owner": null,
       "level": 0,
       "levels": {
@@ -487,6 +507,7 @@
       "sell_price": 2500,
       "upgrade_price": 700,
       "description": "Developing northern province.",
+      "color": "yellow",
       "owner": null,
       "level": 0,
       "levels": {
