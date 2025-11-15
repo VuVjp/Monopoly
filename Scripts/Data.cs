@@ -38,7 +38,8 @@ namespace Monopoly.Scripts
             Disconnect,
             SellProp,
             SellHouse,
-            SellRequest
+            SellRequest,
+            JailDice
         }
         public string? Msg = null!;
         public string? From = null!; 
