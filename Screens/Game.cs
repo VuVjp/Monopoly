@@ -301,7 +301,7 @@ namespace Monopoly.Screens
                                 }
                                 else if (player.PlayerMoney < 0 && PlayerManager.isOnline && PlayerManager.isAdmin)
                                 {
-                                    await PromptSellPropertiesOnl(i, Math.Abs(player.PlayerMoney));
+                                    await PromptSellPropertiesOnl(0, Math.Abs(player.PlayerMoney));
                                 }
                             }
                         };
@@ -2739,6 +2739,7 @@ namespace Monopoly.Screens
                         MessageBox.Show("You need to sell properties to continue");
                     }
                 };
+                frm.ShowDialog();
             }
         }
 
@@ -3057,6 +3058,7 @@ namespace Monopoly.Screens
                         string[] msg = data.From!.Split("/");
                         var plr = PlayerManager.Players.FirstOrDefault(p => p.Name == msg[0]);
                         plr!.PlayerMoney = double.Parse(msg[3]);
+                        plr!.OwnedProperties.Add(int.Parse(msg[1]));
                         board.properties[int.Parse(msg[1])].owner = plr.Name;
                         panels[plr.Position - 1].BackColor = plr.Color;
                         break;
