@@ -2045,14 +2045,14 @@ namespace Monopoly.Screens
                     if (currentPlr.GetOutOfJailFree > 0)
                     {
                         _ = Task.Run(() => MessageBox.Show($"{currentPlr.Name} used a Get Out of Jail Free card.", currentPlr.Name));
-                        await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} used a Get Out of Jail Free card."));
                         currentPlr.IsInJail = false;
                         currentPlr.GetOutOfJailFree--;
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GetOutOfJails, $"{currentPlr.Name} used a Get Out of Jail Free card.", currentPlr.Name));
                     }
                     if (steps % 2 == 0)
                     {
                         _ = Task.Run(() => MessageBox.Show($"{currentPlr.Name} now is free!", currentPlr.Name));
-                        await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} now is free!"));
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GetOutOfJails, $"{currentPlr.Name} now is free!", currentPlr.Name));
                         currentPlr.IsInJail = false;
                     }
                     if (currentPlr.JailTurn >= 3)
@@ -2061,6 +2061,7 @@ namespace Monopoly.Screens
                         currentPlr.PlayerMoney -= 1000;
                         currentPlr.IsInJail = false;
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.Pay, $"{currentPlr.Name} have failed to roll doubles for 3 turns. You must pay $1000 to get out of jail./{currentPlr.PlayerMoney}", currentPlr.Name));
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GetOutOfJails, null, currentPlr.Name));
                     }
                     currentPlr.JailTurn++;
                     for (int i = 0; i < PlayerManager.playerCount; i++)
@@ -2085,17 +2086,19 @@ namespace Monopoly.Screens
                     }
                 }
                 await Task.Delay(200);
+
                 if (Dices[0] == Dices[1])
                 {
-                    PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
-                    if(PlayerManager.Players[currentPlayerIndex].doubleRollCount >= 3)
+                    PlayerManager.Players[playerIndex].doubleRollCount++;
+                    if (PlayerManager.Players[playerIndex].doubleRollCount >= 3)
                     {
-                        await GoToJailOnl(currentPlayerIndex);
+                        await GoToJailOnl(playerIndex);
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, $"{currentPlr.Name} rolled three doubles in a row and is sent to Jail!", currentPlr.Name));
                     }
-                    continue;
+                    else continue;
                 }
-                PlayerManager.Players[currentPlayerIndex].doubleRollCount = 0;
+                await Task.Delay(500);
+                PlayerManager.Players[playerIndex].doubleRollCount = 0;
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
@@ -2281,7 +2284,7 @@ namespace Monopoly.Screens
             var plr = PlayerManager.Players[plrIndex];
             plr.Position = 11;
 
-            await MovePlayerToPosition(1, 10);
+            await MovePlayerToPosition(plrIndex, 10);
             plr.IsInJail = true;
         }
 
@@ -2488,13 +2491,13 @@ namespace Monopoly.Screens
             double price = 0;
             if (plr1!.IsInJail)
             {
-                _ = Task.Run(() => MessageBox.Show($"{plr1} is in jail, so no rent will be charged for this property."));
-                await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{plr1} is in jail, so no rent will be charged for this property."));
+                _ = Task.Run(() => MessageBox.Show($"{plr1.Name} is in jail, so no rent will be charged for this property."));
+                await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{plr1.Name} is in jail, so no rent will be charged for this property."));
                 return;
             }
             if (board.properties[plr.Position - 1].type == "property")
             {
-                price = board.properties[plr.Position - 1].levels![board.properties[plr.Position].level.ToString()];
+                price = board.properties[plr.Position - 1].levels![board.properties[plr.Position - 1].level.ToString()];
                 int samePropColor = 0;
                 foreach (int p in plr1.OwnedProperties)
                 {
@@ -2891,6 +2894,12 @@ namespace Monopoly.Screens
         {
             switch (data.Action)
             {
+                case Data.ActionType.GetOutOfJails:
+                    {
+                        if (data.Msg != null) _ = Task.Run(() => MessageBox.Show(data.Msg));
+                        PlayerManager.Players.FirstOrDefault(x=>x.Name == data.From)!.IsInJail = false;
+                        break;
+                    }
                 case Data.ActionType.SellRequest:
                     {
                         await PromptSellPropertiesOnl(int.Parse(data.From!), Math.Abs(double.Parse(data.Msg!)));
@@ -2981,7 +2990,7 @@ namespace Monopoly.Screens
                         var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
                         _ = Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
-                        plrInfo!.PlayerMoney = int.Parse(values[1]);
+                        plrInfo!.PlayerMoney = double.Parse(values[1]);
                         break;
                     }
                 case Data.ActionType.Pay:
@@ -2989,7 +2998,7 @@ namespace Monopoly.Screens
                         var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
                         _ = Task.Run(() => MessageBox.Show(values[0], plrInfo!.Name));
-                        plrInfo!.PlayerMoney = int.Parse(values[1]);
+                        plrInfo!.PlayerMoney = double.Parse(values[1]);
                         break;
                     }
                 case Data.ActionType.GoToJail:
@@ -3026,9 +3035,9 @@ namespace Monopoly.Screens
                         foreach (var p in PlayerManager.Players)
                         {
                             if (p == plr || p.IsBankrupt == true) continue;
-                            p.PlayerMoney -= int.Parse(values[1]);
+                            p.PlayerMoney -= double.Parse(values[1]);
                         }
-                        plr!.PlayerMoney += int.Parse(values[2]);
+                        plr!.PlayerMoney += double.Parse(values[2]);
                         break;
                     }
                 case Data.ActionType.PayEachPlayer:
@@ -3039,9 +3048,9 @@ namespace Monopoly.Screens
                         foreach (var p in PlayerManager.Players)
                         {
                             if (p == plr || p.IsBankrupt == true) continue;
-                            p.PlayerMoney += int.Parse(values[1]);
+                            p.PlayerMoney += double.Parse(values[1]);
                         }
-                        plr!.PlayerMoney -= int.Parse(values[2]);
+                        plr!.PlayerMoney -= double.Parse(values[2]);
                         break;
                     }
                 case Data.ActionType.PayRent:
