@@ -59,6 +59,7 @@ namespace Monopoly
         private void Monopoly_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Invoke(() => SocketServerManager.bcast?.Stop());
+            StopMusic();
             Environment.Exit(0);
         }
         private void InitAudio(int type)
