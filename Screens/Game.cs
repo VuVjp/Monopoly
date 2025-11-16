@@ -2036,10 +2036,6 @@ namespace Monopoly.Screens
                 if (!checker) { continue; }
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
-                UpdatePropertyVisual(board.properties[1].name, 4);
-                UpdatePropertyVisual(board.properties[11].name, 4);
-                UpdatePropertyVisual(board.properties[19].name, 4);
-                UpdatePropertyVisual(board.properties[35].name, 4);
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await DiceAni(Dices[0], Dices[1]);
                 await Task.Delay(200);
