@@ -2088,8 +2088,14 @@ namespace Monopoly.Screens
                 if (Dices[0] == Dices[1])
                 {
                     PlayerManager.Players[currentPlayerIndex].doubleRollCount++;
+                    if(PlayerManager.Players[currentPlayerIndex].doubleRollCount >= 3)
+                    {
+                        await GoToJailOnl(currentPlayerIndex);
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, currentPlr.Name));
+                    }
                     continue;
                 }
+                PlayerManager.Players[currentPlayerIndex].doubleRollCount = 0;
                 currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
             }
         }
