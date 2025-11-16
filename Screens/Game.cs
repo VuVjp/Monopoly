@@ -63,7 +63,6 @@ namespace Monopoly.Screens
         private TaskCompletionSource<bool> _upgradeWaiter;
         private TaskCompletionSource<bool> _pickCardWaiter;
         private TaskCompletionSource<bool> _buyWaiter;
-        private int currPlayerIndex;
         #endregion
         public Game(Monopoly monopoly, string saveFile = "")
         {
@@ -2012,9 +2011,7 @@ namespace Monopoly.Screens
                     break;
                 }
                 int playerIndex = turnOrder[currentPlayerIndex];
-                currPlayerIndex = turnOrder[currentPlayerIndex];
                 var currentPlr = PlayerManager.Players[playerIndex];
-                currentPlr.Position = 33;
                 if (currentPlr.IsBankrupt || !currentPlr.isPlaying)
                 {
                     currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
@@ -2078,7 +2075,7 @@ namespace Monopoly.Screens
                     continue;
                 }
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
-                //await CheckPlrPos(playerIndex);
+                await CheckPlrPos(playerIndex);
                 for (int i = 0; i < PlayerManager.playerCount; i++)
                 {
                     if (PlayerManager.Players[i].PlayerMoney < 0 && PlayerManager.Players[i].isPlaying)
