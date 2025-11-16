@@ -1679,7 +1679,7 @@ namespace Monopoly.Screens
         private async Task HandleCardAsync(PictureBox pcbCard, List<Card> cards, string pileName)
         {
             if (movementInProgress) return;
-            movementInProgress = true; 
+            movementInProgress = true;
             pcbCard.Enabled = true;
             bool cardOpened = false;
             var tcs = new TaskCompletionSource<bool>();
@@ -1944,7 +1944,7 @@ namespace Monopoly.Screens
                 portalStart.Controls.Remove(pcb);
                 portalEnd.Controls.Add(pcb);
                 pcb.Location = new Point(5, 5);
-            }); 
+            });
             await Task.Delay(200);
             this.Invoke(() =>
             {
@@ -2041,7 +2041,7 @@ namespace Monopoly.Screens
                 await Task.Delay(200);
                 if (currentPlr.IsInJail)
                 {
-                    if(currentPlr.GetOutOfJailFree > 0)
+                    if (currentPlr.GetOutOfJailFree > 0)
                     {
                         _ = Task.Run(() => MessageBox.Show($"{currentPlr.Name} used a Get Out of Jail Free card.", currentPlr.Name));
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} used a Get Out of Jail Free card."));
@@ -2054,7 +2054,7 @@ namespace Monopoly.Screens
                         await SocketServerManager.Broadcast(new Data(Data.ActionType.message, $"{currentPlr.Name} now is free!"));
                         currentPlr.IsInJail = false;
                     }
-                    if(currentPlr.JailTurn >= 3)
+                    if (currentPlr.JailTurn >= 3)
                     {
                         _ = Task.Run(() => MessageBox.Show($"{currentPlr.Name} have failed to roll doubles for 3 turns. You must pay $1000 to get out of jail.", currentPlr.Name));
                         currentPlr.PlayerMoney -= 1000;
@@ -2100,8 +2100,8 @@ namespace Monopoly.Screens
             Point old1 = Dice1.Location;
             Point old2 = Dice2.Location;
 
-            int duration = 1000;         
-            int interval = 30;          
+            int duration = 1000;
+            int interval = 30;
             int frames = duration / interval;
 
             for (int i = 0; i < frames; i++)
@@ -2475,6 +2475,7 @@ namespace Monopoly.Screens
 
         private async Task PayRent(int plrIndex)
         {
+            MessageBox.Show("test");
             var plr = PlayerManager.Players[plrIndex];
             var owner = board.properties[plr.Position - 1].owner;
             var plr1 = PlayerManager.Players.FirstOrDefault(x => x.Name == owner);
@@ -2491,13 +2492,15 @@ namespace Monopoly.Screens
                 int samePropColor = 0;
                 foreach (int p in plr1.OwnedProperties)
                 {
-                    if(board.properties[p].color == board.properties[plr.Position - 1].color)
+                    if (board.properties[p].color == board.properties[plr.Position - 1].color)
                     {
                         samePropColor++;
                     }
                 }
-                if(samePropColor >= 3) { price *= price; }
+                if (samePropColor >= 3) { price *= 2; }
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s property. Pay ${price} rent."));
+
+                MessageBox.Show($"{price}");
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s property. Pay ${price} rent./{plr.Name}/{plr1!.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
             else if (board.properties[plr.Position - 1].type == "railroad")
@@ -2522,11 +2525,8 @@ namespace Monopoly.Screens
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s Utility. Pay {multiplier} × dice roll = ${price}."));
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s Utility. Pay {multiplier} × dice roll = ${price}./{plr.Name}/{plr1.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
-            if (plr.PlayerMoney >= price)
-            {
-                plr.PlayerMoney -= price;
-                plr1!.PlayerMoney += price;
-            }
+            plr.PlayerMoney -= price;
+            plr1!.PlayerMoney += price;
         }
 
         private async void BroadcastDice(string plr, int dice1, int dice2)
