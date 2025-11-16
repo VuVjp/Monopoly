@@ -21,6 +21,7 @@ namespace Monopoly.Screens
         {
             InitializeComponent();
             this.monopoly = monopoly;
+            lblTitle.Location = new Point(this.Size.Width/9, lblTitle.Location.Y);
         }
 
         private void btnSingle_Click(object sender, EventArgs e)
