@@ -2091,7 +2091,7 @@ namespace Monopoly.Screens
                     if(PlayerManager.Players[currentPlayerIndex].doubleRollCount >= 3)
                     {
                         await GoToJailOnl(currentPlayerIndex);
-                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, null, currentPlr.Name));
+                        await SocketServerManager.Broadcast(new Data(Data.ActionType.GoToJail, $"{currentPlr.Name} rolled three doubles in a row and is sent to Jail!", currentPlr.Name));
                     }
                     continue;
                 }
