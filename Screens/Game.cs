@@ -2500,7 +2500,6 @@ namespace Monopoly.Screens
                 if (samePropColor >= 3) { price *= 2; }
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s property. Pay ${price} rent."));
 
-                MessageBox.Show($"{price}");
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s property. Pay ${price} rent./{plr.Name}/{plr1!.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
             else if (board.properties[plr.Position - 1].type == "railroad")
@@ -3052,11 +3051,11 @@ namespace Monopoly.Screens
                 case Data.ActionType.Upgrade:
                     {
                         _ = Task.Run(() => MessageBox.Show(data.Msg));
-                        string[] msg = data.Msg!.Split("/");
-                        var plr = PlayerManager.Players.FirstOrDefault(p => p.Name == msg[0]);
-                        plr!.PlayerMoney = double.Parse(msg[3]);
-                        var prop = board.properties[int.Parse(msg[1])];
-                        prop.level = int.Parse(msg[2]);
+                        string[] values = data.From!.Split("/");
+                        var plr = PlayerManager.Players.FirstOrDefault(p => p.Name == values[0]);
+                        plr!.PlayerMoney = double.Parse(values[3]);
+                        var prop = board.properties[int.Parse(values[1])];
+                        prop.level = int.Parse(values[2]);
                         UpdatePropertyVisual(prop.name, prop.level);
                         break;
                     }
