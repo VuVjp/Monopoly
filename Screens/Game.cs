@@ -17,8 +17,6 @@ namespace Monopoly.Screens
         Board board;
         private readonly Action<double>[] _moneyChangedHandlers = new Action<double>[4];
         private Monopoly monopoly;
-        private WaveOutEvent bgMusic;
-        private WaveFileReader bgReader;
         List<Bitmap> listImage = new List<Bitmap>()
         {Properties.Resources.Dice1,
         Properties.Resources.Dice2,
@@ -82,7 +80,6 @@ namespace Monopoly.Screens
             pos20, pos21, pos22, pos23, pos24, pos25, pos26, pos27, pos28, pos29, pos30, pos31, pos32, pos33, pos34, pos35, pos36};
             this.monopoly = monopoly;
             GameLoader();
-            InitAudio();
 
             if (!PlayerManager.isOnline)
             {
@@ -174,21 +171,6 @@ namespace Monopoly.Screens
             var pcb = (PictureBox)sender!;
             bool isTop = pcb.Name == "pcbChance" ? true : false;
             this.Invoke(() => ShowPointingGif(pcb, pcb.Enabled, isTop));
-        }
-
-        private void InitAudio()
-        {
-            bgReader = new WaveFileReader(new MemoryStream(Properties.Resources.BackGroundMusic));
-            bgMusic = new WaveOutEvent();
-            bgMusic.Init(bgReader);
-            bgMusic.Volume = 0.2f;
-            bgMusic.PlaybackStopped += BgMusic_LoopHandler;
-            bgMusic.Play();
-        }
-        private void BgMusic_LoopHandler(object sender, StoppedEventArgs e)
-        {
-            bgReader.Position = 0;
-            bgMusic.Play();
         }
         private void PlaySFX(byte[] soundBytes, int durationMs, float gain = 1.0f)
         {
@@ -521,16 +503,6 @@ namespace Monopoly.Screens
 
         private void pcbReturnMenu(object sender, EventArgs e)
         {
-            if (bgMusic != null)
-            {
-                bgMusic.PlaybackStopped -= BgMusic_LoopHandler;
-                bgMusic.Stop();
-                bgMusic.Dispose();
-                bgReader.Dispose();
-                bgMusic = null;
-                bgReader = null;
-            }
-
             monopoly.LoadScreen(new MainMenu(monopoly));
         }
 
@@ -935,15 +907,6 @@ namespace Monopoly.Screens
                     var result = (MessageBox.Show($"{PlayerManager.Players[activePlayers[0]].Name} wins the game!"));
                     if (result == DialogResult.OK)
                     {
-                        if (bgMusic != null)
-                        {
-                            bgMusic.PlaybackStopped -= BgMusic_LoopHandler;
-                            bgMusic.Stop();
-                            bgMusic.Dispose();
-                            bgReader.Dispose();
-                            bgMusic = null;
-                            bgReader = null;
-                        }
                         monopoly.LoadScreen(new MainMenu(monopoly));
                     }
                 }
@@ -2073,6 +2036,10 @@ namespace Monopoly.Screens
                 if (!checker) { continue; }
                 int[] Dices = RollDiceOnline();
                 steps = Dices[0] + Dices[1];
+                UpdatePropertyVisual(board.properties[1].name, 4);
+                UpdatePropertyVisual(board.properties[11].name, 4);
+                UpdatePropertyVisual(board.properties[19].name, 4);
+                UpdatePropertyVisual(board.properties[35].name, 4);
                 BroadcastDice(PlayerManager.Players[playerIndex].Name, Dices[0], Dices[1]);
                 await DiceAni(Dices[0], Dices[1]);
                 await Task.Delay(200);

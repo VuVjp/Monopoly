@@ -40,8 +40,7 @@ namespace Monopoly
             {
                 curMusic = Screen.Name;
                 StopMusic();
-                bgMusic = null!;
-                bgReader = null!;
+                InitAudio(3);
             }
             else if (Screen.Name == "PlayerConfig")
             {
@@ -74,6 +73,11 @@ namespace Monopoly
                 case 2:
                     {
                         bgReader = new WaveFileReader(Properties.Resources.Lobby);
+                        break;
+                    }
+                case 3:
+                    {
+                        bgReader = new WaveFileReader(new MemoryStream(Properties.Resources.BackGroundMusic));
                         break;
                     }
             }
