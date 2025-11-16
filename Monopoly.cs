@@ -21,6 +21,7 @@ namespace Monopoly
         private WaveOutEvent bgMusic;
         private WaveFileReader bgReader;
         private string curMusic = null!;
+        UserControl userControl;
         public Monopoly()
         {
             InitializeComponent();
@@ -28,6 +29,8 @@ namespace Monopoly
         }
         public void LoadScreen(UserControl Screen)
         {
+            userControl?.Dispose();
+            userControl = Screen;
             pnlMain.Controls.Clear();
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Controls.Add(Screen);

@@ -81,6 +81,7 @@ namespace Monopoly.Screens
             this.monopoly = monopoly;
             GameLoader();
 
+
             if (!PlayerManager.isOnline)
             {
                 if (PlayerManager.IsLoadingSavedGame)
@@ -163,7 +164,9 @@ namespace Monopoly.Screens
                     pnlChat.Visible = false;
                 }
             }
+
         }
+
 
 
         private void Pcb_EnabledChanged(object? sender, EventArgs e)
@@ -239,7 +242,7 @@ namespace Monopoly.Screens
                         {
                             this.Invoke(() => lblPlayerMoney1.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            this.Invoke(() => ShowPopup(labels[player.Position-1], newMoney - player.oldMoney));
                             if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
@@ -287,7 +290,7 @@ namespace Monopoly.Screens
                         {
                             this.Invoke(() => lblPlayerMoney2.Text = $"${newMoney}");
                             PlaySFX(Properties.Resources.Money, 500);
-                            this.Invoke(() => ShowPopup(labels[player.Position - 1], newMoney - player.oldMoney));
+                            this.Invoke(() => ShowPopup(labels[player.Position-1], newMoney - player.oldMoney));
                             if (player.PlayerMoney < 0 && !PlayerManager.isOnline)
                             {
                                 CheckBankrupt(i);
@@ -2011,6 +2014,7 @@ namespace Monopoly.Screens
                 int playerIndex = turnOrder[currentPlayerIndex];
                 currPlayerIndex = turnOrder[currentPlayerIndex];
                 var currentPlr = PlayerManager.Players[playerIndex];
+                currentPlr.Position = 33;
                 if (currentPlr.IsBankrupt || !currentPlr.isPlaying)
                 {
                     currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.Count;
@@ -2074,7 +2078,7 @@ namespace Monopoly.Screens
                     continue;
                 }
                 await PlayerMoving(PlayerManager.Players[playerIndex].Name, steps);
-                await CheckPlrPos(playerIndex);
+                //await CheckPlrPos(playerIndex);
                 for (int i = 0; i < PlayerManager.playerCount; i++)
                 {
                     if (PlayerManager.Players[i].PlayerMoney < 0 && PlayerManager.Players[i].isPlaying)
@@ -2475,7 +2479,6 @@ namespace Monopoly.Screens
 
         private async Task PayRent(int plrIndex)
         {
-            MessageBox.Show("test");
             var plr = PlayerManager.Players[plrIndex];
             var owner = board.properties[plr.Position - 1].owner;
             var plr1 = PlayerManager.Players.FirstOrDefault(x => x.Name == owner);
@@ -2552,9 +2555,9 @@ namespace Monopoly.Screens
                 if (pcb == null) return;
 
                 int oldPos = plrInfo.Position;
-                bool passedStart = (plrInfo.Position + steps) >= labels.Count;
+                bool passedStart = (plrInfo.Position + steps) > labels.Count;
                 plrInfo.Position = (plrInfo.Position + steps) % labels.Count;
-
+                if (plrInfo.Position == 0) plrInfo.Position = 36;
                 for (int i = 0; i < steps; i++)
                 {
                     int pos = (oldPos + i) % labels.Count;
@@ -3232,6 +3235,5 @@ namespace Monopoly.Screens
                 }
             }
         }
-
     }
 }
