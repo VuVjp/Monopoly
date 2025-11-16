@@ -2492,6 +2492,15 @@ namespace Monopoly.Screens
             if (board.properties[plr.Position - 1].type == "property")
             {
                 price = board.properties[plr.Position - 1].levels![board.properties[plr.Position].level.ToString()];
+                int samePropColor = 0;
+                foreach (int p in plr1.OwnedProperties)
+                {
+                    if(board.properties[p].color == board.properties[plr.Position - 1].color)
+                    {
+                        samePropColor++;
+                    }
+                }
+                if(samePropColor >= 3) { price *= price; }
                 _ = Task.Run(() => MessageBox.Show($"{plr.Name} landed on {owner}'s property. Pay ${price} rent."));
                 await SocketServerManager.Broadcast(new Data(Data.ActionType.PayRent, $"{plr.Name} landed on {owner}'s property. Pay ${price} rent./{plr.Name}/{plr1!.Name}/{plr.PlayerMoney}/{plr1.PlayerMoney}"));
             }
