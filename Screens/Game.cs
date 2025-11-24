@@ -1209,8 +1209,10 @@ namespace Monopoly.Screens
                                        "Not enough money",
                                        MessageBoxButtons.YesNo);
 
-            if (sell == DialogResult.Yes)
-                PromptSellProperties(PlayerManager.Players.IndexOf(player), price - player.PlayerMoney);
+            if (sell != DialogResult.Yes)
+                return;
+
+            PromptSellProperties(PlayerManager.Players.IndexOf(player), price - player.PlayerMoney);
         }
         private void HandleUpgrade(int currPlayer, Property property, PictureBox pcbHouse, Label lbl, int direction)
         {
