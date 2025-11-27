@@ -881,41 +881,64 @@ namespace Monopoly.Screens
                 default: return null;
             }
         }
-        private void CheckBankrupt(int currPlayer, double amount = 0)
+        private bool CheckBankrupt(int currPlayer, double requiredAmount = 0)
         {
-            if (!activePlayers.Contains(currPlayer)) return;
+            if (!activePlayers.Contains(currPlayer))
+                return false;
 
             var player = PlayerManager.Players[currPlayer];
+            if (requiredAmount == 0)
+                requiredAmount = 0;
+            if (player.PlayerMoney >= requiredAmount)
+                return false;
+            if (player.OwnedProperties.Count == 0)
+                return ForceBankrupt(currPlayer);
+            double needed = requiredAmount - player.PlayerMoney;
 
-            if (player.PlayerMoney < 0 && player.OwnedProperties.Count > 0)
+            bool hasEnoughAfterSell = CanPlayerAfford(currPlayer, requiredAmount);
+            if (!hasEnoughAfterSell)
+                return ForceBankrupt(currPlayer);
+            while (player.PlayerMoney < requiredAmount)
             {
-                MessageBox.Show($"{player.Name} must sell properties");
-                PromptSellProperties(currPlayer);
+                bool paid = PromptSellProperties(currPlayer, needed);
+                if (paid)
+                    break;
+                MessageBox.Show($"{player.Name} still needs ${needed}. You must sell properties to pay the debt.");
             }
-            if ((player.PlayerMoney <= 0 && player.OwnedProperties.Count == 0) || (amount != 0 && !CanPlayerAfford(currPlayer, amount)))
-            {
-                player.IsBankrupt = true;
-                ResetPlayerProperties(currPlayer);
-                SetPlayerBankruptUI(currPlayer);
-                activePlayers.Remove(currPlayer);
-                if (playerPos.ContainsKey(currPlayer))
-                {
-                    var pcb = GetPlayerPictureBox(currPlayer);
-                    if (pcb != null) pcb.Visible = false;
-                    playerPos.Remove(currPlayer);
-                }
-                if (activePlayers.Count == 1)
-                {
-                    var result = (MessageBox.Show($"{PlayerManager.Players[activePlayers[0]].Name} wins the game!"));
-                    if (result == DialogResult.OK)
-                    {
-                        monopoly.LoadScreen(new MainMenu(monopoly));
-                    }
-                }
-                if (currPlayer == this.currPlayer)
-                    NextPlayer();
-            }
+            if (player.PlayerMoney < requiredAmount)
+                return ForceBankrupt(currPlayer);
+
+            return false;
         }
+
+
+        private bool ForceBankrupt(int currPlayer)
+        {
+            var player = PlayerManager.Players[currPlayer];
+
+            player.IsBankrupt = true;
+            player.PlayerMoney = -1;
+
+            ResetPlayerProperties(currPlayer);
+            SetPlayerBankruptUI(currPlayer);
+            activePlayers.Remove(currPlayer);
+            if (playerPos.ContainsKey(currPlayer))
+            {
+                var pcb = GetPlayerPictureBox(currPlayer);
+                if (pcb != null) pcb.Visible = false;
+                playerPos.Remove(currPlayer);
+            }
+            if (activePlayers.Count == 1)
+            {
+                MessageBox.Show($"{PlayerManager.Players[activePlayers[0]].Name} wins the game!");
+                monopoly.LoadScreen(new MainMenu(monopoly));
+            }
+            if (currPlayer == this.currPlayer)
+                NextPlayer();
+            return true;
+        }
+
+
         private void SetPlayerBankruptUI(int index)
         {
             switch (index)
@@ -938,7 +961,7 @@ namespace Monopoly.Screens
                     break;
             }
         }
-        private void PromptSellProperties(int currPlayer, double requiredAmount = 0)
+        private bool PromptSellProperties(int currPlayer, double requiredAmount = 0)
         {
             RequiredAmount = requiredAmount;
             var player = PlayerManager.Players[currPlayer];
@@ -1074,6 +1097,7 @@ namespace Monopoly.Screens
                 };
 
                 frm.ShowDialog();
+                return RequiredAmount <= 0;
             }
         }
         private class ListItemForSell
@@ -1157,22 +1181,27 @@ namespace Monopoly.Screens
             var dr = MessageBox.Show($"{player.Name}, do you want to buy {property.name} for ${price}?",
                                      "Buy Property",
                                      MessageBoxButtons.YesNo);
-
             if (dr != DialogResult.Yes)
                 return;
+            bool paid = TryPayWithSelling(currPlayer, price);
 
-            TryPayWithSelling(currPlayer, price);
-            if (PlayerManager.Players[currPlayer].PlayerMoney < price) return;
+            if (!paid)
+                return;
             player.PlayerMoney -= price;
             property.owner = player.Name;
             player.OwnedProperties.Add(board.properties.IndexOf(property));
 
             if (pnl != null)
                 pnl.BackColor = player.Color;
-            var ownerProperties = board.properties.Where(p => p.owner == property.owner && p.type == "property" && p.color == property.color).Count();
+
+            var ownerProperties = board.properties
+                .Where(p => p.owner == property.owner && p.type == "property" && p.color == property.color)
+                .Count();
+
             if (ownerProperties == 3)
             {
-                MessageBox.Show("You’ve acquired 3 properties of the same color set, so the rent is doubled.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("You’ve acquired 3 properties of the same color set, so the rent is doubled.",
+                                "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         private bool CanPlayerAfford(int currPlayer, double price)
@@ -1197,23 +1226,23 @@ namespace Monopoly.Screens
             return (player.PlayerMoney + total) >= price;
         }
 
-        private void TryPayWithSelling(int currPlayer, double price)
+        private bool TryPayWithSelling(int currPlayer, double price)
         {
             var player = PlayerManager.Players[currPlayer];
-            if (player.PlayerMoney >= price) return;
-
+            if (player.PlayerMoney >= price)
+                return true;
             if (player.OwnedProperties.Count == 0)
-                return;
+                return false;
 
             var sell = MessageBox.Show($"{player.Name} doesn't have enough money. Sell assets?",
-                                       "Not enough money",
-                                       MessageBoxButtons.YesNo);
+                                        "Not enough money",
+                                        MessageBoxButtons.YesNo);
 
             if (sell != DialogResult.Yes)
-                return;
-
-            PromptSellProperties(PlayerManager.Players.IndexOf(player), price - player.PlayerMoney);
+                return false;
+            return PromptSellProperties(currPlayer, price - player.PlayerMoney);
         }
+
         private void HandleUpgrade(int currPlayer, Property property, PictureBox pcbHouse, Label lbl, int direction)
         {
 
@@ -1231,12 +1260,18 @@ namespace Monopoly.Screens
             if (ask != DialogResult.Yes)
                 return;
 
-            TryPayWithSelling(currPlayer, upgradeCost);
+            bool paid = TryPayWithSelling(currPlayer, upgradeCost);
+
+            if (!paid)
+            {
+                MessageBox.Show($"{player.Name} doesn't have enough money to upgrade!");
+                return;
+            }
 
             player.PlayerMoney -= upgradeCost;
             property.level++;
-
             DrawHouse(property, pcbHouse, direction);
+
         }
         private void DrawHouse(Property property, PictureBox pcbHouse, int direction)
         {
@@ -1562,33 +1597,36 @@ namespace Monopoly.Screens
         private void EnsurePlayerCanPay(int currPlayer, double amount)
         {
             var player = PlayerManager.Players[currPlayer];
-            if (!CanPlayerAfford(currPlayer, amount))
-            {
-                CheckBankrupt(currPlayer);
-                return;
-            }
-            while (player.PlayerMoney < amount && player.OwnedProperties.Count > 0)
-            {
-                MessageBox.Show($"{player.Name} doesn't have enough money to pay ${amount}. Must sell property to continue.");
-                PromptSellProperties(currPlayer, amount - player.PlayerMoney);
-                if (player.IsBankrupt)
-                {
-                    CheckBankrupt(currPlayer);
-                    return;
-                }
-            }
+
             if (player.PlayerMoney >= amount)
             {
                 player.PlayerMoney -= amount;
+                return;
             }
-            else
+
+            while (player.PlayerMoney < amount && player.OwnedProperties.Count > 0)
             {
-                MessageBox.Show($"{player.Name} cannot afford the payment and is bankrupt!");
-                player.IsBankrupt = true;
-                player.PlayerMoney = -1;
-                CheckBankrupt(currPlayer);
+                MessageBox.Show($"{player.Name} doesn't have enough money to pay ${amount}. You must sell assets.");
+
+                bool paid = PromptSellProperties(currPlayer, amount - player.PlayerMoney);
+
+                if (!paid)
+                {
+                    break;
+                }
             }
+
+            if (player.PlayerMoney >= amount)
+            {
+                player.PlayerMoney -= amount;
+                return;
+            }
+            MessageBox.Show($"{player.Name} cannot afford the payment and is bankrupt!");
+            player.IsBankrupt = true;
+            player.PlayerMoney = -1;
+            CheckBankrupt(currPlayer);
         }
+
         private async Task GoToJail(int player)
         {
             MessageBox.Show($"{PlayerManager.Players[player].Name} goes to jail!");
@@ -1634,9 +1672,17 @@ namespace Monopoly.Screens
 
                 MessageBox.Show($"{p.Name} failed 3 times. Must pay $1000 to get out");
                 EnsurePlayerCanPay(player, 1000);
+
+                if (p.IsBankrupt)
+                {
+                    NextPlayer();
+                    return;
+                }
+
                 inJail[player] = false;
                 jailTurns[player] = 0;
                 NextPlayer();
+
             }
             else
             {
