@@ -36,7 +36,7 @@ namespace Monopoly.Scripts
         public event Action<double>? OnMoneyChanged;
         private double _money = 10000;
         public string Name = string.Empty;
-        public PictureBox Avt = new PictureBox();
+        public PictureBox? Avt = null;
         public Color Color;
         public double PlayerMoney
         {
