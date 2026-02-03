@@ -35,11 +35,11 @@
             SellRequest,
             GetOutOfJails,
         }
-        public string? Msg = null!;
-        public string? From = null!; 
+        public string? Msg;
+        public string? From; 
         public ActionType Action;
        
-        public Data(ActionType ActionType, string? msg = null!,string? from = null!)
+        public Data(ActionType ActionType, string? msg = null, string? from = null)
         {
             Msg = msg;
             From = from;

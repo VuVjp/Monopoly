@@ -4,8 +4,8 @@ namespace Monopoly.Scripts
 {
     class PlayerManager
     {
-        public static PictureBox curPlayer = null!;
-        public static PictureBox curAvt = null!;
+        public static PictureBox? curPlayer = null;
+        public static PictureBox? curAvt = null;
         public static bool isOnline;
         public static bool isAdmin;
         public static int playerCount;
@@ -35,8 +35,8 @@ namespace Monopoly.Scripts
     {
         public event Action<double>? OnMoneyChanged;
         private double _money = 10000;
-        public string Name = null!;
-        public PictureBox Avt = null!;
+        public string Name = string.Empty;
+        public PictureBox Avt = new PictureBox();
         public Color Color;
         public double PlayerMoney
         {

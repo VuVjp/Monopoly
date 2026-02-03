@@ -11,17 +11,17 @@
 
     public class Property
     {
-        public string name { get; set; } = null!;
-        public string type { get; set; } = null!;
+        public string name { get; set; } = string.Empty;
+        public string type { get; set; } = string.Empty;
         public double? price { get; set; }
         public double? sell_price { get; set; }
         public double? upgrade_price { get; set; }
-        public string description { get; set; } = null!;
+        public string description { get; set; } = string.Empty;
         public Dictionary<string, double>? levels { get; set; }
         public double? amount { get; set; }
         public string? owner { get; set; }
         public int level { get; set; } = 0;
-        public string color { get; set; }
+        public string color { get; set; } = string.Empty;
     }
 
     public enum CardAction
