@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Monopoly.Scripts
+﻿namespace Monopoly.Scripts
 {
     using Newtonsoft.Json.Converters;
     using System.Collections.Generic;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Monopoly.Scripts
+﻿namespace Monopoly.Scripts
 {
     internal class Data
     {
@@ -18,7 +12,7 @@ namespace Monopoly.Scripts
             LoadPlayer,
             BuyProperty,
             Pay,
-            Recieve,
+            Receive,
             PickCard,
             Upgrade,
             Auction,
