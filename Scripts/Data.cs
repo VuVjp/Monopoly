@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Monopoly.Scripts
+﻿namespace Monopoly.Scripts
 {
     internal class Data
     {
@@ -18,7 +12,7 @@ namespace Monopoly.Scripts
             LoadPlayer,
             BuyProperty,
             Pay,
-            Recieve,
+            Receive,
             PickCard,
             Upgrade,
             Auction,
@@ -41,11 +35,11 @@ namespace Monopoly.Scripts
             SellRequest,
             GetOutOfJails,
         }
-        public string? Msg = null!;
-        public string? From = null!; 
+        public string? Msg;
+        public string? From; 
         public ActionType Action;
        
-        public Data(ActionType ActionType, string? msg = null!,string? from = null!)
+        public Data(ActionType ActionType, string? msg = null, string? from = null)
         {
             Msg = msg;
             From = from;

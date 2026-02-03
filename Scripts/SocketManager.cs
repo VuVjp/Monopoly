@@ -226,12 +226,12 @@ namespace Monopoly.Scripts.Sockets
         public static event Action<Socket, string>? OnClientDisconnect;
         public static SocketServerManager SocketServer => _socketServer ??= new SocketServerManager()!;
 
-        public static Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>()
+        public static Dictionary<string, Socket?> ClientSockets = new Dictionary<string, Socket?>()
         {
-            {"Player 1", null!},
-            {"Player 2", null!},
-            {"Player 3", null!},
-            {"Player 4", null!}
+            {"Player 1", null},
+            {"Player 2", null},
+            {"Player 3", null},
+            {"Player 4", null}
         };
         private Socket socketServer = null!;
         public SocketServerManager() { }

@@ -2286,7 +2286,7 @@ namespace Monopoly.Screens
             {
                 case CardAction.Receive:
                     plr.PlayerMoney += card.value;
-                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Recieve, $"{card.description}/{plr.PlayerMoney}", plr.Name));
+                    await SocketServerManager.Broadcast(new Data(Data.ActionType.Receive, $"{card.description}/{plr.PlayerMoney}", plr.Name));
                     _ = Task.Run(() => MessageBox.Show(card.description, plr.Name));
                     break;
                 case CardAction.Pay:
@@ -2638,7 +2638,7 @@ namespace Monopoly.Screens
                             {
                                 await SocketServerManager.SocketServer.Send(
                                     client.Value,
-                                    new Data(Data.ActionType.Recieve, $"{plrInfo.Name} passed GO! Collect $2000/{plrInfo.PlayerMoney}", plr)
+                                    new Data(Data.ActionType.Receive, $"{plrInfo.Name} passed GO! Collect $2000/{plrInfo.PlayerMoney}", plr)
                                 );
                             }
                         }
@@ -3033,7 +3033,7 @@ namespace Monopoly.Screens
                         }
                     });
                     break;
-                case Data.ActionType.Recieve:
+                case Data.ActionType.Receive:
                     {
                         var plrInfo = PlayerManager.Players.FirstOrDefault(x => x.Name == data.From);
                         string[] values = data.Msg!.Split("/");
